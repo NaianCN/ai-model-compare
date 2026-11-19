@@ -48,9 +48,9 @@ h2{font-size:16px; font-weight:600; margin:32px 0 2px}
 .key{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12px; color:var(--sec); margin:0 0 8px}
 .key span{display:inline-flex; align-items:center; gap:6px}
 .key svg{flex:none; color:var(--muted)}
-.chart{--lab:172px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:0 24px}
+.chart{--lab:172px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:16px 20px}
 .ccol{min-width:0}
-.axis, .row{display:grid; grid-template-columns:var(--lab) minmax(0,1fr); column-gap:12px}
+.axis, .row{display:grid; grid-template-columns:var(--lab) minmax(0,1fr); column-gap:10px}
 .axis{position:relative; height:44px; font-size:11px; line-height:12px; color:var(--muted)}
 .axis .ticks{position:relative; grid-column:2}
 .axis .ticks span{position:absolute; top:0; transform:translateX(-50%); white-space:nowrap}
@@ -82,7 +82,7 @@ h2{font-size:16px; font-weight:600; margin:32px 0 2px}
 .pt::after{content:""; position:absolute; inset:-8px}
 .val{position:absolute; top:1px; font-size:12px; line-height:18px; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--fg); font-weight:600}
 .val i{font-style:normal; font-weight:400; color:var(--sec)}
-@media (max-width:900px){ .chart{grid-template-columns:minmax(0,1fr)} }
+@media (max-width:980px){ .chart{grid-template-columns:minmax(0,1fr)} }
 #tip{position:fixed; z-index:9; max-width:300px; background:var(--bg); color:var(--fg); border:0.5px solid var(--line); border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.55; box-shadow:0 4px 16px rgba(0,0,0,.14); pointer-events:none}
 #tip b{font-weight:600}
 #tip[hidden]{display:none}
@@ -408,13 +408,13 @@ function smallPng(canvas, done){
     ]]
   ];
 
-  var DMIN = 0.1, DMAX = 300;
+  var DMIN = 0.15, DMAX = 220;
   var TICKS = [
-    [DMIN, '1000 万'], [0.3, '3000 万', 'minor'],
+    [DMIN, '1500 万'], [0.3, '3000 万', 'minor'],
     [1, '1 亿'], [3, '3 亿', 'minor'],
     [10, '10 亿'], [30, '30 亿', 'minor'],
     [50, '50 亿'], [90, '90 亿', 'minor'],
-    [120, '120 亿', 'lower'], [DMAX, '300 亿']
+    [120, '120 亿', 'lower'], [DMAX, '220 亿']
   ];
   function pos(v){ return Math.log10(v/DMIN) / Math.log10(DMAX/DMIN) * 100; }
   function fmt(v){

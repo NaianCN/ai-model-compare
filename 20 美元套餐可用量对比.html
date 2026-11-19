@@ -51,11 +51,12 @@ h2{font-size:16px; font-weight:600; margin:32px 0 2px}
 .chart{--lab:172px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:0 24px}
 .ccol{min-width:0}
 .axis, .row{display:grid; grid-template-columns:var(--lab) minmax(0,1fr); column-gap:12px}
-.axis{position:relative; height:20px; font-size:11px; color:var(--muted)}
+.axis{position:relative; height:32px; font-size:11px; line-height:12px; color:var(--muted)}
 .axis .ticks{position:relative; grid-column:2}
-.axis .ticks span{position:absolute; transform:translateX(-50%); white-space:nowrap}
+.axis .ticks span{position:absolute; top:0; transform:translateX(-50%); white-space:nowrap}
 .axis .ticks span:first-child{transform:none}
 .axis .ticks span:last-child{transform:translateX(-100%)}
+.axis .ticks .minor{top:14px}
 .vgroup{margin-top:8px; padding-top:8px; border-top:0.5px solid var(--line)}
 .vhead{display:flex; flex-wrap:wrap; align-items:center; gap:2px 8px; margin-bottom:4px; font-size:14px}
 .vhead b{font-weight:600}
@@ -72,6 +73,7 @@ h2{font-size:16px; font-weight:600; margin:32px 0 2px}
 .src.thi{color:var(--sec); border:1px dashed var(--sec); font-weight:500}
 .track{position:relative; height:38px}
 .gl{position:absolute; top:0; bottom:0; width:1px; background:var(--grid)}
+.gl.minor{opacity:.6}
 .seg{position:absolute; top:25px; height:0; border-top:2px solid var(--c)}
 .seg.est{border-top-style:dashed}
 .pt{position:absolute; top:19px; width:14px; height:14px; margin-left:-7px; border-radius:50%; box-sizing:border-box; background:var(--c); border:2px solid var(--card); padding:0; cursor:help}
@@ -106,7 +108,7 @@ ul.notes li{margin-bottom:6px}
   .row{margin-bottom:4px}
   .mlabel{flex-direction:row; flex-wrap:wrap; align-items:center; gap:2px 6px; margin-top:2px}
   .axis .blank{display:none}
-  .axis .ticks{grid-column:1; height:20px}
+  .axis .ticks{grid-column:1}
 }
 .beta{display:inline-block; vertical-align:middle; padding:2px 7px; border:1px solid currentColor; border-radius:999px; font-size:12px; font-weight:600; line-height:1.4; color:var(--sec)}
 </style>
@@ -405,7 +407,13 @@ function smallPng(canvas, done){
     ]]
   ];
 
-  var DMIN = 0.1, DMAX = 1000;
+  var DMIN = 0.1, DMAX = 300;
+  var TICKS = [
+    [DMIN, '1000 万'], [0.3, '3000 万', true],
+    [1, '1 亿'], [3, '3 亿', true],
+    [10, '10 亿'], [30, '30 亿', true],
+    [100, '100 亿'], [DMAX, '300 亿', true]
+  ];
   function pos(v){ return Math.log10(v/DMIN) / Math.log10(DMAX/DMIN) * 100; }
   function fmt(v){
     if (v >= 10) return v.toFixed(1);
@@ -421,13 +429,18 @@ function smallPng(canvas, done){
   var mode = 'norm';
 
   function axis(){
-    var t = [[0.1,'1000 万'],[1,'1 亿'],[10,'10 亿'],[100,'100 亿'],[1000,'1000 亿']];
     return '<div class="axis"><div class="blank"></div><div class="ticks">' +
-      t.map(function(x){ return '<span style="left:' + pos(x[0]) + '%">' + x[1] + '</span>'; }).join('') + '</div></div>';
+      TICKS.map(function(tick){
+        return '<span' + (tick[2] ? ' class="minor"' : '') + ' style="left:' + pos(tick[0]) + '%">' + tick[1] + '</span>';
+      }).join('') + '</div></div>';
   }
 
   function badge(r){ return '<span class="src ' + r.kind + '">' + r.badge + '</span>'; }
-  function grid(){ return [0,25,50,75,100].map(function(x){ return '<i class="gl" style="left:' + x + '%"></i>'; }).join(''); }
+  function grid(){
+    return TICKS.map(function(tick){
+      return '<i class="gl' + (tick[2] ? ' minor' : '') + '" style="left:' + pos(tick[0]) + '%"></i>';
+    }).join('');
+  }
   function dot(x, cls, r, p, tipId){
     return '<button type="button" class="pt' + cls + '" data-tip="' + tipId + '" aria-label="' + p.name + ' ' + r.m + ' ' + r.badge + '" style="left:' + x + '%"></button>';
   }

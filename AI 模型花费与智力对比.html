@@ -171,35 +171,12 @@ td.vendor{font-weight:600}
   </div>
   </div>
 
-  <div id="part-notes">
+    <div id="part-notes">
   <h2>数据说明</h2>
   <ul class="notes">
-    <li>智力指数与每任务花费均来自 Artificial Analysis，同一来源。2026-10-28 起使用 AA 智力指数 v5.0（2026-11-05 起 AA 标为 v5.0.1，评测项与权重不变）：共 9 项评测（AA-Briefcase v1.1、AutomationBench-AA、GDP.pdf、FrontierCode 2.0、Terminal-Bench 4.0、Terminal-Bench-Science 0.1、CritPt v2 Hard Subset、AA-Omniscience v1.1、HLE-Diamond），分知识工作、编程、科学、通用四类，各占 25%。v5.0 的分数与之前版本不能直接比较，每任务花费也按新评测重算。</li>
-    <li>Claude Sonnet 5.5 与 Opus 5.5 的数据带有 "with fallback" 标签，AA 页面没有解释其含义，与其他模型是否直接可比无法确认。</li>
-    <li>每任务花费是 AA 的加权平均值（Cost per Task），属于 API 口径，不是 Claude Pro 订阅的额度消耗。</li>
-    <li>本图只包含推理档位。非推理模式与花费取整的数据也在表中，"入图"列为"否"，不画在图上。</li>
-    <li>高分区放大图显示花费 $0.2–$30、智力 40–66 范围内的数据点，范围外的点只在主图上。</li>
-    <li>虚线表示该模型的评分与实际表现疑似存在差异，目前只有 Muse Wonder Full (Max)。2026-10-28 起 Muse Wonder、MiMo-V2.6-Pro、Step 5 Preview 与 Kimi K3.1 Pro 改为实线。</li>
-    <li>Muse Spark Open 为 Meta 的开放权重模型，2026-10-18 新增；AA 只列出 xhigh 档（v5.0 智力 25，每任务 $2.02，单价 $1.25 / $4.25 每百万 token）。</li>
-    <li>Grok 4.7、Qwen 3.8 Max、Muse、MiMo 系列与 Step 5 Preview 的数据取自 Artificial Analysis 各模型页面。页面没有给出的档位或非推理版本没有填写，备注里有说明。</li>
-    <li>Muse Spark 1.2 已被 AA 标注为弃用，不再收录；Muse Spark 1.3 已按要求移除。</li>
-    <li>快速模式价格于 2026-10-18 对照 Anthropic（platform.claude.com 的 Pricing 与 Fast mode 文档）和 OpenAI（developers.openai.com 的 Pricing）官方页面重新核实，表中数值与官方一致。Claude Opus 5.5 快速模式为 $8 / $40，缓存命中按快速价的 0.05 倍计（$0.40）；只在 Claude API（含 Managed Agents）和 Microsoft Foundry 中托管在 Azure 的部署上提供，Foundry 托管在 Anthropic 的部署、Claude Platform on AWS 及其他云平台均不提供，也不能与 Batch API、Priority Tier 同时使用；快速与标准速度之间切换会使提示缓存失效。OpenAI 的 Priority processing 已于 2026-07-30 更名为 Fast mode（2 倍）；超快（Ultrafast，6 倍）只有 GPT-6.1 Sol 与 GPT-6 Astra。表中只列短上下文价格（OpenAI 为输入 ≤272K token）。</li>
-    <li>Claude Fable 5.2、Sonnet 5.5、Haiku 5.5 没有快速模式（Anthropic 官方只列出 Opus 5.5、Opus 5、Opus 4.8）。Google 的 Gemini 4 Argon 与 3.8 Flash 有 Priority 档（约为标准价 1.8 倍），但官方说明它针对的是低延迟和不被限流，并不提高输出速度，因此不算快速模式、不列入表中。xAI 官方模型页对 Grok 4.7 只按提示长度分两档计价，没有快速档；第三方报道的 Grok 4.7 Fast 未在公开 API 中列出。Moonshot 为 Kimi K3.1 Pro 提供高速版（约 2–3 倍速度，输入、输出为 2 倍价，缓存命中价不变），Kimi K3 没有高速版。其余厂商官方未提供快速档。</li>
-    <li>Muse Wonder Full (Max) 的智力指数为 50（推理版，v5.0.1），AA 页面未给出花费，因此只出现在表格和条形图中，不在散点图中。</li>
-    <li>Muse Wonder Full (Max) 目前没有公开 API：AA 的 API 提供商页面显示 0 个提供商（2026-10-18 核对），只出现在表格和条形图中。Tencent Hy4 自 2026-11 起有公开 API（仅腾讯 1 个提供商），2026-11-10 起 AA 给出花费（$1.03），已进入散点图。页面上其余型号均至少有一个 API 提供商。</li>
-    <li>以下各条更新记录中的智力与花费为当时（v5.0 之前）的数值，现已全部替换为 v5.0 数据。</li>
-    <li>2026-10-19 对照 AA 排行榜逐档重新核对：新增 DeepSeek V4.1 Flash 1017 (Max)（2026-10-17 发布，智力 45，每任务 $0.26）；原 DeepSeek V4.1 Flash（2026-09 版，含非推理模式）已按要求移除。其余型号各档位的智力指数与花费均无变化。</li>
-    <li>2026-10-23 新增 MiniMax-M3.1-Flash（2026-10 发布，闭源，推理版；智力 43，每任务 $0.22，AA 页面未列出档位）。此前图中没有 MiniMax 的旧型号，因此无需移除。</li>
-    <li>2026-10-24 新增 Kimi K3.1 Pro（2026-10-23 发布，闭源，推理版；智力 55，每任务 $2.11，单价 $2 / $10 每百万 token）。AA 只给出一档且未标档位，记为默认；Moonshot 官方的 reasoning_effort 支持 low / high / max，默认 max，另两档 AA 未测。Kimi K3 已被 AA 标为弃用，当时按要求保留。</li>
-    <li>2026-10-27 新增 GPT-6.1 Terra（2026-10 发布，闭源，100 万 token 上下文；low / medium / high / xhigh / max 五档智力 36 / 41 / 44 / 45 / 48，每任务 $0.05–$0.40，单价 $1 / $5 每百万 token，约为 GPT-6.1 Sol 的一半）。非推理版智力 33、每任务 $0.11，未入图。</li>
-    <li>2026-10-28 AA 改用智力指数 v5.0，按排行榜（当前型号）逐档重抓全部型号的智力与花费。分数普遍下降、花费普遍上升（如 GPT-6.1 Sol low 42→35，Claude Fable 5.1 max 每任务 $7.63→$13.04），横轴上限改为 $16，放大图改为智力 40–60，条形图阈值改为 35 分。移除 Kimi K3（已弃用）与 GLM-5.3-Flash，两者在 v5.0 下暂无评分，列入表格"入图：否"。</li>
-    <li>2026-11-03 重新抓取：新增 Gemini 4 Carbon（2026-10 发布，闭源；AA 只列出 high、medium 两档，智力 59 / 58，每任务 $7.76 / $6.59，单价 $4 / $20 每百万 token），为当前 AA 智力指数最高的模型。Gemini 4 Argon (high) 每任务花费由 $3.84 升至 $7.68。Claude Fable 5.1 各档位每任务花费小幅下调（如 max $13.04→$12.99）。DeepSeek V4.1 Flash 1017 新增 high 档（智力 29），页面未给出花费，列入表格"入图：否"。GLM-5.3-Flash 在 v5.0 下恢复评分（智力 28，每任务 $0.58，单价 $0.15 / $0.50 每百万 token），重新加入图表。其余型号各档位的智力指数与花费均无变化。</li>
-    <li>2026-11-05 重新抓取（AA 智力指数版本标为 v5.0.1）：新增 Tencent Hy4（腾讯，2026-11 发布，闭源，推理版；智力 35，暂无公开 API，AA 未给出花费，只出现在表格和条形图中）。Gemini 4 Carbon 新增 low 档（智力 54，每任务 $7.19），high 档 59→60。Gemini 4 Argon (high) 每任务花费 $7.68→$9.95。多个型号智力指数上调 1 分、花费不变：Claude Opus 5.5 max 58→59，Claude Sonnet 5.5 low / medium / high / max 25→26、30→31、41→42、54→55，Claude Fable 5.1 low 38→39，Claude Haiku 5.5 xhigh 34→35，GPT-6 Astra medium 51→52，DeepSeek V4.1 Flash 1017 max 32→33，Muse Wonder max 43→44，GPT-6.1 Terra 非推理版 30→31，Gemini 3.8 Flash low 22→23。Grok 4.7 xhigh 34→35，每任务花费 $7.51→$7.77。DeepSeek V4.1 Flash 1017 high 档补上花费（$0.46）后入图，非推理版（智力 19，$0.43）列入表格；Muse Wonder 新增 high 档（智力 41），页面未给出花费，未入图。条形图横轴放宽到 61，主图纵轴上限改为 64，放大图改为 40–62。其余型号各档位的智力指数与花费均无变化。</li>
-    <li>2026-11-10 重新抓取（AA 智力指数仍为 v5.0.1，评测项与权重未变）：新增 Claude Fable 5.2（Anthropic，2026-11-09 发布，闭源推理版，单价 $8 / $40 每百万 token，100 万 token 上下文；五档智力 54 / 56 / 62 / 62 / 65，每任务 $3.10 / $3.80 / $9.08 / $14.83 / $26.54），超过 Gemini 4 Carbon (high) 的 60 分成为当前 AA 智力指数最高的模型。Claude Fable 5.1 已不再出现在 AA 排行榜（由 5.2 取代），从图表中移除，表格保留一行说明。Tencent Hy4 补上花费（$1.03，仅腾讯 1 个提供商）后入图；Muse Wonder 的 high 档补上花费（$4.56，智力 41）后入图。新增 Meta Muse Ember（xhigh 34 / $0.12、max 36 / $0.14）。其余全部型号各档位的智力指数与花费均无变化。主图横轴上限改为 $30、纵轴上限改为 68，放大图改为花费 $0.2–$30、智力 40–66，条形图横轴放宽到 66。</li>
-    <li>2026-11-18 对照 AA 榜单核对，新增 GPT-6.2 Astra 和 Sol 各五档。Max 档分别为 62 分 / 每任务 $4.00、57 分 / 每任务 $1.01。旧款 GPT-6 Astra、GPT-6.1 Sol 移至排除列表。快速模式表采用 OpenAI 当期定价，Ultrafast 使用 3 倍优惠倍率。</li>
-    <li>2026-11-16 对照 AA 榜单及模型页嵌入数据核对（智力指数仍为 v5.0.1）：新增 Qwen4 Max，xhigh 档 43 分，每任务 $3.27，输入 / 输出单价 $1.50 / $4.50 每百万 token；榜单未显示档位标签，嵌入数据标记 xhigh。Qwen 3.8 Max (0902) 已不在 Current 榜单，移至排除列表。其余已收录型号的全部绘图档位，分数及每任务花费与上次记录一致。本次未重新核实快速模式单价及套餐用量。</li>
-    <li>2026-11-13 重新抓取（AA 智力指数仍为 v5.0.1）：新增 Gemini 4 Hydrogen（Google，2026-11 发布，闭源推理版，单价 $1.50 / $7.50 每百万 token，100 万 token 上下文，支持文本、图像、语音、视频输入；AA 只列出 low、medium、high、xhigh 四档，没有 max，智力 27 / 41 / 51 / 54，每任务 $0.29 / $0.80 / $1.87 / $3.16；AA 备注它每个智力指数任务输出 3.04 亿 token，中位数为 7,280 万，属于"非常啰嗦"）。Gemini 4 系列每任务花费大幅下调，单价不变：Carbon 的 low / medium / high 由 $7.19 / $6.59 / $7.76 降至 $5.22 / $4.68 / $5.48，Argon 的 high 由 $9.95 降至 $4.97；调整后 Carbon (high) 以 60 分 / $5.48 成为 60 分以上最便宜的一档。其余全部型号各档位的智力指数与花费均无变化。</li>
-    <li>Claude Fable 5.2 的数据同样带 with fallback 标签（AA 页面标题为 "Max, Default Fallback"），目前仅 Anthropic 一家 API 提供商；AA 未提供其快速模式，因此不在"快速模式花费"表中。</li>
+    <li>智力指数采用 <a href="https://artificialanalysis.ai/leaderboards/models">Artificial Analysis v5.0.1</a>。每任务花费为 AA 的加权 API 成本；跨版本的分数与花费口径有变。</li>
+    <li>散点图仅绘制有花费数据的推理档位。Muse Wonder Full (Max) 缺少公开 API 和花费数据，仅列入条形图和明细。</li>
+    <li>Claude Sonnet 5.5、Opus 5.5 和 Fable 5.2 带 AA 的 with fallback 标签。</li>
   </ul>
   </div>
 </div>
@@ -812,7 +789,7 @@ function smallPng(canvas, done){
 
   var FAST = [
     {name:'Claude Opus 5.5', fam:'Claude', std:[4, 0.2, 20], fast:2, ultra:null,
-     note:'Claude Opus 5.5：仅 Claude API（含 Managed Agents）与 Microsoft Foundry 中托管在 Azure 的部署提供，不支持 Batch API 与 Priority Tier；缓存输入为缓存命中价（0.05 倍），缓存倍率叠加在快速价格上。'},
+     note:'Claude Opus 5.5：支持 Claude API 和 Azure 托管的 Foundry 部署。缓存命中按快速输入价的 5% 计。'},
     {name:'GPT-6.2 Sol', fam:'GPT', std:[2, 0.1, 10], fast:2, ultra:3},
     {name:'GPT-6.1 Terra', fam:'GPT', std:[1, 0.05, 5], fast:2, ultra:null},
     {name:'GPT-6.2 Astra', fam:'GPT', std:[8, 0.4, 40], fast:2, ultra:3},
@@ -852,9 +829,9 @@ function smallPng(canvas, done){
   });
   var fastNotes = document.getElementById('fast-notes');
   [FAST[0].note,
-   'OpenAI：Priority processing 已于 2026-07-30 更名为 Fast mode；GPT-6.2 Astra 和 Sol 的 Fast 为标准价 2 倍。Ultrafast 在 2027-02-28 前（含当天，太平洋时间）为 3 倍，2027-03-01 起为 6 倍。表中为输入 ≤272K token 的价格。',
-   'Kimi K3.1 Pro：高速版为单独的模型名 kimi-k3.1-pro-highspeed，约 2–3 倍速度；输入、输出为标准价 2 倍，缓存命中价不变（$0.20），所以每任务花费按 2 倍估算是上限。Kimi K3 没有高速版。',
-   '以上价格于 2026-10-18 对照 Anthropic 与 OpenAI 官方价格页核实（GPT-6.1 Terra 于 2026-10-27 核对，GPT-6.2 Astra、Sol 于 2026-11-18 核对）；Kimi 价格于 2026-10-24 对照 Moonshot 官方价格页（platform.moonshot.ai）核实。'
+   'OpenAI：表中为输入 ≤272K token 的价格。Ultrafast 截至 2027-02-28（太平洋时间）为 3 倍，之后为 6 倍。',
+   'Kimi K3.1 Pro：高速版的缓存命中价不变，按 2 倍估算的每任务花费是上限。',
+   '价格取自 Anthropic、OpenAI 和 Moonshot 官方文档，最近一次核对为 2026-11-18（GPT-6.2）。'
   ].forEach(function(t){ fastNotes.appendChild(cell('li', t)); });
 
   var fastTask = document.getElementById('fast-task');

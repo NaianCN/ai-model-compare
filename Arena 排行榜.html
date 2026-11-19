@@ -84,13 +84,6 @@ td.muted{color:var(--muted)}
 .notes-sec h2{font-size:14px; margin:0 0 8px}
 ul.notes{padding:0 0 0 18px; margin:0; color:var(--sec); font-size:13px}
 ul.notes li{margin-bottom:6px}
-.bdesc{margin:0 0 20px; font-size:13px; color:var(--sec)}
-.bdesc h3{font-size:13px; margin:12px 0 4px; color:inherit; font-weight:600}
-.bdesc dl{margin:0; display:grid; grid-template-columns:max-content 1fr; gap:6px 14px}
-.bdesc dt{font-weight:600; color:var(--ink, inherit); white-space:nowrap}
-.bdesc dt small{display:block; font-weight:400; color:var(--muted, inherit); font-size:11px}
-.bdesc dd{margin:0; line-height:1.6}
-@media (max-width:640px){ .bdesc dl{grid-template-columns:1fr} .bdesc dd{margin-bottom:6px} }
 </style>
 </head><body>
 <div class="wrap">
@@ -147,27 +140,12 @@ ul.notes li{margin-bottom:6px}
   </div>
 
   <section class="notes-sec" id="part-notes">
-    <h2>各榜单说明</h2>
-    <div class="bdesc" id="bdesc"></div>
     <h2>数据说明</h2>
     <ul class="notes">
-    <li>Arena 的分数来自用户盲评投票（Bradley–Terry 模型，类似 Elo），是同一榜单内的相对分。不同榜单的分数不能互相比较。</li>
-    <li>横轴不从 0 起，以便看出前 15 名之间的差距；条形末端的细线是 Arena 给出的 ± 置信区间。区间重叠的型号，排名差异并不显著。</li>
-    <li>斜纹条形是 Arena 标注为 Preliminary（初步）的型号，票数较少，排名可能变动。</li>
-    <li>Agent（智能体任务）榜的指标是 Net Improvement（相对基线的净提升，百分比），Alignment Index（对齐指数）榜的指标是对齐指数（越高越好）；两者都不是 Elo 分。</li>
-    <li>价格为 Arena 页面列出的每百万 token 输入 / 输出价格（美元），N/A 表示页面未列出；图像、视频榜单不列价格。</li>
-    <li>同一型号的不同思考档位（如 High、Max）在 Arena 上分开计分，这里照原样保留。Video Edit（视频编辑）榜目前只有 12 个型号。</li>
-    <li>2026-10-19 重新抓取，与 2026-10-18 相比：Agent 榜名次与分数不变，只有每任务花费（P50）小幅变动；WebDev 榜新进 DeepSeek-V4.1-Flash-20261017 (Max)（第 12 名），Muse Wonder (Max) 跌出前 15，其余型号分数变动 1–2 分；Image-to-WebDev 榜里原来的 DeepSeek-V4.1-Flash (Max)，Arena 现在标为 -20260910 版本。其余 10 个榜单前 15 名没有变化。Alignment Index 榜的上榜型号数更正为 30 个（此前误把表格行数 61 当作型号数）。</li>
-    <li>2026-10-24 重新抓取，与 2026-10-19 相比：Agent 榜上榜型号从 52 个增至 55 个，新进 Muse Wonder Full (Max)（第 7 名，10.74%）、Kimi K3.1 Pro (Max)（第 11 名，Preliminary，7.61%）、DeepSeek-V4.1-Flash-20261017 (Max)（第 13 名，4.37%），MiMo-V2.6-Pro、Gemini 3.8 Flash (High)、Muse Spark 1.3 (Max) 跌出前 15；Claude Opus 5.5 (Max) 由 18.88% 升至 20.77%，Claude Sonnet 5.5 (Max) 升至第 2 名（13.99%），Gemini 4 Argon (High) 由 13.23% 降至 11.75%（第 6 名）。WebDev 榜新进 Muse Wonder Full (Max)（第 6 名，1726）和 Kimi K3.1 Pro (Max)（第 8 名，Preliminary，1692），Muse Spark 1.3 (Max) 与 Kimi K3 (Max) 跌出前 15，Gemini 4 Argon (High) 不再标为 Preliminary（1678→1674）。Image Edit 榜新进 Krea 3 Ultra（Krea，第 8 名，Preliminary，1411），Gemini 3 Pro Image Preview (nano-banana-pro) 跌出前 15，GPT-Image-2.5 Sunburst 由 1524 降至 1514。Text 榜前 15 名型号不变，Gemini 4 Argon (High) 由 1524 降至 1517 并不再标为 Preliminary，Claude Opus 5.5 (High) 升至第 2 名；Vision、Image-to-WebDev 两榜前 15 名型号不变，分数变动 1–5 分，名次小幅互换。Alignment Index、Document、Search、Text to Image、Text to Video、Image to Video、Video Edit 七个榜单前 15 名没有变化。</li>
-    <li>2026-10-27 重新抓取，与 2026-10-24 相比：13 个榜单的上榜型号数不变。Agent、Alignment Index、Text、Vision、Document、Search、WebDev、Image-to-WebDev、Text to Video、Image to Video、Video Edit 十一个榜单前 15 名的名次、型号、分数和票数没有变化；其中 Agent 榜每任务花费（P50）普遍小幅上调（如 Claude Opus 5.5 (Max) $6.24→$6.40），DeepSeek-V4.1-Flash-20261017 (Max) 在 Agent 和 WebDev 榜的价格由 $0.30 / $1.20 降为 $0.15 / $0.60，Search 榜 Qwen3.8-Max 价格由 $1.69 / $5.07 改为 $2 / $6；Text 榜 Gemini 3.8 Flash (High)、Vision 榜 Gemini 3.7 Flash (High) 与 Gemini 3.8 Flash (High)、WebDev 榜 Kimi K3.1 Pro (Max)、Qwen3.8-Max (0902)、Qwen3.8-Max 不再标为 Preliminary。Text to Image 榜型号不变但名次有调整：MAI-Image-2.6 升至第 4 名（1329），Grok Imagine Image 2.0 由第 4 名（1334）降至第 6 名（1317），Qwen-Image-3.0-Pro 与 MAI-Image-2.5 各升一名，Seedream 5.0 Pro 由第 12 名降至第 14 名，GPT-Image-2.5 Sunburst 1425→1427；Image Edit 榜名次不变，分数变动 0–3 分。GPT-6.1 Terra：Arena 上没有这个名称的型号，只有 GPT-5.6 Terra (xHigh)，13 个榜单中只在 Document 榜进入前 15 名（第 13 名，1472），其余名次为 Agent 第 30 名、Text 第 49 名、Vision 第 37 名、WebDev 第 55 名与 Image-to-WebDev 第 31 名（均为 Codex Harness 版），Alignment Index、Search 和图像、视频榜没有它。</li>
-    <li>2026-11-03 重新抓取，与 2026-10-27 相比：Arena 把图像编辑拆成单图编辑与多图编辑两个榜单，新增 Multi Image Edit（多图编辑）榜（45 个型号），图像大类现有 3 个榜单。Gemini 4 Carbon (High)（2026-10 发布）首次上榜即登顶 Text 榜（1528，Preliminary，4403 票），并居 Agent 榜第 2 名（16.04%，Preliminary）、WebDev 榜第 4 名（1768，Preliminary）。Agent 榜上榜型号从 55 个增至 57 个：GPT-6.1 Terra (Max) 新进前 15（第 8 名，10.57%），DeepSeek-V4.1-Flash-20261017 (Max) 跌至第 18 名、Claude Sonnet 5 (High) 跌至第 16 名；Claude Opus 5.5 (Max) 升至 20.94%，Claude Fable 5.1 (Max) 升至第 4 名（13.35%），GPT-6 Astra (Max) 降至第 5 名（12.96%），GPT-6.1 Sol (Max) 降至第 6 名（12.47%，票数 16092→28883），Kimi K3.1 Pro (Max) 降至第 13 名（5.96%），每任务花费普遍上调（如 Opus 5.5 $6.40→$6.82、Astra $4.66→$6.02，Sol $0.87→$0.95）。Text 榜 Muse Spark 1.1 跌出前 15（现第 16 名），Gemini 4 Argon (High) 由 1517 升至 1520，Gemini 3.8 Flash (High) 改标 Preliminary。WebDev 榜上榜型号从 151 个增至 153 个：GPT-6.1 Terra (Max) 新进前 15（第 14 名），DeepSeek-V4.1-Flash-20261017 (Max) 跌至第 16 名、Claude Opus 5 (High) 跌至第 17 名，Kimi K3.1 Pro (Max)、Qwen3.8-Max (0902)、Qwen3.8-Max 改标 Preliminary。Image Edit（单图）榜上榜型号从 60 个增至 61 个：新进 MAI-Image-2.7-Preview（第 3 名，1471），ChatGPT Image Latest (High Fidelity, 20251216) 跌至第 16 名。Search 榜 Gemini 3.1 Pro (Grounding) 价格由 N/A 改为 $2.70 / $16.20。Vision 榜 Gemini 3.7 Flash (High)、Gemini 3.8 Flash (High) 改标 Preliminary。Alignment Index、Document、Text to Image、Text to Video、Image to Video、Video Edit 六个榜单前 15 名没有变化。</li>
-    <li>2026-11-05 重新抓取，与 2026-11-03 相比：Agent 榜上榜型号从 57 个增至 58 个：腾讯 Hy4 首次上榜即进入前 15（第 13 名，5.39%，每任务 $0.57，价格未公布），Muse Wonder (Max) 跌出前 15。Gemini 4 Carbon (High) 去掉 Preliminary 标记，升至 16.72%（会话数 26511→44873）；Claude Opus 5.5 (Max) 降至 20.14%，仍居第 1；Claude Sonnet 5.5 (Max) 升至 15.42%；GPT-6 Astra (Max) 升至第 4 名（14.70%），Claude Fable 5.1 (Max) 降至第 5 名（13.86%，每任务 $6.93→$6.39）；GPT-6.1 Terra (Max) 升至第 7 名（11.40%，会话数 8977→21355），Gemini 4 Argon (High) 降至第 8 名；Claude Opus 5 (Max) 与 GPT-6 Sol (Max) 互换第 11、12 名；Kimi K3.1 Pro (Max) 去掉 Preliminary 标记、降至第 14 名（5.29%），GPT-5.6 Sol (xHigh) 降至第 15 名。Alignment Index 榜上榜型号从 30 个增至 61 个，前 15 名没有变化。Image to WebDev 榜 Grok 4.6 (High) 价格由 $2 / $6 改为 $1.60 / $4.80。图像大类新增 GPT-Image-2.6 Sunburst (Medium) 与 GPT-Image-2.6 Flare (Medium)（均为 Preliminary）：Text to Image 榜分列第 2、4 名（上榜型号 82→84，Seedream 5.0 Pro 与 Gemini 3.1 Flash-Lite Image 跌出前 15），单图编辑榜分列第 3、5 名（61→63，Gemini 3 Pro Image (2K) 与 Gemini 3.1 Flash Image (Web Search) 跌出前 15），多图编辑榜 Flare 第 4 名（45→46，UNI-1.1 Max 跌出前 15）。Text、Vision、WebDev 上榜型号各减少 1 个（419→418、167→166、153→152），前 15 名的分数与票数没有变化；Document、Search 与三个视频榜单没有变化。</li>
-    <li>2026-11-10 重新抓取，与 2026-11-05 相比：Claude Fable 5.2（2026-11-09 发布）只出现在 WebDev 榜，标注为 AutoEval（自动评估估分 1832 ±18，暂无名次和票数，价格 $8 / $40），比第 1 名 Claude Opus 5.5 (Max) 的 1818 高 14 分，本页未列入名次。Agent 榜上榜型号从 58 个减至 57 个：Gemini 4 Carbon (High) 重新标为 Preliminary（16.63%，第 2 名），Hy4 也标为 Preliminary，降至第 14 名（4.66%）；Claude Fable 5.1 (Max) 与 GPT-6 Astra (Max) 互换第 4、5 名；Kimi K3.1 Pro (Max) 升至第 13 名；多数型号每任务花费有小幅变化（如 Opus 5.5 (Max) $6.86→$6.06）。Alignment Index 榜没有变化。Text 榜 418→421：Muse Wonder (Max) 升至第 3 名，Claude Fable 5.1 (Max) 降至第 7 名，Muse Spark 1.1 回到第 14 名，Claude Opus 5 (Max) 跌出前 15。Vision 榜 166→167：Claude Opus 5.5 (High) 升至第 6 名，Claude Fable 5.1 (Max) 进入第 15 名。Document 榜 44→46：Claude Fable 5.1 (Max) 升至第 1 名，Gemini 3.8 Flash (High) 与 Gemini 3.7 Flash (High) 进入前 15。Search 榜 Qwen3.8-Max 升至第 1 名。WebDev 榜 152→156：Claude Opus 5.5 (Max) 升至 1818，Claude Sonnet 5.5 (xHigh) 升至第 2 名，GPT-6 Astra (Max) 降至第 4 名，GPT-6.1 Terra (Max) 升至第 12 名，Kimi K3.1 Pro (Max) 去掉 Preliminary 标记。Image to WebDev 榜 Claude Fable 5.1 (Max) 与 GPT-6 Astra (Max) 互换第 3、4 名。三个视频榜新增 Gemini Omni 1.2 Flash（Preliminary，均排第 1 或第 3），SkyReels V4 进入两个生成榜前 10；Text to Video 与 Image to Video 上榜型号 48→50，Video Edit 10→11。图像三榜只有名次小幅变化。</li>
-    <li>2026-11-18 核对全部 14 榜：对齐指数更新至 11-15，覆盖 64 个模型、184,539 个会话，GPT-6.1 Terra 以 84.7 ±2.0 居首。Agent 前 15 顺序及得分未变，部分每任务中位花费有调整。图像三榜更新，MAI-Image-2.7 在文生图、单图编辑、多图编辑分别第 4、第 4、第 3。对话、编程和视频榜的已记录字段与 11-16 一致。</li>
-    <li>2026-11-16 使用 Chrome 页面逐榜核对全部 14 个榜单：Agent 数据截至 11-13（2,979,271 个会话、65 个型号），Qwen4-Max (xHigh) 新进第 14，7.46% ±1.34%，Preliminary，14,727 个会话，每任务中位花费 $1.47；Fable 5 (High) 跌出前 15。Fable 5.2 (Max) 仍居首，28.61%，每任务 $9.02。WebDev 和 Image-to-WebDev 数据截至 11-14，Qwen4-Max (xHigh) 分别新进第 6（1750 ±15，1,814 票）和第 6（1674 ±16，1,474 票），均为 Preliminary；Fable 5.2 (xHigh) 仍为 WebDev 第 1（1826 ±19）。其余 11 个榜单前 15 名的数据与上次记录一致。核对时间不等于各榜数据更新时间。</li>
-    <li>2026-11-13 重新抓取（Agent 榜标注数据截至 11-12，2,927,721 个会话），与 2026-11-10 相比：Claude Fable 5.2 在 WebDev 榜由 AutoEval 估值转为正式计分，以 1838 ±21（1,215 票）排第 1，比 Claude Opus 5.5 (Max) 的 1815 高 23 分。Agent 榜上榜型号从 57 个增至 64 个：Claude Fable 5.2 (Max) 首次上榜即登顶（30.48%，每任务 $7.57，7,841 个会话），比第 2 名 Claude Opus 5.5 (Max) 的 19.51% 高 10.97 个百分点；Claude Opus 5.5 (Max) 由 19.96% 降至 19.51%，Gemini 4 Carbon (High) 由 16.63% 升至 16.90%（仍为 Preliminary，会话数 53,721→61,473）。新进前 15 的还有 Gemini 4 Hydrogen (High)（第 5 名，14.80%，Preliminary，$1.61）、Claude Opus 5.5 (High)（第 8 名，14.22%，$2.10）、GPT-6.1 Sol (Medium)（第 13 名，8.81%）、Claude Sonnet 5.5 (High)（第 14 名，8.02%）；Claude Opus 5 (Max)、GPT-6 Sol (Max)、Kimi K3.1 Pro (Max)、Hy4、GPT-5.6 Sol (xHigh) 跌出前 15。Text 榜 421 个型号：Gemini 4 Hydrogen (High) 第 15 名（1490，Preliminary，4,741 票），Claude Opus 5 (High) 跌出前 15，其余名次与分数基本不变。WebDev 榜 156→158：Gemini 4 Hydrogen (High) 第 10 名（1704，Preliminary，1,997 票），GPT-6 Sol (Max) 与 Qwen3.8-Max 跌出前 15。Image to WebDev 榜新进 DeepSeek-V4.1-Flash-20261017 (Max)（第 13 名，1609，3,881 票），Gemini 3.7 Flash (High) 跌出前 15。多图编辑榜 46→47：MiniMax H3-Image 第 11 名（1365），Ideogram 4.5 跌出前 15。Video Edit 榜 11→12：SkyReels V4 第 7 名（1364，697 票）。Vision、Document、Search、Alignment Index、Text to Image 与两个视频生成榜的前 15 名没有变化，其中图像三榜与 Video Edit 的分数、票数有小幅更新。Alignment Index 榜页面标注 30 个型号（79,468 个会话，数据仍截至 10-16）。</li>
-    <li>每个榜单标题下的中文说明根据 arena.ai 各榜单页面的介绍和常见问题整理。</li>
-  </ul>
+      <li>数据来自 <a href="https://arena.ai/leaderboard">Arena</a>。盲评分数只在同榜内比较，智能体任务和对齐指数采用各自的指标。</li>
+      <li>横轴从接近最低分处起画。细线为置信区间，斜纹表示初步排名。</li>
+      <li>输入和输出价格按每百万 token 计，任务花费按 Arena 公布的中位数列示。</li>
+    </ul>
   </section>
 </div>
 
@@ -640,21 +618,6 @@ function smallPng(canvas, done){
     renderTable();
     renderLegend();
   }
-  (function(){
-    var box = document.getElementById('bdesc');
-    GROUPS.forEach(function(g){
-      box.appendChild(el('h3', g.zh + ' ' + g.key));
-      var dl = el('dl');
-      g.boards.forEach(function(b){
-        var dt = el('dt', b.zh);
-        dt.appendChild(el('small', b.name));
-        dl.appendChild(dt);
-        dl.appendChild(el('dd', b.desc));
-      });
-      box.appendChild(dl);
-    });
-  })();
-
   select(cur.group, cur.board);
 
   if (window.matchMedia){

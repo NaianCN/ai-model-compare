@@ -1,0 +1,1038 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>AI 模型性价比对比</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#0b0b0b; --sec:#52514e; --muted:#898781;
+  --card:#fcfcfb; --grid:rgba(137,135,129,0.22); --line:#e1e0d9;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161615; --fg:#f0efec; --sec:#c3c2b7; --muted:#898781;
+    --card:#1c1c1b; --grid:rgba(137,135,129,0.22); --line:#383835; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161615; --fg:#f0efec; --sec:#c3c2b7; --muted:#898781;
+  --card:#1c1c1b; --grid:rgba(137,135,129,0.22); --line:#383835; color-scheme:dark;
+}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:14px/1.6 system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;
+}
+.wrap{
+  max-width:1280px; margin:0 auto; padding-block:28px 56px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+h1{font-size:22px; font-weight:600; margin:0 0 4px; text-wrap:balance}
+h2{font-size:16px; font-weight:600; margin:36px 0 12px}
+.sub{color:var(--sec); margin:0 0 20px}
+.card{background:var(--card); border:0.5px solid var(--line); border-radius:12px; padding:16px}
+.chart{position:relative; height:920px}
+@media (max-width:600px){ .chart{height:720px} }
+.tablewrap{overflow-x:auto; border:0.5px solid var(--line); border-radius:12px; background:var(--card)}
+table{border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums}
+th,td{padding:8px 10px; text-align:left; border-bottom:0.5px solid var(--line); white-space:nowrap; vertical-align:top}
+th{color:var(--sec); font-weight:600}
+td.note{white-space:normal; min-width:240px; color:var(--sec)}
+td.num, th.num{text-align:right}
+table.fast{table-layout:fixed; min-width:640px}
+table.fast col.c-model{width:24%}
+table.fast col.c-mode{width:18%}
+table.fast col.c-mult{width:13%}
+table.fast col.c-n{width:15%}
+table.fast td.fm{white-space:normal}
+.fm-vendor{font-size:11px; color:var(--sec); margin:2px 0 0 16px}
+table.fast tr.base td:not(.fm){color:var(--sec)}
+table.fast tr.iq td:not(.fm){color:var(--fg); font-weight:600}
+table.fast td.span{text-align:left; padding-left:14px}
+table.fast td.na{color:var(--sec)}
+table.fast th, table.fast td{padding:6px 10px}
+table.fast.task col.c-model{width:20%}
+table.fast.task col.c-mode{width:15%}
+table.fast.task col.c-t{width:13%}
+table.fast tbody tr:last-child td{border-bottom:0}
+ul.fast-notes{margin-top:10px; font-size:12px; color:var(--fg)}
+tr.muted td{color:var(--sec)}
+.dot{display:inline-block; width:10px; height:10px; border-radius:50%; margin-right:6px; vertical-align:-1px}
+ul.notes{padding-left:20px; margin:0; color:var(--sec)}
+ul.notes li{margin-bottom:6px}
+tr.grp td{border-top:1px solid var(--sec)}
+td.vendor{font-weight:600}
+.legend{display:flex; flex-wrap:wrap; gap:8px 18px; margin-top:14px; padding-top:12px; border-top:0.5px solid var(--line); font-size:12px; color:var(--sec)}
+.sw{display:inline-flex; flex:none; width:12px; height:12px}
+.sw svg{display:block}
+#legend{display:grid; grid-template-columns:repeat(auto-fill, minmax(210px, 1fr)); gap:10px; align-items:stretch; font-size:13px}
+#legend .vg{background:var(--bg); border:0.5px solid var(--line); border-left:3px solid var(--accent); border-radius:10px; padding:10px 12px 10px 11.5px}
+.vg-head{display:flex; align-items:flex-start; gap:7px; margin-bottom:8px; line-height:18px}
+.vg-logo{width:16px; height:16px; flex:none; margin-top:1px; border-radius:4px; background:#fff; padding:1px; box-sizing:border-box}
+.vg-name{font-weight:600; color:var(--fg); flex:1; min-width:0}
+.vg-count{font-size:11px; color:var(--muted); font-variant-numeric:tabular-nums}
+.vg-items{display:flex; flex-direction:column; align-items:flex-start; gap:5px}
+.lg{display:inline-flex; align-items:center; gap:7px; padding:1px 0; background:none; border:0; font:inherit; line-height:18px; color:var(--sec); cursor:pointer; text-align:left}
+.lg:hover{color:var(--fg)}
+.lg.off{opacity:.35}
+.dash-note{display:flex; align-items:center; gap:7px; margin:12px 0 0; font-size:12px; color:var(--sec)}
+.lgs{display:inline-flex; align-items:center; gap:6px; font-size:12px; color:var(--sec)}
+.chart-bar{height:1000px}
+.zoom-title{font-weight:600; font-size:13px; color:var(--sec); margin:0 0 10px}
+.chart-zoom{height:820px}
+@media (max-width:600px){ .chart-zoom{height:520px} }
+.head{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.export{flex:none; font:inherit; font-size:13px; color:var(--fg); background:var(--card); border:0.5px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer}
+.export:disabled{opacity:.6; cursor:default}
+.toolbar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; margin:0 0 16px}
+.parts{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:13px; color:var(--sec)}
+.parts label{display:inline-flex; align-items:center; gap:5px; cursor:pointer}
+</style>
+
+<div class="wrap">
+  <div class="head" id="part-head">
+    <div>
+    <h1>AI 模型性价比对比</h1>
+    <p class="sub">对比各模型思考档位的智力指数与每任务花费。数据来自 Artificial Analysis（v5.0.1），2026-11-18 核对。花费使用美元和对数刻度。另见 <a href="Arena%20排行榜.html" style="color:inherit">Arena 排行榜</a>、<a href="20%20美元套餐可用量对比.html" style="color:inherit">$20 套餐可用量</a>。</p>
+    </div>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="parts">
+      <label><input type="checkbox" data-part="head" checked> 标题与说明</label>
+      <label><input type="checkbox" data-part="chart" checked> 图表</label>
+      <label><input type="checkbox" data-part="zoom" checked> 高分区放大</label>
+      <label><input type="checkbox" data-part="bar" checked> 条形图</label>
+      <label><input type="checkbox" data-part="table" checked> 详细数据</label>
+      <label><input type="checkbox" data-part="fast" checked> 快速模式</label>
+      <label><input type="checkbox" data-part="notes" checked> 数据说明</label>
+    </div>
+    <button class="export" id="export" type="button">导出为图片</button>
+  </div>
+
+  <section class="card" id="part-chart">
+    <div class="chart">
+      <canvas id="c" role="img" aria-label="折线图，横轴为每任务花费（美元，对数刻度，刻度 0.05 至 30 美元），纵轴为 Artificial Analysis 智力指数 v5.0.1。Claude Fable 5.2 在 3.10 到 26.54 美元之间得分 54 到 65，为全图最高；Gemini 4 Carbon 在 4.68 到 5.48 美元之间得分 54 到 60；Gemini 4 Hydrogen 在 0.29 到 3.16 美元之间得分 27 到 54；Claude Opus 5.5 在 0.98 到 10.04 美元之间得分 35 到 59；GPT-6.2 Sol 在 0.18 到 1.01 美元之间得分 41 到 57；GPT-6.1 Terra 在 0.07 到 0.96 美元之间得分 29 到 51；GPT-6.2 Astra 在 0.66 到 4.00 美元之间得分 46 到 62；Muse Ember 在 0.12 到 0.14 美元之间得分 34 到 36；Sonnet 5.5 与 Fable 5.2 位于中高花费区间；Gemini 4 Argon 在 4.97 美元为 50 分；Tencent Hy4 在 1.03 美元为 35 分；Kimi K3.1 Pro 在 3.68 美元为 46 分；GLM-5.3 在 1.57 美元为 23 分，在 5.01 美元为 32 分，GLM-5.3-Flash 在 0.58 美元为 28 分；DeepSeek V4.1 Flash 1017 在 0.46 美元为 29 分，在 0.60 美元为 33 分，MiniMax-M3.1-Flash 在 0.49 美元为 29 分。"></canvas>
+    </div>
+    <div class="legend" id="legend"></div>
+    <p class="dash-note" id="legend-key">虚线 = 该模型的评分与实际表现疑似存在差异</p>
+  </section>
+  <section class="card" id="part-zoom">
+    <p class="zoom-title">高分区放大：花费 $0.2–$30，智力 40–66</p>
+    <div class="chart chart-zoom">
+      <canvas id="cz" role="img" aria-label="高分区放大图，显示花费 0.2 到 30 美元、智力指数 40 到 66 之间的数据点，标志、标注与主图相同。"></canvas>
+    </div>
+  </section>
+
+  <section class="card" id="part-bar">
+    <p class="zoom-title">各型号各档位的智力指数（混排，从高到低；只列智力 ≥ 35 的档位，颜色越浅为该型号越低的档位）</p>
+    <div class="chart chart-bar">
+      <canvas id="cb" role="img" aria-label="横向条形图，所有型号的各思考档位按智力指数从高到低混排，只列 35 分及以上，颜色表示厂商，深浅表示档位高低，斜纹条形为虚线系列。"></canvas>
+    </div>
+    <div class="legend" id="bar-legend"></div>
+    <p class="dash-note" id="bar-key">斜纹 = 虚线系列，该模型的评分与实际表现疑似存在差异</p>
+  </section>
+  <div id="part-table">
+  <h2>详细数据</h2>
+  <div class="tablewrap">
+    <table>
+      <thead>
+        <tr>
+          <th>厂商</th><th>型号</th><th>思考档位（原名）</th><th>思考档位</th>
+          <th class="num">智力指数</th><th class="num">每任务花费（美元）</th><th>入图</th><th>备注</th>
+        </tr>
+      </thead>
+      <tbody id="rows"></tbody>
+    </table>
+  </div>
+  </div>
+
+  <div id="part-fast">
+  <h2>快速模式花费</h2>
+  <p class="sub">对比 Claude Opus 5.5、四款 GPT-6 系列和 Kimi K3.1 Pro 的快速模式价格。每任务花费按相同 token 用量估算。</p>
+  <p class="zoom-title">单价（美元 / 百万 token，短上下文）</p>
+  <div class="tablewrap">
+    <table class="fast">
+      <colgroup><col class="c-model"><col class="c-mode"><col class="c-mult"><col class="c-n"><col class="c-n"><col class="c-n"></colgroup>
+      <thead>
+        <tr><th>型号</th><th>模式</th><th class="num">倍率</th><th class="num">输入</th><th class="num">缓存输入</th><th class="num">输出</th></tr>
+      </thead>
+      <tbody id="fast-price"></tbody>
+    </table>
+  </div>
+  <ul class="notes fast-notes" id="fast-notes"></ul>
+  <p class="zoom-title" style="margin-top:20px">各思考档位的智力指数与每任务花费估算（美元，标准花费 × 倍率）</p>
+  <div class="tablewrap">
+    <table class="fast task">
+      <colgroup><col class="c-model"><col class="c-mode"><col class="c-t"><col class="c-t"><col class="c-t"><col class="c-t"><col class="c-t"></colgroup>
+      <thead>
+        <tr><th>型号</th><th>项目</th><th class="num">低 low</th><th class="num">中 medium</th><th class="num">高 high</th><th class="num">超高 xhigh</th><th class="num">最大 max</th></tr>
+      </thead>
+      <tbody id="fast-task"></tbody>
+    </table>
+  </div>
+  </div>
+
+  <div id="part-notes">
+  <h2>数据说明</h2>
+  <ul class="notes">
+    <li>智力指数与每任务花费均来自 Artificial Analysis，同一来源。2026-10-28 起使用 AA 智力指数 v5.0（2026-11-05 起 AA 标为 v5.0.1，评测项与权重不变）：共 9 项评测（AA-Briefcase v1.1、AutomationBench-AA、GDP.pdf、FrontierCode 2.0、Terminal-Bench 4.0、Terminal-Bench-Science 0.1、CritPt v2 Hard Subset、AA-Omniscience v1.1、HLE-Diamond），分知识工作、编程、科学、通用四类，各占 25%。v5.0 的分数与之前版本不能直接比较，每任务花费也按新评测重算。</li>
+    <li>Claude Sonnet 5.5 与 Opus 5.5 的数据带有 "with fallback" 标签，AA 页面没有解释其含义，与其他模型是否直接可比无法确认。</li>
+    <li>每任务花费是 AA 的加权平均值（Cost per Task），属于 API 口径，不是 Claude Pro 订阅的额度消耗。</li>
+    <li>本图只包含推理档位。非推理模式与花费取整的数据也在表中，"入图"列为"否"，不画在图上。</li>
+    <li>高分区放大图显示花费 $0.2–$30、智力 40–66 范围内的数据点，范围外的点只在主图上。</li>
+    <li>虚线表示该模型的评分与实际表现疑似存在差异，目前只有 Muse Wonder Full (Max)。2026-10-28 起 Muse Wonder、MiMo-V2.6-Pro、Step 5 Preview 与 Kimi K3.1 Pro 改为实线。</li>
+    <li>Muse Spark Open 为 Meta 的开放权重模型，2026-10-18 新增；AA 只列出 xhigh 档（v5.0 智力 25，每任务 $2.02，单价 $1.25 / $4.25 每百万 token）。</li>
+    <li>Grok 4.7、Qwen 3.8 Max、Muse、MiMo 系列与 Step 5 Preview 的数据取自 Artificial Analysis 各模型页面。页面没有给出的档位或非推理版本没有填写，备注里有说明。</li>
+    <li>Muse Spark 1.2 已被 AA 标注为弃用，不再收录；Muse Spark 1.3 已按要求移除。</li>
+    <li>快速模式价格于 2026-10-18 对照 Anthropic（platform.claude.com 的 Pricing 与 Fast mode 文档）和 OpenAI（developers.openai.com 的 Pricing）官方页面重新核实，表中数值与官方一致。Claude Opus 5.5 快速模式为 $8 / $40，缓存命中按快速价的 0.05 倍计（$0.40）；只在 Claude API（含 Managed Agents）和 Microsoft Foundry 中托管在 Azure 的部署上提供，Foundry 托管在 Anthropic 的部署、Claude Platform on AWS 及其他云平台均不提供，也不能与 Batch API、Priority Tier 同时使用；快速与标准速度之间切换会使提示缓存失效。OpenAI 的 Priority processing 已于 2026-07-30 更名为 Fast mode（2 倍）；超快（Ultrafast，6 倍）只有 GPT-6.1 Sol 与 GPT-6 Astra。表中只列短上下文价格（OpenAI 为输入 ≤272K token）。</li>
+    <li>Claude Fable 5.2、Sonnet 5.5、Haiku 5.5 没有快速模式（Anthropic 官方只列出 Opus 5.5、Opus 5、Opus 4.8）。Google 的 Gemini 4 Argon 与 3.8 Flash 有 Priority 档（约为标准价 1.8 倍），但官方说明它针对的是低延迟和不被限流，并不提高输出速度，因此不算快速模式、不列入表中。xAI 官方模型页对 Grok 4.7 只按提示长度分两档计价，没有快速档；第三方报道的 Grok 4.7 Fast 未在公开 API 中列出。Moonshot 为 Kimi K3.1 Pro 提供高速版（约 2–3 倍速度，输入、输出为 2 倍价，缓存命中价不变），Kimi K3 没有高速版。其余厂商官方未提供快速档。</li>
+    <li>Muse Wonder Full (Max) 的智力指数为 50（推理版，v5.0.1），AA 页面未给出花费，因此只出现在表格和条形图中，不在散点图中。</li>
+    <li>Muse Wonder Full (Max) 目前没有公开 API：AA 的 API 提供商页面显示 0 个提供商（2026-10-18 核对），只出现在表格和条形图中。Tencent Hy4 自 2026-11 起有公开 API（仅腾讯 1 个提供商），2026-11-10 起 AA 给出花费（$1.03），已进入散点图。页面上其余型号均至少有一个 API 提供商。</li>
+    <li>以下各条更新记录中的智力与花费为当时（v5.0 之前）的数值，现已全部替换为 v5.0 数据。</li>
+    <li>2026-10-19 对照 AA 排行榜逐档重新核对：新增 DeepSeek V4.1 Flash 1017 (Max)（2026-10-17 发布，智力 45，每任务 $0.26）；原 DeepSeek V4.1 Flash（2026-09 版，含非推理模式）已按要求移除。其余型号各档位的智力指数与花费均无变化。</li>
+    <li>2026-10-23 新增 MiniMax-M3.1-Flash（2026-10 发布，闭源，推理版；智力 43，每任务 $0.22，AA 页面未列出档位）。此前图中没有 MiniMax 的旧型号，因此无需移除。</li>
+    <li>2026-10-24 新增 Kimi K3.1 Pro（2026-10-23 发布，闭源，推理版；智力 55，每任务 $2.11，单价 $2 / $10 每百万 token）。AA 只给出一档且未标档位，记为默认；Moonshot 官方的 reasoning_effort 支持 low / high / max，默认 max，另两档 AA 未测。Kimi K3 已被 AA 标为弃用，当时按要求保留。</li>
+    <li>2026-10-27 新增 GPT-6.1 Terra（2026-10 发布，闭源，100 万 token 上下文；low / medium / high / xhigh / max 五档智力 36 / 41 / 44 / 45 / 48，每任务 $0.05–$0.40，单价 $1 / $5 每百万 token，约为 GPT-6.1 Sol 的一半）。非推理版智力 33、每任务 $0.11，未入图。</li>
+    <li>2026-10-28 AA 改用智力指数 v5.0，按排行榜（当前型号）逐档重抓全部型号的智力与花费。分数普遍下降、花费普遍上升（如 GPT-6.1 Sol low 42→35，Claude Fable 5.1 max 每任务 $7.63→$13.04），横轴上限改为 $16，放大图改为智力 40–60，条形图阈值改为 35 分。移除 Kimi K3（已弃用）与 GLM-5.3-Flash，两者在 v5.0 下暂无评分，列入表格"入图：否"。</li>
+    <li>2026-11-03 重新抓取：新增 Gemini 4 Carbon（2026-10 发布，闭源；AA 只列出 high、medium 两档，智力 59 / 58，每任务 $7.76 / $6.59，单价 $4 / $20 每百万 token），为当前 AA 智力指数最高的模型。Gemini 4 Argon (high) 每任务花费由 $3.84 升至 $7.68。Claude Fable 5.1 各档位每任务花费小幅下调（如 max $13.04→$12.99）。DeepSeek V4.1 Flash 1017 新增 high 档（智力 29），页面未给出花费，列入表格"入图：否"。GLM-5.3-Flash 在 v5.0 下恢复评分（智力 28，每任务 $0.58，单价 $0.15 / $0.50 每百万 token），重新加入图表。其余型号各档位的智力指数与花费均无变化。</li>
+    <li>2026-11-05 重新抓取（AA 智力指数版本标为 v5.0.1）：新增 Tencent Hy4（腾讯，2026-11 发布，闭源，推理版；智力 35，暂无公开 API，AA 未给出花费，只出现在表格和条形图中）。Gemini 4 Carbon 新增 low 档（智力 54，每任务 $7.19），high 档 59→60。Gemini 4 Argon (high) 每任务花费 $7.68→$9.95。多个型号智力指数上调 1 分、花费不变：Claude Opus 5.5 max 58→59，Claude Sonnet 5.5 low / medium / high / max 25→26、30→31、41→42、54→55，Claude Fable 5.1 low 38→39，Claude Haiku 5.5 xhigh 34→35，GPT-6 Astra medium 51→52，DeepSeek V4.1 Flash 1017 max 32→33，Muse Wonder max 43→44，GPT-6.1 Terra 非推理版 30→31，Gemini 3.8 Flash low 22→23。Grok 4.7 xhigh 34→35，每任务花费 $7.51→$7.77。DeepSeek V4.1 Flash 1017 high 档补上花费（$0.46）后入图，非推理版（智力 19，$0.43）列入表格；Muse Wonder 新增 high 档（智力 41），页面未给出花费，未入图。条形图横轴放宽到 61，主图纵轴上限改为 64，放大图改为 40–62。其余型号各档位的智力指数与花费均无变化。</li>
+    <li>2026-11-10 重新抓取（AA 智力指数仍为 v5.0.1，评测项与权重未变）：新增 Claude Fable 5.2（Anthropic，2026-11-09 发布，闭源推理版，单价 $8 / $40 每百万 token，100 万 token 上下文；五档智力 54 / 56 / 62 / 62 / 65，每任务 $3.10 / $3.80 / $9.08 / $14.83 / $26.54），超过 Gemini 4 Carbon (high) 的 60 分成为当前 AA 智力指数最高的模型。Claude Fable 5.1 已不再出现在 AA 排行榜（由 5.2 取代），从图表中移除，表格保留一行说明。Tencent Hy4 补上花费（$1.03，仅腾讯 1 个提供商）后入图；Muse Wonder 的 high 档补上花费（$4.56，智力 41）后入图。新增 Meta Muse Ember（xhigh 34 / $0.12、max 36 / $0.14）。其余全部型号各档位的智力指数与花费均无变化。主图横轴上限改为 $30、纵轴上限改为 68，放大图改为花费 $0.2–$30、智力 40–66，条形图横轴放宽到 66。</li>
+    <li>2026-11-18 对照 AA 榜单核对，新增 GPT-6.2 Astra 和 Sol 各五档。Max 档分别为 62 分 / 每任务 $4.00、57 分 / 每任务 $1.01。旧款 GPT-6 Astra、GPT-6.1 Sol 移至排除列表。快速模式表采用 OpenAI 当期定价，Ultrafast 使用 3 倍优惠倍率。</li>
+    <li>2026-11-16 对照 AA 榜单及模型页嵌入数据核对（智力指数仍为 v5.0.1）：新增 Qwen4 Max，xhigh 档 43 分，每任务 $3.27，输入 / 输出单价 $1.50 / $4.50 每百万 token；榜单未显示档位标签，嵌入数据标记 xhigh。Qwen 3.8 Max (0902) 已不在 Current 榜单，移至排除列表。其余已收录型号的全部绘图档位，分数及每任务花费与上次记录一致。本次未重新核实快速模式单价及套餐用量。</li>
+    <li>2026-11-13 重新抓取（AA 智力指数仍为 v5.0.1）：新增 Gemini 4 Hydrogen（Google，2026-11 发布，闭源推理版，单价 $1.50 / $7.50 每百万 token，100 万 token 上下文，支持文本、图像、语音、视频输入；AA 只列出 low、medium、high、xhigh 四档，没有 max，智力 27 / 41 / 51 / 54，每任务 $0.29 / $0.80 / $1.87 / $3.16；AA 备注它每个智力指数任务输出 3.04 亿 token，中位数为 7,280 万，属于"非常啰嗦"）。Gemini 4 系列每任务花费大幅下调，单价不变：Carbon 的 low / medium / high 由 $7.19 / $6.59 / $7.76 降至 $5.22 / $4.68 / $5.48，Argon 的 high 由 $9.95 降至 $4.97；调整后 Carbon (high) 以 60 分 / $5.48 成为 60 分以上最便宜的一档。其余全部型号各档位的智力指数与花费均无变化。</li>
+    <li>Claude Fable 5.2 的数据同样带 with fallback 标签（AA 页面标题为 "Max, Default Fallback"），目前仅 Anthropic 一家 API 提供商；AA 未提供其快速模式，因此不在"快速模式花费"表中。</li>
+  </ul>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/upng-js/2.1.0/UPNG.min.js"></script>
+<script>
+// 导出压缩：量化成 256 色 PNG，分辨率不变；压缩组件没加载时退回普通 PNG
+function smallPng(canvas, done){
+  try {
+    var w = canvas.width, h = canvas.height;
+    var rgba = canvas.getContext('2d').getImageData(0, 0, w, h).data.buffer;
+    done(new Blob([UPNG.encode([rgba], w, h, 256)], {type:'image/png'}));
+  } catch (e) {
+    canvas.toBlob(done, 'image/png');
+  }
+}
+</script>
+<script>
+(function(){
+  var LV = {low:'低', medium:'中', high:'高', xhigh:'超高', max:'最大', 'default':'默认'};
+  var LV_EN = {low:'low', medium:'medium', high:'high', xhigh:'xhigh', max:'max', 'default':'默认'};
+  var RANK = {'default':0, low:1, medium:2, high:3, xhigh:4, max:5};
+  var FB = '带 with fallback 标签（AA 未说明含义）';
+
+  var SERIES = [
+    {name:'Claude Haiku 5.5', fam:'Claude', letter:'A', color:'#2a78d6', note:'',
+     pts:[[0.04,19,'low'],[0.09,25,'medium'],[0.16,30,'high'],[0.25,35,'xhigh'],[0.41,36,'max']]},
+    {name:'Claude Sonnet 5.5', fam:'Claude', letter:'A', color:'#eb6834', note:FB,
+     pts:[[0.51,26,'low'],[0.78,31,'medium'],[1.64,42,'high'],[4.09,50,'xhigh'],[10.02,55,'max']]},
+    {name:'Claude Opus 5.5', fam:'Claude', letter:'A', color:'#1baf7a', note:FB,
+     pts:[[0.98,35,'low'],[2.45,48,'medium'],[3.46,52,'high'],[6.05,57,'xhigh'],[10.04,59,'max']]},
+    {name:'Claude Fable 5.2', fam:'Claude', letter:'A', color:'#0e7490', note:FB + '；2026-11-09 发布，2026-11-10 新增，当前 AA 智力指数最高',
+     pts:[[3.10,54,'low'],[3.80,56,'medium'],[9.08,62,'high'],[14.83,62,'xhigh'],[26.54,65,'max']]},
+    {name:'GPT-6.2 Sol', fam:'GPT', letter:'O', color:'#c98500', note:'',
+     pts:[[0.18,41,'low'],[0.41,53,'medium'],[0.56,55,'high'],[0.65,56,'xhigh'],[1.01,57,'max']]},
+    {name:'GPT-6.1 Terra', fam:'GPT', letter:'O', color:'#65a30d', note:'2026-10 发布，2026-10-27 新增；非推理版未入图',
+     pts:[[0.07,29,'low'],[0.17,38,'medium'],[0.26,42,'high'],[0.40,45,'xhigh'],[0.96,51,'max']]},
+    {name:'GPT-6 Luna', fam:'GPT', letter:'O', color:'#6250d6', note:'花费只显示到分，数值可能有取整偏差；low 档未入图',
+     pts:[[0.04,18,'medium'],[0.07,21,'high'],[0.10,23,'xhigh'],[0.15,28,'max']]},
+    {name:'GPT-6.2 Astra', fam:'GPT', letter:'O', color:'#e34948', note:'',
+     pts:[[0.66,46,'low'],[1.62,57,'medium'],[2.07,60,'high'],[2.52,62,'xhigh'],[4.00,62,'max']]},
+    {name:'Gemini 3.8 Flash', fam:'Gemini', letter:'G', color:'#d55181', note:'low 档无花费数据，未入图',
+     pts:[[6.26,30,'medium'],[7.77,31,'high']]},
+    {name:'Gemini 4 Argon', fam:'Gemini', letter:'G', color:'#7a1f5c', note:'仅 high 档；2026-11-13 每任务花费 $9.95→$4.97',
+     pts:[[4.97,50,'high']]},
+    {name:'Gemini 4 Carbon', fam:'Gemini', letter:'G', color:'#0891b2', note:'2026-10 发布，2026-11-03 新增；AA 列出 low、medium、high 三档（low 档 2026-11-05 新增）；2026-11-13 每任务花费下调',
+     pts:[[5.22,54,'low'],[4.68,58,'medium'],[5.48,60,'high']]},
+    {name:'Gemini 4 Hydrogen', fam:'Gemini', letter:'G', color:'#0f766e', note:'2026-11 发布，2026-11-13 新增；闭源推理版，单价 $1.50 / $7.50，100 万 token 上下文，支持文本、图像、语音、视频输入；AA 列出 low、medium、high、xhigh 四档，无 max',
+     pts:[[0.29,27,'low'],[0.80,41,'medium'],[1.87,51,'high'],[3.16,54,'xhigh']]},
+    {name:'GLM-5.3', fam:'GLM', letter:'Z', color:'#008300', note:'',
+     pts:[[1.57,23,'low'],[5.01,32,'max']]},
+    {name:'GLM-5.3-Flash', fam:'GLM', letter:'Z', color:'#16a34a', note:'智谱编程套餐模型，2026-11-03 重新上榜（v5.0 恢复评分）；AA 未标档位，记为默认',
+     pts:[[0.58,28,'default']]},
+    {name:'DeepSeek V4.1 Flash 1017', fam:'DeepSeek', letter:'D', color:'#2563eb', note:'2026-10-17 发布，2026-10-19 新增；开放权重，5 个 API 提供商；high 档 2026-11-05 补上花费后入图；非推理版未入图',
+     pts:[[0.46,29,'high'],[0.60,33,'max']]},
+    {name:'Kimi K3.1 Pro', fam:'Kimi', letter:'K', color:'#be185d', note:'2026-10-23 发布，2026-10-24 新增；闭源，2 个 API 提供商；AA 只给出一档且未标档位，记为默认（官方默认 max，low、high 两档 AA 未测）；仅推理版',
+     pts:[[3.68,46,'default']]},
+    {name:'MiniMax-M3.1-Flash', fam:'MiniMax', letter:'N', color:'#be123c', note:'2026-10 发布，2026-10-23 新增；闭源，页面未列出档位，记为默认；仅推理版',
+     pts:[[0.49,29,'default']]},
+    {name:'Muse Spark Open', fam:'Muse', letter:'M', color:'#d946ef', note:'开放权重（816B 总参数 / 42B 激活）；AA 仅列出 xhigh 档',
+     pts:[[2.02,25,'xhigh']]},
+    {name:'Muse Wonder', fam:'Muse', letter:'M', color:'#7e22ce', note:'high 档 2026-11-10 起 AA 给出花费（$4.56）后入图；非推理版页面未给出',
+     pts:[[4.56,41,'high'],[6.95,44,'max']]},
+    {name:'Muse Ember', fam:'Muse', letter:'M', color:'#c026d3', note:'2026-11 新增，2026-11-10 抓取；AA 只列出 xhigh、max 两档',
+     pts:[[0.12,34,'xhigh'],[0.14,36,'max']]},
+    {name:'Muse Wonder Full (Max)', fam:'Muse', letter:'M', color:'#9333ea', dashed:true, index:50, note:'AA 页面给出推理版智力指数，未给出花费；目前无公开 API（0 个提供商）；虚线：评分与实际表现存在差异', pts:[]},
+    {name:'Grok 4.7', fam:'Grok', letter:'X', color:'#6b7280', note:'仅列出 low、high、xhigh 三档，其余档位页面未给出',
+     pts:[[2.92,31,'low'],[6.18,35,'high'],[7.77,35,'xhigh']]},
+    {name:'Qwen4 Max', fam:'Qwen', letter:'Q', color:'#14b8a6', note:'2026-11-16 发布并新增；闭源推理模型，支持文本、图像输入，983,616 token 上下文；AA 榜单未显示档位标签，嵌入数据标记为 xhigh；单价 $1.50 / $4.50 每百万 token',
+     pts:[[3.27,43,'xhigh']]},
+    {name:'MiMo-V2.6-Pro', fam:'MiMo', letter:'I', color:'#d97706', note:'仅推理版，非推理版未给出',
+     pts:[[0.26,30,'default']]},
+    {name:'MiMo-V2.6 Flash', fam:'MiMo', letter:'I', color:'#ca8a04', note:'页面未列出档位，记为默认；仅推理版，非推理版未给出',
+     pts:[[0.13,27,'default']]},
+    {name:'Step 5 Preview', fam:'Step', letter:'S', color:'#4f46e5', note:'页面未列出档位，记为默认；非推理版未给出',
+     pts:[[2.35,29,'default']]},
+    {name:'Tencent Hy4', fam:'Hy', letter:'H', color:'#0ea5e9', note:'腾讯混元，2026-11 发布，2026-11-05 新增；闭源，推理版，支持文本和图像输入，100 万 token 上下文；2026-11-10 起 AA 给出花费，仅腾讯 1 个提供商',
+     pts:[[1.03,35,'default']]}
+  ];
+
+  var EXCL = [
+    {fam:'GPT', name:'GPT-6 Astra', lv:'—', y:'—', x:'—', why:'2026-11-18 AA Current 榜单已换为 GPT-6.2 Astra，旧版移出图表'},
+    {fam:'GPT', name:'GPT-6.1 Sol', lv:'—', y:'—', x:'—', why:'2026-11-18 AA Current 榜单已换为 GPT-6.2 Sol，旧版移出图表'},
+    {fam:'Qwen', name:'Qwen 3.8 Max (0902)', lv:'—', y:'—', x:'—', why:'2026-11-16 在 AA Current 榜单中未再列出，移至排除列表；新增 Qwen4 Max 不表示两者为同一型号'},
+    {fam:'GPT', name:'GPT-6 Luna', lv:'low', y:10, x:'$0.01', why:'花费只显示为 $0.01（取整），不画在对数横轴上'},
+    {fam:'GPT', name:'GPT-6 Luna', lv:'non-reasoning', y:9, x:'$0.07', why:'非推理模式，本图只画推理档位'},
+    {fam:'GPT', name:'GPT-6.1 Terra', lv:'non-reasoning', y:31, x:'$0.23', why:'非推理模式，本图只画推理档位'},
+    {fam:'Gemini', name:'Gemini 3.8 Flash', lv:'low', y:23, x:'未列出', why:'页面无花费数据'},
+    {fam:'DeepSeek', name:'DeepSeek V4.1 Flash 1017', lv:'non-reasoning', y:19, x:'$0.43', why:'非推理模式，本图只画推理档位'},
+    {fam:'Claude', name:'Claude Fable 5.1', lv:'—', y:'—', x:'—', why:'2026-11-10 起 AA 排行榜不再列出（由 Fable 5.2 取代），各档位数据无法再核对，已移出图表'},
+    {fam:'Muse', name:'Muse Wonder Full (Max)', lv:'max', y:50, x:'未列出', why:'AA 页面未给出花费，无法放在对数横轴上；虚线：评分与实际表现存在差异'},
+    {fam:'Kimi', name:'Kimi K3', lv:'—', y:'—', x:'—', why:'AA 已标为弃用；改用智力指数 v5.0 后暂无评分，已移出图表'}
+  ];
+
+  var THEME = {};
+  function readTheme(){
+    var cs = getComputedStyle(document.documentElement);
+    function g(k, d){ return (cs.getPropertyValue(k) || '').trim() || d; }
+    THEME.muted = g('--muted', '#898781');
+    THEME.sec = g('--sec', '#52514e');
+    THEME.grid = g('--grid', 'rgba(137,135,129,0.22)');
+    THEME.surf = g('--card', '#fcfcfb');
+    THEME.dark = (cs.colorScheme || '').indexOf('dark') !== -1;
+    if (!/^(#|rgb)/.test(THEME.surf)) THEME.surf = '#ffffff';
+  }
+  readTheme();
+
+  function tone(hex){
+    if (!THEME.dark) return hex;
+    var n = parseInt(hex.slice(1), 16);
+    var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    r = Math.round(r + (255 - r) * 0.45);
+    g = Math.round(g + (255 - g) * 0.45);
+    b = Math.round(b + (255 - b) * 0.45);
+    return 'rgb(' + r + ',' + g + ',' + b + ')';
+  }
+
+  // 标注文字色：深色主题用 tone 提亮，浅色主题把浅色系列压暗以保证可读
+  function ink(hex){
+    if (THEME.dark) return tone(hex);
+    var n = parseInt(hex.slice(1), 16);
+    var r = (n >> 16) & 255, g = (n >> 8) & 255, b = n & 255;
+    var lum = (0.299 * r + 0.587 * g + 0.114 * b) / 255;
+    var k = lum > 0.55 ? 0.4 : lum > 0.4 ? 0.2 : 0;
+    return 'rgb(' + Math.round(r * (1 - k)) + ',' + Math.round(g * (1 - k)) + ',' + Math.round(b * (1 - k)) + ')';
+  }
+
+  function pill(ctx, x, y, w, h, r){
+    ctx.beginPath();
+    ctx.moveTo(x + r, y);
+    ctx.lineTo(x + w - r, y);
+    ctx.arcTo(x + w, y, x + w, y + r, r);
+    ctx.lineTo(x + w, y + h - r);
+    ctx.arcTo(x + w, y + h, x + w - r, y + h, r);
+    ctx.lineTo(x + r, y + h);
+    ctx.arcTo(x, y + h, x, y + h - r, r);
+    ctx.lineTo(x, y + r);
+    ctx.arcTo(x, y, x + r, y, r);
+    ctx.closePath();
+  }
+
+  var LOGOS = {
+    Claude: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPkFudGhyb3BpYzwvdGl0bGU+PHBhdGggZD0iTTEzLjgyNyAzLjUyaDMuNjAzTDI0IDIwaC0zLjYwM2wtNi41Ny0xNi40OHptLTcuMjU4IDBoMy43NjdMMTYuOTA2IDIwaC0zLjY3NGwtMS4zNDMtMy40NjFINS4wMTdsLTEuMzQ0IDMuNDZIMEw2LjU3IDMuNTIyem00LjEzMiA5Ljk1OUw4LjQ1MyA3LjY4NyA2LjIwNSAxMy40OEgxMC43eiI+PC9wYXRoPjwvc3ZnPg==',
+    GPT: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPk9wZW5BSTwvdGl0bGU+PHBhdGggZD0iTTkuMjA1IDguNjU4di0yLjI2YzAtLjE5LjA3Mi0uMzMzLjIzOC0uNDI4bDQuNTQzLTIuNjE2Yy42MTktLjM1NyAxLjM1Ni0uNTIzIDIuMTE3LS41MjMgMi44NTQgMCA0LjY2MiAyLjIxMiA0LjY2MiA0LjU2NiAwIC4xNjcgMCAuMzU3LS4wMjQuNTQ3bC00LjcxLTIuNzU5YS43OTcuNzk3IDAgMDAtLjg1NiAwbC01Ljk3IDMuNDczem0xMC42MDkgOC44VjEyLjA2YzAtLjMzMy0uMTQzLS41Ny0uNDI5LS43MzdsLTUuOTctMy40NzMgMS45NS0xLjExOGEuNDMzLjQzMyAwIDAxLjQ3NiAwbDQuNTQzIDIuNjE3YzEuMzA5Ljc2IDIuMTg5IDIuMzc4IDIuMTg5IDMuOTQ4IDAgMS44MDgtMS4wNyAzLjQ3My0yLjc2IDQuMTYzek03LjgwMiAxMi43MDNsLTEuOTUtMS4xNDJjLS4xNjctLjA5NS0uMjM5LS4yMzgtLjIzOS0uNDI4VjUuODk5YzAtMi41NDUgMS45NS00LjQ3MiA0LjU5MS00LjQ3MiAxIDAgMS45MjcuMzMzIDIuNzEyLjkyOEw4LjIzIDUuMDY3Yy0uMjg1LjE2Ni0uNDI4LjQwNC0uNDI4LjczN3Y2Ljg5OHpNMTIgMTUuMTI4bC0yLjc5NS0xLjU3di0zLjMzTDEyIDguNjU4bDIuNzk1IDEuNTd2My4zM0wxMiAxNS4xMjh6bTEuNzk2IDcuMjNjLTEgMC0xLjkyNy0uMzMyLTIuNzEyLS45MjdsNC42ODYtMi43MTJjLjI4NS0uMTY2LjQyOC0uNDA0LjQyOC0uNzM3di02Ljg5OGwxLjk3NCAxLjE0MmMuMTY3LjA5NS4yMzguMjM4LjIzOC40Mjh2NS4yMzNjMCAyLjU0NS0xLjk3NCA0LjQ3Mi00LjYxNCA0LjQ3MnptLTUuNjM3LTUuMzAzbC00LjU0NC0yLjYxN2MtMS4zMDgtLjc2MS0yLjE4OC0yLjM3OC0yLjE4OC0zLjk0OEE0LjQ4MiA0LjQ4MiAwIDAxNC4yMSA2LjMyN3Y1LjQyM2MwIC4zMzMuMTQzLjU3MS40MjguNzM4bDUuOTQ3IDMuNDQ5LTEuOTUgMS4xMThhLjQzMi40MzIgMCAwMS0uNDc2IDB6bS0uMjYyIDMuOWMtMi42ODggMC00LjY2Mi0yLjAyMS00LjY2Mi00LjUxOSAwLS4xOS4wMjQtLjM4LjA0Ny0uNTdsNC42ODYgMi43MWMuMjg2LjE2Ny41NzEuMTY3Ljg1NiAwbDUuOTctMy40NDh2Mi4yNmMwIC4xOS0uMDcuMzMzLS4yMzcuNDI4bC00LjU0MyAyLjYxNmMtLjYxOS4zNTctMS4zNTYuNTIzLTIuMTE3LjUyM3ptNS44OTkgMi44M2E1Ljk0NyA1Ljk0NyAwIDAwNS44MjctNC43NTZDMjIuMjg3IDE4LjMzOSAyNCAxNS44NCAyNCAxMy4yOTZjMC0xLjY2NS0uNzEzLTMuMjgyLTEuOTk4LTQuNDQ4LjExOS0uNS4xOS0uOTk5LjE5LTEuNDk4IDAtMy40MDEtMi43NTktNS45NDctNS45NDYtNS45NDctLjY0MiAwLTEuMjYuMDk1LTEuODguMzFBNS45NjIgNS45NjIgMCAwMDEwLjIwNSAwYTUuOTQ3IDUuOTQ3IDAgMDAtNS44MjcgNC43NTdDMS43MTMgNS40NDcgMCA3Ljk0NSAwIDEwLjQ5YzAgMS42NjYuNzEzIDMuMjgzIDEuOTk4IDQuNDQ4LS4xMTkuNS0uMTkgMS0uMTkgMS40OTkgMCAzLjQwMSAyLjc1OSA1Ljk0NiA1Ljk0NiA1Ljk0Ni42NDIgMCAxLjI2LS4wOTUgMS44OC0uMzA5YTUuOTYgNS45NiAwIDAwNC4xNjIgMS43MTN6Ij48L3BhdGg+PC9zdmc+',
+    Gemini: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5HZW1pbmk8L3RpdGxlPjxwYXRoIGQ9Ik0yMC42MTYgMTAuODM1YTE0LjE0NyAxNC4xNDcgMCAwMS00LjQ1LTMuMDAxIDE0LjExMSAxNC4xMTEgMCAwMS0zLjY3OC02LjQ1Mi41MDMuNTAzIDAgMDAtLjk3NSAwIDE0LjEzNCAxNC4xMzQgMCAwMS0zLjY3OSA2LjQ1MiAxNC4xNTUgMTQuMTU1IDAgMDEtNC40NSAzLjAwMWMtLjY1LjI4LTEuMzE4LjUwNS0yLjAwMi42NzhhLjUwMi41MDIgMCAwMDAgLjk3NWMuNjg0LjE3MiAxLjM1LjM5NyAyLjAwMi42NzdhMTQuMTQ3IDE0LjE0NyAwIDAxNC40NSAzLjAwMSAxNC4xMTIgMTQuMTEyIDAgMDEzLjY3OSA2LjQ1My41MDIuNTAyIDAgMDAuOTc1IDBjLjE3Mi0uNjg1LjM5Ny0xLjM1MS42NzctMi4wMDNhMTQuMTQ1IDE0LjE0NSAwIDAxMy4wMDEtNC40NSAxNC4xMTMgMTQuMTEzIDAgMDE2LjQ1My0zLjY3OC41MDMuNTAzIDAgMDAwLS45NzUgMTMuMjQ1IDEzLjI0NSAwIDAxLTIuMDAzLS42Nzh6IiBmaWxsPSIjMzE4NkZGIj48L3BhdGg+PHBhdGggZD0iTTIwLjYxNiAxMC44MzVhMTQuMTQ3IDE0LjE0NyAwIDAxLTQuNDUtMy4wMDEgMTQuMTExIDE0LjExMSAwIDAxLTMuNjc4LTYuNDUyLjUwMy41MDMgMCAwMC0uOTc1IDAgMTQuMTM0IDE0LjEzNCAwIDAxLTMuNjc5IDYuNDUyIDE0LjE1NSAxNC4xNTUgMCAwMS00LjQ1IDMuMDAxYy0uNjUuMjgtMS4zMTguNTA1LTIuMDAyLjY3OGEuNTAyLjUwMiAwIDAwMCAuOTc1Yy42ODQuMTcyIDEuMzUuMzk3IDIuMDAyLjY3N2ExNC4xNDcgMTQuMTQ3IDAgMDE0LjQ1IDMuMDAxIDE0LjExMiAxNC4xMTIgMCAwMTMuNjc5IDYuNDUzLjUwMi41MDIgMCAwMC45NzUgMGMuMTcyLS42ODUuMzk3LTEuMzUxLjY3Ny0yLjAwM2ExNC4xNDUgMTQuMTQ1IDAgMDEzLjAwMS00LjQ1IDE0LjExMyAxNC4xMTMgMCAwMTYuNDUzLTMuNjc4LjUwMy41MDMgMCAwMDAtLjk3NSAxMy4yNDUgMTMuMjQ1IDAgMDEtMi4wMDMtLjY3OHoiIGZpbGw9InVybCgjbG9iZS1pY29ucy1nZW1pbmktMC1fUl8wXykiPjwvcGF0aD48cGF0aCBkPSJNMjAuNjE2IDEwLjgzNWExNC4xNDcgMTQuMTQ3IDAgMDEtNC40NS0zLjAwMSAxNC4xMTEgMTQuMTExIDAgMDEtMy42NzgtNi40NTIuNTAzLjUwMyAwIDAwLS45NzUgMCAxNC4xMzQgMTQuMTM0IDAgMDEtMy42NzkgNi40NTIgMTQuMTU1IDE0LjE1NSAwIDAxLTQuNDUgMy4wMDFjLS42NS4yOC0xLjMxOC41MDUtMi4wMDIuNjc4YS41MDIuNTAyIDAgMDAwIC45NzVjLjY4NC4xNzIgMS4zNS4zOTcgMi4wMDIuNjc3YTE0LjE0NyAxNC4xNDcgMCAwMTQuNDUgMy4wMDEgMTQuMTEyIDE0LjExMiAwIDAxMy42NzkgNi40NTMuNTAyLjUwMiAwIDAwLjk3NSAwYy4xNzItLjY4NS4zOTctMS4zNTEuNjc3LTIuMDAzYTE0LjE0NSAxNC4xNDUgMCAwMTMuMDAxLTQuNDUgMTQuMTEzIDE0LjExMyAwIDAxNi40NTMtMy42NzguNTAzLjUwMyAwIDAwMC0uOTc1IDEzLjI0NSAxMy4yNDUgMCAwMS0yLjAwMy0uNjc4eiIgZmlsbD0idXJsKCNsb2JlLWljb25zLWdlbWluaS0xLV9SXzBfKSI+PC9wYXRoPjxwYXRoIGQ9Ik0yMC42MTYgMTAuODM1YTE0LjE0NyAxNC4xNDcgMCAwMS00LjQ1LTMuMDAxIDE0LjExMSAxNC4xMTEgMCAwMS0zLjY3OC02LjQ1Mi41MDMuNTAzIDAgMDAtLjk3NSAwIDE0LjEzNCAxNC4xMzQgMCAwMS0zLjY3OSA2LjQ1MiAxNC4xNTUgMTQuMTU1IDAgMDEtNC40NSAzLjAwMWMtLjY1LjI4LTEuMzE4LjUwNS0yLjAwMi42NzhhLjUwMi41MDIgMCAwMDAgLjk3NWMuNjg0LjE3MiAxLjM1LjM5NyAyLjAwMi42NzdhMTQuMTQ3IDE0LjE0NyAwIDAxNC40NSAzLjAwMSAxNC4xMTIgMTQuMTEyIDAgMDEzLjY3OSA2LjQ1My41MDIuNTAyIDAgMDAuOTc1IDBjLjE3Mi0uNjg1LjM5Ny0xLjM1MS42NzctMi4wMDNhMTQuMTQ1IDE0LjE0NSAwIDAxMy4wMDEtNC40NSAxNC4xMTMgMTQuMTEzIDAgMDE2LjQ1My0zLjY3OC41MDMuNTAzIDAgMDAwLS45NzUgMTMuMjQ1IDEzLjI0NSAwIDAxLTIuMDAzLS42Nzh6IiBmaWxsPSJ1cmwoI2xvYmUtaWNvbnMtZ2VtaW5pLTItX1JfMF8pIj48L3BhdGg+PGRlZnM+PGxpbmVhckdyYWRpZW50IGdyYWRpZW50VW5pdHM9InVzZXJTcGFjZU9uVXNlIiBpZD0ibG9iZS1pY29ucy1nZW1pbmktMC1fUl8wXyIgeDE9IjciIHgyPSIxMSIgeTE9IjE1LjUiIHkyPSIxMiI+PHN0b3Agc3RvcC1jb2xvcj0iIzA4Qjk2MiI+PC9zdG9wPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iIzA4Qjk2MiIgc3RvcC1vcGFjaXR5PSIwIj48L3N0b3A+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGlkPSJsb2JlLWljb25zLWdlbWluaS0xLV9SXzBfIiB4MT0iOCIgeDI9IjExLjUiIHkxPSI1LjUiIHkyPSIxMSI+PHN0b3Agc3RvcC1jb2xvcj0iI0Y5NDU0MyI+PC9zdG9wPjxzdG9wIG9mZnNldD0iMSIgc3RvcC1jb2xvcj0iI0Y5NDU0MyIgc3RvcC1vcGFjaXR5PSIwIj48L3N0b3A+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgZ3JhZGllbnRVbml0cz0idXNlclNwYWNlT25Vc2UiIGlkPSJsb2JlLWljb25zLWdlbWluaS0yLV9SXzBfIiB4MT0iMy41IiB4Mj0iMTcuNSIgeTE9IjEzLjUiIHkyPSIxMiI+PHN0b3Agc3RvcC1jb2xvcj0iI0ZBQkMxMiI+PC9zdG9wPjxzdG9wIG9mZnNldD0iLjQ2IiBzdG9wLWNvbG9yPSIjRkFCQzEyIiBzdG9wLW9wYWNpdHk9IjAiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=',
+    GLM: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5aaGlwdTwvdGl0bGU+PHBhdGggZD0iTTExLjk5MSAyMy41MDNhLjI0LjI0IDAgMDAtLjI0NC4yNDguMjQuMjQgMCAwMC4yNDQuMjQ5LjI0LjI0IDAgMDAuMjQ1LS4yNDkuMjQuMjQgMCAwMC0uMjItLjI0N2wtLjAyNS0uMDAxek05LjY3MSA1LjM2NWExLjY5NyAxLjY5NyAwIDAxMS4wOTkgMi4xMzJsLS4wNzEuMTcyLS4wMTYuMDQtLjAxOC4wNTRjLS4wNy4xNi0uMTA0LjMyLS4xMDQuNDk4LS4wMzUuNzEuNDcgMS4yNzkgMS4xODYgMS4zMTRoLjM2NmMxLjMwOS4wNTMgMi4zMzggMS4xNzMgMi4yODYgMi41MjMtLjA1MiAxLjMzMi0xLjE1MiAyLjM4LTIuNDc4IDIuMzI3aC0uMTc0Yy0uNzE1LjAxOC0xLjI3NC42NC0xLjIzOSAxLjM2OCAwIC4xMjQuMDE4LjIzLjA1My4zMzcuMjA5LjM3My41NC42NTguOTYuOC43NS4yMyAxLjUxNy0uMTI1IDEuOS0uNzgybC4wMTgtLjAzNWMuNDAyLS42NCAxLjE3LS45NiAxLjkyLS43MTEuODU0LjI4NCAxLjM3OCAxLjIyNiAxLjA5OSAyLjE2N2ExLjY2MSAxLjY2MSAwIDAxLTIuMDc3IDEuMTAyIDEuNzExIDEuNzExIDAgMDEtLjkwNy0uNzExbC0uMDE3LS4wMzVjLS4yLS4zMjMtLjQ2My0uNTgtLjg1MS0uNzExbC0uMDU2LS4wMThhMS42NDYgMS42NDYgMCAwMC0xLjk1NC43NDYgMS42NiAxLjY2IDAgMDEtMS4wNjUuNzY0IDEuNjc3IDEuNjc3IDAgMDEtMS45ODktMS4yNzljLS4yMDktLjkwNi4zMzItMS44MyAxLjI1Ny0yLjA0M2ExLjUxIDEuNTEgMCAwMS4yOTYtLjAzNWguMDE4Yy42OC0uMDcxIDEuMTUxLS42MjIgMS4xMTYtMS4zMzNhMS4zMDcgMS4zMDcgMCAwMC0uMjI3LS42OTMgMi41MTUgMi41MTUgMCAwMS0uMzY2LTEuNDAzIDIuMzkgMi4zOSAwIDAxLjM2Ni0xLjIwOGMuMTQtLjE5NS4yMS0uNDQ0LjIyNy0uNjkzLjAxOC0uNzEtLjUwNi0xLjI2MS0xLjE4Ni0xLjMzMmwtLjA3LS4wMThhMS40MyAxLjQzIDAgMDEtLjI5OS0uMDdsLS4wNS0uMDE5YTEuNyAxLjcgMCAwMS0xLjA0Ny0yLjExNCAxLjY4IDEuNjggMCAwMTIuMDk0LTEuMTAxem0tNS41NzUgMTAuMTFjLjI2LS4yNjQuNjM5LS4zNjcuOTk0LS4yNy4zNTUuMDk2LjYzMy4zNzkuNzI4Ljc0LjA5NS4zNjItLjAwNy43NDgtLjI2NyAxLjAxMy0uNDAyLjQxLTEuMDUzLjQxLTEuNDU1IDBhMS4wNjIgMS4wNjIgMCAwMTAtMS40ODJ6bTE0Ljg0NS0uMjk0Yy4zNTktLjA5LjczOC4wMjQuOTkyLjI5Ny4yNTQuMjc0LjM0NC42NjUuMjM3IDEuMDI1LS4xMDcuMzYtLjM5Ni42MzQtLjc1Ni43MTgtLjU1MS4xMjgtMS4xLS4yMi0xLjIzLS43ODFhMS4wNSAxLjA1IDAgMDEuNzU3LTEuMjZ6bS0uMDY0LTQuMzljLjMxNC4zMi40OS43NTMuNDkgMS4yMDYgMCAuNDUyLS4xNzYuODg2LS40OSAxLjIwNi0uMzE1LjMyLS43NC41LTEuMTg1LjUtLjQ0NCAwLS44Ny0uMTgtMS4xODQtLjVhMS43MjcgMS43MjcgMCAwMTAtMi40MTIgMS42NTQgMS42NTQgMCAwMTIuMzY5IDB6bS0xMS4yNDMuMTYzYy4zNjQuNDg0LjQ0NyAxLjEyOC4yMTggMS42OTFhMS42NjUgMS42NjUgMCAwMS0yLjE4OC45MjNjLS44NTUtLjM2LTEuMjYtMS4zNTgtLjkwNy0yLjIyOGExLjY4IDEuNjggMCAwMTEuMzMtMS4wMzhjLjU5My0uMDggMS4xODMuMTY5IDEuNTQ3LjY1MnptMTEuNTQ1LTQuMjIxYy4zNjggMCAuNzA4LjIuODkyLjUyNC4xODQuMzI0LjE4NC43MjQgMCAxLjA0OGExLjAyNiAxLjAyNiAwIDAxLS44OTIuNTI0Yy0uNTY4IDAtMS4wMy0uNDctMS4wMy0xLjA0OCAwLS41NzkuNDYyLTEuMDQ4IDEuMDMtMS4wNDh6bS0xNC4zNTggMGMuMzY4IDAgLjcwNy4yLjg5MS41MjQuMTg0LjMyNC4xODQuNzI0IDAgMS4wNDhhMS4wMjYgMS4wMjYgMCAwMS0uODkxLjUyNGMtLjU2OSAwLTEuMDMtLjQ3LTEuMDMtMS4wNDggMC0uNTc5LjQ2MS0xLjA0OCAxLjAzLTEuMDQ4em0xMC4wMzEtMS40NzVjLjkyNSAwIDEuNjc1Ljc2NCAxLjY3NSAxLjcwNnMtLjc1IDEuNzA1LTEuNjc1IDEuNzA1LTEuNjc0LS43NjMtMS42NzQtMS43MDVjMC0uOTQyLjc1LTEuNzA2IDEuNjc0LTEuNzA2em0tMi42MjYtLjY4NGMuMzYyLS4wODIuNjUzLS4zNTYuNzYxLS43MThhMS4wNjIgMS4wNjIgMCAwMC0uMjM4LTEuMDI4IDEuMDE3IDEuMDE3IDAgMDAtLjk5Ni0uMjk0Yy0uNTQ3LjE0LS44ODEuNy0uNzUyIDEuMjU3LjEzLjU1OC42NzUuOTA3IDEuMjI1Ljc4M3ptMCAxNi44NzZjLjM1OS0uMDg3LjY0NC0uMzYuNzUtLjcyYTEuMDYyIDEuMDYyIDAgMDAtLjIzNy0xLjAxOSAxLjAxOCAxLjAxOCAwIDAwLS45ODUtLjMwMSAxLjAzNyAxLjAzNyAwIDAwLS43NjIuNzE3Yy0uMTA4LjM2MS0uMDE3Ljc1NC4yMzkgMS4wMjguMjQ1LjI2My42MDYuMzc3Ljk1My4zMDVsLjA0My0uMDF6TTE3LjE5IDMuNWEuNjMxLjYzMSAwIDAwLjYyOC0uNjRjMC0uMzU1LS4yNzktLjY0LS42MjgtLjY0YS42MzEuNjMxIDAgMDAtLjYyOC42NGMwIC4zNTUuMjguNjQuNjI4LjY0em0tMTAuMzggMGEuNjMxLjYzMSAwIDAwLjYyOC0uNjRjMC0uMzU1LS4yOC0uNjQtLjYyOC0uNjRhLjYzMS42MzEgMCAwMC0uNjI4LjY0YzAgLjM1NS4yNzkuNjQuNjI4LjY0em0tNS4xODIgNy44NTJhLjYzMS42MzEgMCAwMC0uNjI4LjY0YzAgLjM1NC4yOC42MzkuNjI4LjYzOWEuNjMuNjMgMCAwMC42MjctLjYwNmwuMDAxLS4wMzRhLjYyLjYyIDAgMDAtLjYyOC0uNjR6bTUuMTgyIDkuMTNhLjYzMS42MzEgMCAwMC0uNjI4LjY0YzAgLjM1NS4yNzkuNjQuNjI4LjY0YS42MzEuNjMxIDAgMDAuNjI4LS42NGMwLS4zNTUtLjI4LS42NC0uNjI4LS42NHptMTAuMzguMDE4YS42MzEuNjMxIDAgMDAtLjYyOC42NGMwIC4zNTUuMjguNjQuNjI4LjY0YS42MzEuNjMxIDAgMDAuNjI4LS42NGMwLS4zNTUtLjI3OS0uNjQtLjYyOC0uNjR6bTUuMTgyLTkuMTQ4YS42MzEuNjMxIDAgMDAtLjYyOC42NGMwIC4zNTQuMjc5LjYzOS42MjguNjM5YS42MzEuNjMxIDAgMDAuNjI4LS42NGMwLS4zNTUtLjI4LS42NC0uNjI4LS42NHptLS4zODQtNC45OTJhLjI0LjI0IDAgMDAuMjQ0LS4yNDkuMjQuMjQgMCAwMC0uMjQ0LS4yNDkuMjQuMjQgMCAwMC0uMjQ0LjI0OWMwIC4xNDIuMTIyLjI0OS4yNDQuMjQ5ek0xMS45OTEuNDk3YS4yNC4yNCAwIDAwLjI0NS0uMjQ4QS4yNC4yNCAwIDAwMTEuOTkgMGEuMjQuMjQgMCAwMC0uMjQ0LjI0OWMwIC4xMzMuMTA4LjIzNi4yMjMuMjQ3bC4wMjEuMDAxek0yLjAxMSA2LjM2YS4yNC4yNCAwIDAwLjI0NS0uMjQ5LjI0LjI0IDAgMDAtLjI0NC0uMjQ5LjI0LjI0IDAgMDAtLjI0NC4yNDkuMjQuMjQgMCAwMC4yNDQuMjQ5em0wIDExLjI2M2EuMjQuMjQgMCAwMC0uMjQzLjI0OC4yNC4yNCAwIDAwLjI0NC4yNDkuMjQuMjQgMCAwMC4yNDQtLjI0OS4yNTIuMjUyIDAgMDAtLjI0NC0uMjQ4em0xOS45OTUtLjAxOGEuMjQuMjQgMCAwMC0uMjQ1LjI0OC4yNC4yNCAwIDAwLjI0NS4yNS4yNC4yNCAwIDAwLjI0NC0uMjUuMjUyLjI1MiAwIDAwLS4yNDQtLjI0OHoiIGZpbGw9IiMzODU5RkYiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjwvc3ZnPg==',
+    DeepSeek: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5EZWVwU2VlazwvdGl0bGU+PHBhdGggZD0iTTIzLjc0OCA0LjQ4MmMtLjI1NC0uMTI0LS4zNjQuMTEzLS41MTIuMjM0LS4wNTEuMDM5LS4wOTQuMDktLjEzNy4xMzYtLjM3Mi4zOTctLjgwNi42NTctMS4zNzMuNjI2LS44MjktLjA0Ni0xLjUzNy4yMTQtMi4xNjMuODQ4LS4xMzMtLjc4Mi0uNTc1LTEuMjQ4LTEuMjQ3LTEuNTQ4LS4zNTItLjE1Ni0uNzA4LS4zMTEtLjk1NS0uNjUtLjE3Mi0uMjQxLS4yMTktLjUxLS4zMDUtLjc3NC0uMDU1LS4xNi0uMTEtLjMyMy0uMjkzLS4zNS0uMi0uMDMxLS4yNzguMTM2LS4zNTYuMjc2LS4zMTMuNTcyLS40MzQgMS4yMDItLjQyMiAxLjg0LjAyNyAxLjQzNi42MzMgMi41OCAxLjgzOCAzLjM5My4xMzcuMDkzLjE3Mi4xODcuMTI5LjMyMy0uMDgyLjI4LS4xOC41NTItLjI2Ni44MzMtLjA1NS4xNzktLjEzNy4yMTctLjMyOS4xNGE1LjUyNiA1LjUyNiAwIDAxLTEuNzM2LTEuMThjLS44NTctLjgyOC0xLjYzMS0xLjc0Mi0yLjU5Ny0yLjQ1OGExMS4zNjUgMTEuMzY1IDAgMDAtLjY4OS0uNDcxYy0uOTg1LS45NTcuMTMtMS43NDMuMzg4LTEuODM2LjI3LS4wOTguMDkzLS40MzItLjc3OS0uNDI4LS44NzIuMDA0LTEuNjcuMjk1LTIuNjg3LjY4NGEzLjA1NSAzLjA1NSAwIDAxLS40NjUuMTM3IDkuNTk3IDkuNTk3IDAgMDAtMi44ODMtLjEwMmMtMS44ODUuMjEtMy4zOSAxLjEwMi00LjQ5NyAyLjYyM0MuMDgyIDguNjA2LS4yMzEgMTAuNjg0LjE1MiAxMi44NWMuNDAzIDIuMjg0IDEuNTY5IDQuMTc1IDMuMzYgNS42NTMgMS44NTggMS41MzMgMy45OTcgMi4yODQgNi40MzggMi4xNCAxLjQ4Mi0uMDg1IDMuMTMzLS4yODQgNC45OTQtMS44Ni40Ny4yMzQuOTYyLjMyNyAxLjc4LjM5Ny42My4wNTkgMS4yMzYtLjAzIDEuNzA1LS4xMjguNzM1LS4xNTYuNjg0LS44MzcuNDE5LS45NjEtMi4xNTUtMS4wMDQtMS42ODItLjU5NS0yLjExMy0uOTI2IDEuMDk2LTEuMjk2IDIuNzQ2LTIuNjQyIDMuMzkyLTcuMDAzLjA1LS4zNDcuMDA3LS41NjUgMC0uODQ1LS4wMDQtLjE3LjAzNS0uMjM3LjIzLS4yNTZhNC4xNzMgNC4xNzMgMCAwMDEuNTQ1LS40NzVjMS4zOTYtLjc2MyAxLjk2LTIuMDE1IDIuMDkzLTMuNTE3LjAyLS4yMy0uMDA0LS40NjctLjI0Ny0uNTg4ek0xMS41ODEgMThjLTIuMDg5LTEuNjQyLTMuMTAyLTIuMTgzLTMuNTItMi4xNi0uMzkyLjAyNC0uMzIxLjQ3MS0uMjM1Ljc2My4wOS4yODguMjA3LjQ4Ni4zNzEuNzM5LjExNC4xNjcuMTkyLjQxNi0uMTEzLjYwMy0uNjczLjQxNi0xLjg0Mi0uMTQtMS44OTctLjE2Ny0xLjM2MS0uODAyLTIuNS0xLjg2LTMuMzAxLTMuMzA3LS43NzQtMS4zOTMtMS4yMjQtMi44ODctMS4yOTgtNC40ODItLjAyLS4zODYuMDkzLS41MjIuNDc3LS41OTJhNC42OTYgNC42OTYgMCAwMTEuNTI5LS4wMzljMi4xMzIuMzEyIDMuOTQ2IDEuMjY1IDUuNDY4IDIuNzc0Ljg2OC44NiAxLjUyNSAxLjg4NyAyLjIwMiAyLjg5MS43MiAxLjA2NiAxLjQ5NCAyLjA4MiAyLjQ4IDIuOTE0LjM0OC4yOTIuNjI1LjUxNC44OTEuNjc3LS44MDIuMDktMi4xNC4xMS0zLjA1NC0uNjE0em0xLTYuNDRhLjMwNi4zMDYgMCAwMS40MTUtLjI4Ny4zMDIuMzAyIDAgMDEuMi4yODguMzA2LjMwNiAwIDAxLS4zMS4zMDcuMzAzLjMwMyAwIDAxLS4zMDQtLjMwOHptMy4xMSAxLjU5NmMtLjIuMDgxLS4zOTkuMTUxLS41OS4xNmExLjI0NSAxLjI0NSAwIDAxLS43OTgtLjI1NGMtLjI3NC0uMjMtLjQ3LS4zNTgtLjU1Mi0uNzU4YTEuNzMgMS43MyAwIDAxLjAxNi0uNTg4Yy4wNy0uMzI3LS4wMDgtLjUzNy0uMjM5LS43MjctLjE4Ny0uMTU2LS40MjYtLjE5OS0uNjg4LS4xOTlhLjU1OS41NTkgMCAwMS0uMjU0LS4wNzhjLS4xMS0uMDU0LS4yLS4xOS0uMTE0LS4zNTguMDI4LS4wNTQuMTYtLjE4Ni4xOTItLjIxLjM1Ni0uMjAyLjc2Ny0uMTM2IDEuMTQ2LjAxNi4zNTIuMTQ0LjYxOC40MDggMS4wMDEuNzgyLjM5MS40NTEuNDYyLjU3Ni42ODUuOTE0LjE3Ni4yNjUuMzM2LjUzNy40NDUuODQ4LjA2Ny4xOTUtLjAxOS4zNTQtLjI1LjQ1MnoiIGZpbGw9IiM0RDZCRkUiPjwvcGF0aD48L3N2Zz4=',
+    Kimi: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPktpbWk8L3RpdGxlPjxwYXRoIGQ9Ik0yMS44NDYgMGExLjkyMyAxLjkyMyAwIDExMCAzLjg0NkgyMC4xNWEuMjI2LjIyNiAwIDAxLS4yMjctLjIyNlYxLjkyM0MxOS45MjMuODYxIDIwLjc4NCAwIDIxLjg0NiAweiI+PC9wYXRoPjxwYXRoIGQ9Ik0xMS4wNjUgMTEuMTk5bDcuMjU3LTcuMmMuMTM3LS4xMzYuMDYtLjQxLS4xMTYtLjQxSDE0LjNhLjE2NC4xNjQgMCAwMC0uMTE3LjA1MWwtNy44MiA3Ljc1NmMtLjEyMi4xMi0uMzAyLjAxMy0uMzAyLS4xNzlWMy44MmMwLS4xMjctLjA4My0uMjMtLjE4NS0uMjNIMy4xODZjLS4xMDMgMC0uMTg2LjEwMy0uMTg2LjIzVjE5Ljc3YzAgLjEyOC4wODMuMjMuMTg2LjIzaDIuNjljLjEwMyAwIC4xODYtLjEwMi4xODYtLjIzdi0zLjI1YzAtLjA2OS4wMjUtLjEzNS4wNjktLjE3OGwyLjQyNC0yLjQwNmEuMTU4LjE1OCAwIDAxLjIwNS0uMDIzbDYuNDg0IDQuNzcyYTcuNjc3IDcuNjc3IDAgMDAzLjQ1MyAxLjI4M2MuMTA4LjAxMi4yLS4wOTUuMi0uMjN2LTMuMDZjMC0uMTE3LS4wNy0uMjEyLS4xNjQtLjIyN2E1LjAyOCA1LjAyOCAwIDAxLTIuMDI3LS44MDdsLTUuNjEzLTQuMDY0Yy0uMTE3LS4wNzgtLjEzMi0uMjc5LS4wMjgtLjM4MXoiPjwvcGF0aD48L3N2Zz4=',
+    Muse: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5NZXRhPC90aXRsZT48cGF0aCBkPSJNNi44OTcgNGgtLjAyNGwtLjAzMSAyLjYxNWguMDIyYzEuNzE1IDAgMy4wNDYgMS4zNTcgNS45NCA2LjI0NmwuMTc1LjI5Ny4wMTIuMDIgMS42Mi0yLjQzOC0uMDEyLS4wMTlhNDguNzYzIDQ4Ljc2MyAwIDAwLTEuMDk4LTEuNzE2IDI4LjAxIDI4LjAxIDAgMDAtMS4xNzUtMS42MjlDMTAuNDEzIDQuOTMyIDguODEyIDQgNi44OTYgNHoiIGZpbGw9InVybCgjbG9iZS1pY29ucy1tZXRhLTAtX1JfMF8pIj48L3BhdGg+PHBhdGggZD0iTTYuODczIDRDNC45NSA0LjAxIDMuMjQ3IDUuMjU4IDIuMDIgNy4xN2E0LjM1MiA0LjM1MiAwIDAwLS4wMS4wMTdsMi4yNTQgMS4yMzEuMDExLS4wMTdjLjcxOC0xLjA4MyAxLjYxLTEuNzc0IDIuNTY4LTEuNzg1aC4wMjFMNi44OTYgNGgtLjAyM3oiIGZpbGw9InVybCgjbG9iZS1pY29ucy1tZXRhLTEtX1JfMF8pIj48L3BhdGg+PHBhdGggZD0iTTIuMDE5IDcuMTdsLS4wMTEuMDE3QzEuMiA4LjQ0Ny41OTggOS45OTUuMjc0IDExLjY2NGwtLjAwNS4wMjIgMi41MzQuNi4wMDQtLjAyMmMuMjctMS40NjcuNzg2LTIuODI4IDEuNDU2LTMuODQ1bC4wMTEtLjAxN0wyLjAyIDcuMTd6IiBmaWxsPSJ1cmwoI2xvYmUtaWNvbnMtbWV0YS0yLV9SXzBfKSI+PC9wYXRoPjxwYXRoIGQ9Ik0yLjgwNyAxMi4yNjRsLTIuNTMzLS42LS4wMDUuMDIyYy0uMTc3LjkxOC0uMjY3IDEuODUxLS4yNjkgMi43ODZ2LjAyM2wyLjU5OC4yMzN2LS4wMjNhMTIuNTkxIDEyLjU5MSAwIDAxLjIxLTIuNDR6IiBmaWxsPSJ1cmwoI2xvYmUtaWNvbnMtbWV0YS0zLV9SXzBfKSI+PC9wYXRoPjxwYXRoIGQ9Ik0yLjY3NyAxNS41MzdhNS40NjIgNS40NjIgMCAwMS0uMDc5LS44MTN2LS4wMjJMMCAxNC40Njh2LjAyNGE4Ljg5IDguODkgMCAwMC4xNDYgMS42NTJsMi41MzUtLjU4NWE0LjEwNiA0LjEwNiAwIDAxLS4wMDQtLjAyMnoiIGZpbGw9InVybCgjbG9iZS1pY29ucy1tZXRhLTQtX1JfMF8pIj48L3BhdGg+PHBhdGggZD0iTTMuMjcgMTYuODljLS4yODQtLjMxLS40ODQtLjc1Ni0uNTg5LTEuMzI4bC0uMDA0LS4wMjEtMi41MzUuNTg1LjAwNC4wMjFjLjE5MiAxLjAxLjU2OCAxLjg1IDEuMTA2IDIuNDg3bC4wMTQuMDE3IDIuMDE4LTEuNzQ1YTIuMTA2IDIuMTA2IDAgMDEtLjAxNS0uMDE2eiIgZmlsbD0idXJsKCNsb2JlLWljb25zLW1ldGEtNS1fUl8wXykiPjwvcGF0aD48cGF0aCBkPSJNMTAuNzggOS42NTRjLTEuNTI4IDIuMzUtMi40NTQgMy44MjUtMi40NTQgMy44MjUtMi4wMzUgMy4yLTIuNzM5IDMuOTE3LTMuODcxIDMuOTE3YTEuNTQ1IDEuNTQ1IDAgMDEtMS4xODYtLjUwOGwtMi4wMTcgMS43NDQuMDE0LjAxN0MyLjAxIDE5LjUxOCAzLjA1OCAyMCA0LjM1NiAyMGMxLjk2MyAwIDMuMzc0LS45MjggNS44ODQtNS4zM2wxLjc2Ni0zLjEzYTQxLjI4MyA0MS4yODMgMCAwMC0xLjIyNy0xLjg4NnoiIGZpbGw9IiMwMDgyRkIiPjwvcGF0aD48cGF0aCBkPSJNMTMuNTAyIDUuOTQ2bC0uMDE2LjAxNmMtLjQuNDMtLjc4Ni45MDgtMS4xNiAxLjQxNi4zNzguNDgzLjc2OCAxLjAyNCAxLjE3NSAxLjYzLjQ4LS43NDMuOTI4LTEuMzQ1IDEuMzY3LTEuODA3bC4wMTYtLjAxNi0xLjM4Mi0xLjI0eiIgZmlsbD0idXJsKCNsb2JlLWljb25zLW1ldGEtNi1fUl8wXykiPjwvcGF0aD48cGF0aCBkPSJNMjAuOTE4IDUuNzEzQzE5Ljg1MyA0LjYzMyAxOC41ODMgNCAxNy4yMjUgNGMtMS40MzIgMC0yLjYzNy43ODctMy43MjMgMS45NDRsLS4wMTYuMDE2IDEuMzgyIDEuMjQuMDE2LS4wMTdjLjcxNS0uNzQ3IDEuNDA4LTEuMTIgMi4xNzYtMS4xMi44MjYgMCAxLjYuMzkgMi4yNyAxLjA3NWwuMDE1LjAxNiAxLjU4OS0xLjQyNS0uMDE2LS4wMTZ6IiBmaWxsPSIjMDA4MkZCIj48L3BhdGg+PHBhdGggZD0iTTIzLjk5OCAxNC4xMjVjLS4wNi0zLjQ2Ny0xLjI3LTYuNTY2LTMuMDY0LTguMzk2bC0uMDE2LS4wMTYtMS41ODggMS40MjQuMDE1LjAxNmMxLjM1IDEuMzkyIDIuMjc3IDMuOTggMi4zNjEgNi45NzF2LjAyM2gyLjI5MnYtLjAyMnoiIGZpbGw9InVybCgjbG9iZS1pY29ucy1tZXRhLTctX1JfMF8pIj48L3BhdGg+PHBhdGggZD0iTTIzLjk5OCAxNC4xNXYtLjAyM2gtMi4yOTJ2LjAyMmMuMDA0LjE0LjAwNi4yODIuMDA2LjQyNCAwIC44MTUtLjEyMSAxLjQ3NC0uMzY4IDEuOTVsLS4wMTEuMDIyIDEuNzA4IDEuNzgyLjAxMy0uMDJjLjYyLS45Ni45NDYtMi4yOTMuOTQ2LTMuOTEgMC0uMDgzIDAtLjE2NS0uMDAyLS4yNDd6IiBmaWxsPSJ1cmwoI2xvYmUtaWNvbnMtbWV0YS04LV9SXzBfKSI+PC9wYXRoPjxwYXRoIGQ9Ik0yMS4zNDQgMTYuNTJsLS4wMTEuMDJjLS4yMTQuNDAyLS41MTkuNjctLjkxNy43ODdsLjc3OCAyLjQ2MmEzLjQ5MyAzLjQ5MyAwIDAwLjQzOC0uMTgyIDMuNTU4IDMuNTU4IDAgMDAxLjM2Ni0xLjIxOGwuMDQ0LS4wNjUuMDEyLS4wMi0xLjcxLTEuNzg0eiIgZmlsbD0idXJsKCNsb2JlLWljb25zLW1ldGEtOS1fUl8wXykiPjwvcGF0aD48cGF0aCBkPSJNMTkuOTIgMTcuMzkzYy0uMjYyIDAtLjQ5Mi0uMDM5LS43MTgtLjE0bC0uNzk4IDIuNTIyYy40NDkuMTUzLjkyNy4yMjIgMS40Ni4yMjIuNDkyIDAgLjk0My0uMDczIDEuMzUyLS4yMTVsLS43OC0yLjQ2MmMtLjE2Ny4wNS0uMzQxLjA3NS0uNTE3LjA3M3oiIGZpbGw9InVybCgjbG9iZS1pY29ucy1tZXRhLTEwLV9SXzBfKSI+PC9wYXRoPjxwYXRoIGQ9Ik0xOC4zMjMgMTYuNTM0bC0uMDE0LS4wMTctMS44MzYgMS45MTQuMDE2LjAxN2MuNjM3LjY4MiAxLjI0NiAxLjEwNSAxLjkzNyAxLjMzN2wuNzk3LTIuNTJjLS4yOTEtLjEyNS0uNTczLS4zNTMtLjktLjczMXoiIGZpbGw9InVybCgjbG9iZS1pY29ucy1tZXRhLTExLV9SXzBfKSI+PC9wYXRoPjxwYXRoIGQ9Ik0xOC4zMDkgMTYuNTE1Yy0uNTUtLjY0Mi0xLjIzMi0xLjcxMi0yLjMwMy0zLjQ0bC0xLjM5Ni0yLjMzNi0uMDExLS4wMi0xLjYyIDIuNDM4LjAxMi4wMi45ODkgMS42NjhjLjk1OSAxLjYxIDEuNzQgMi43NzQgMi40OTMgMy41ODVsLjAxNi4wMTYgMS44MzQtMS45MTRhMi4zNTMgMi4zNTMgMCAwMS0uMDE0LS4wMTd6IiBmaWxsPSJ1cmwoI2xvYmUtaWNvbnMtbWV0YS0xMi1fUl8wXykiPjwvcGF0aD48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImxvYmUtaWNvbnMtbWV0YS0wLV9SXzBfIiB4MT0iNzUuODk3JSIgeDI9IjI2LjMxMiUiIHkxPSI4OS4xOTklIiB5Mj0iMTIuMTk0JSI+PHN0b3Agb2Zmc2V0PSIuMDYlIiBzdG9wLWNvbG9yPSIjMDg2N0RGIj48L3N0b3A+PHN0b3Agb2Zmc2V0PSI0NS4zOSUiIHN0b3AtY29sb3I9IiMwNjY4RTEiPjwvc3RvcD48c3RvcCBvZmZzZXQ9Ijg1LjkxJSIgc3RvcC1jb2xvcj0iIzAwNjRFMCI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLW1ldGEtMS1fUl8wXyIgeDE9IjIxLjY3JSIgeDI9Ijk3LjA2OCUiIHkxPSI3NS44NzQlIiB5Mj0iMjMuOTg1JSI+PHN0b3Agb2Zmc2V0PSIxMy4yMyUiIHN0b3AtY29sb3I9IiMwMDY0REYiPjwvc3RvcD48c3RvcCBvZmZzZXQ9Ijk5Ljg4JSIgc3RvcC1jb2xvcj0iIzAwNjRFMCI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLW1ldGEtMi1fUl8wXyIgeDE9IjM4LjI2MyUiIHgyPSI2MC44OTUlIiB5MT0iODkuMTI3JSIgeTI9IjE2LjEzMSUiPjxzdG9wIG9mZnNldD0iMS40NyUiIHN0b3AtY29sb3I9IiMwMDcyRUMiPjwvc3RvcD48c3RvcCBvZmZzZXQ9IjY4LjgxJSIgc3RvcC1jb2xvcj0iIzAwNjRERiI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLW1ldGEtMy1fUl8wXyIgeDE9IjQ3LjAzMiUiIHgyPSI1Mi4xNSUiIHkxPSI5MC4xOSUiIHkyPSIxNS43NDUlIj48c3RvcCBvZmZzZXQ9IjcuMzElIiBzdG9wLWNvbG9yPSIjMDA3Q0Y2Ij48L3N0b3A+PHN0b3Agb2Zmc2V0PSI5OS40MyUiIHN0b3AtY29sb3I9IiMwMDcyRUMiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0ibG9iZS1pY29ucy1tZXRhLTQtX1JfMF8iIHgxPSI1Mi4xNTUlIiB4Mj0iNDcuNTkxJSIgeTE9IjU4LjMwMSUiIHkyPSIzNy4wMDQlIj48c3RvcCBvZmZzZXQ9IjcuMzElIiBzdG9wLWNvbG9yPSIjMDA3RkY5Ij48L3N0b3A+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDA3Q0Y2Ij48L3N0b3A+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImxvYmUtaWNvbnMtbWV0YS01LV9SXzBfIiB4MT0iMzcuNjg5JSIgeDI9IjYxLjk2MSUiIHkxPSIxMi41MDIlIiB5Mj0iNjMuNjI0JSI+PHN0b3Agb2Zmc2V0PSI3LjMxJSIgc3RvcC1jb2xvcj0iIzAwN0ZGOSI+PC9zdG9wPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzAwODJGQiI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLW1ldGEtNi1fUl8wXyIgeDE9IjM0LjgwOCUiIHgyPSI2Mi4zMTMlIiB5MT0iNjguODU5JSIgeTI9IjIzLjE3NCUiPjxzdG9wIG9mZnNldD0iMjcuOTklIiBzdG9wLWNvbG9yPSIjMDA3RkY4Ij48L3N0b3A+PHN0b3Agb2Zmc2V0PSI5MS40MSUiIHN0b3AtY29sb3I9IiMwMDgyRkIiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0ibG9iZS1pY29ucy1tZXRhLTctX1JfMF8iIHgxPSI0My43NjIlIiB4Mj0iNTcuNjAyJSIgeTE9IjYuMjM1JSIgeTI9Ijk4LjUxNCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMDgyRkIiPjwvc3RvcD48c3RvcCBvZmZzZXQ9Ijk5Ljk1JSIgc3RvcC1jb2xvcj0iIzAwODFGQSI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLW1ldGEtOC1fUl8wXyIgeDE9IjYwLjA1NSUiIHgyPSIzOS44OCUiIHkxPSI0LjY2MSUiIHkyPSI2OS4wNzclIj48c3RvcCBvZmZzZXQ9IjYuMTklIiBzdG9wLWNvbG9yPSIjMDA4MUZBIj48L3N0b3A+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDA4MEY5Ij48L3N0b3A+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImxvYmUtaWNvbnMtbWV0YS05LV9SXzBfIiB4MT0iMzAuMjgyJSIgeDI9IjYxLjA4MSUiIHkxPSI1OS4zMiUiIHkyPSIzMy4yNDQlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjMDI3QUYzIj48L3N0b3A+PHN0b3Agb2Zmc2V0PSIxMDAlIiBzdG9wLWNvbG9yPSIjMDA4MEY5Ij48L3N0b3A+PC9saW5lYXJHcmFkaWVudD48bGluZWFyR3JhZGllbnQgaWQ9ImxvYmUtaWNvbnMtbWV0YS0xMC1fUl8wXyIgeDE9IjIwLjQzMyUiIHgyPSI4Mi4xMTIlIiB5MT0iNTAuMDAxJSIgeTI9IjUwLjAwMSUiPjxzdG9wIG9mZnNldD0iMCUiIHN0b3AtY29sb3I9IiMwMzc3RUYiPjwvc3RvcD48c3RvcCBvZmZzZXQ9Ijk5Ljk0JSIgc3RvcC1jb2xvcj0iIzAyNzlGMSI+PC9zdG9wPjwvbGluZWFyR3JhZGllbnQ+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLW1ldGEtMTEtX1JfMF8iIHgxPSI0MC4zMDMlIiB4Mj0iNzIuMzk0JSIgeTE9IjM1LjI5OCUiIHkyPSI1Ny44MTElIj48c3RvcCBvZmZzZXQ9Ii4xOSUiIHN0b3AtY29sb3I9IiMwNDcxRTkiPjwvc3RvcD48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwMzc3RUYiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjxsaW5lYXJHcmFkaWVudCBpZD0ibG9iZS1pY29ucy1tZXRhLTEyLV9SXzBfIiB4MT0iMzIuMjU0JSIgeDI9IjY4LjAwMyUiIHkxPSIxOS43MTklIiB5Mj0iODQuOTA4JSI+PHN0b3Agb2Zmc2V0PSIyNy42NSUiIHN0b3AtY29sb3I9IiMwODY3REYiPjwvc3RvcD48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiMwNDcxRTkiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=',
+    Grok: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPkdyb2s8L3RpdGxlPjxwYXRoIGQ9Ik05LjI3IDE1LjI5bDcuOTc4LTUuODk3Yy4zOTEtLjI5Ljk1LS4xNzcgMS4xMzcuMjcyLjk4IDIuMzY5LjU0MiA1LjIxNS0xLjQxIDcuMTY5LTEuOTUxIDEuOTU0LTQuNjY3IDIuMzgyLTcuMTQ5IDEuNDA2bC0yLjcxMSAxLjI1N2MzLjg4OSAyLjY2MSA4LjYxMSAyLjAwMyAxMS41NjItLjk1MyAyLjM0MS0yLjM0NCAzLjA2Ni01LjUzOSAyLjM4OC04LjQybC4wMDYuMDA3Yy0uOTgzLTQuMjMyLjI0Mi01LjkyNCAyLjc1LTkuMzgzLjA2LS4wODIuMTItLjE2NC4xNzktLjI0OGwtMy4zMDEgMy4zMDV2LS4wMUw5LjI2NyAxNS4yOTJNNy42MjMgMTYuNzIzYy0yLjc5Mi0yLjY3LTIuMzEtNi44MDEuMDcxLTkuMTg0IDEuNzYxLTEuNzYzIDQuNjQ3LTIuNDgzIDcuMTY2LTEuNDI1bDIuNzA1LTEuMjVhNy44MDggNy44MDggMCAwMC0xLjgyOS0xQTguOTc1IDguOTc1IDAgMDA1Ljk4NCA1LjgzYy0yLjUzMyAyLjUzNi0zLjMzIDYuNDM2LTEuOTYyIDkuNzY0IDEuMDIyIDIuNDg3LS42NTMgNC4yNDYtMi4zNCA2LjAyMi0uNTk5LjYzLTEuMTk5IDEuMjU5LTEuNjgyIDEuOTI1bDcuNjItNi44MTUiPjwvcGF0aD48L3N2Zz4=',
+    Qwen: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5Rd2VuPC90aXRsZT48cGF0aCBkPSJNMTIuNjA0IDEuMzRjLjM5My42OS43ODQgMS4zODIgMS4xNzQgMi4wNzVhLjE4LjE4IDAgMDAuMTU3LjA5MWg1LjU1MmMuMTc0IDAgLjMyMi4xMS40NDYuMzI3bDEuNDU0IDIuNTdjLjE5LjMzNy4yNC40NzguMDI0LjgzNy0uMjYuNDMtLjUxMy44NjQtLjc2IDEuM2wtLjM2Ny42NThjLS4xMDYuMTk2LS4yMjMuMjgtLjA0LjUxMmwyLjY1MiA0LjYzN2MuMTcyLjMwMS4xMTEuNDk0LS4wNDMuNzctLjQzNy43ODUtLjg4MiAxLjU2NC0xLjMzNSAyLjM0LS4xNTkuMjcyLS4zNTIuMzc1LS42OC4zNy0uNzc3LS4wMTYtMS41NTItLjAxLTIuMzI3LjAxNmEuMDk5LjA5OSAwIDAwLS4wODEuMDUgNTc1LjA5NyA1NzUuMDk3IDAgMDEtMi43MDUgNC43NGMtLjE2OS4yOTMtLjM4LjM2My0uNzI1LjM2NC0uOTk3LjAwMy0yLjAwMi4wMDQtMy4wMTcuMDAyYS41MzcuNTM3IDAgMDEtLjQ2NS0uMjcxbC0xLjMzNS0yLjMyM2EuMDkuMDkgMCAwMC0uMDgzLS4wNDlINC45ODJjLS4yODUuMDMtLjU1My0uMDAxLS44MDUtLjA5MmwtMS42MDMtMi43N2EuNTQzLjU0MyAwIDAxLS4wMDItLjU0bDEuMjA3LTIuMTJhLjE5OC4xOTggMCAwMDAtLjE5NyA1NTAuOTUxIDU1MC45NTEgMCAwMS0xLjg3NS0zLjI3MmwtLjc5LTEuMzk1Yy0uMTYtLjMxLS4xNzMtLjQ5Ni4wOTUtLjk2NS40NjUtLjgxMy45MjctMS42MjUgMS4zODctMi40MzYuMTMyLS4yMzQuMzA0LS4zMzQuNTg0LS4zMzVhMzM4LjMgMzM4LjMgMCAwMTIuNTg5LS4wMDEuMTI0LjEyNCAwIDAwLjEwNy0uMDYzbDIuODA2LTQuODk1YS40ODguNDg4IDAgMDEuNDIyLS4yNDZjLjUyNC0uMDAxIDEuMDUzIDAgMS41ODMtLjAwNkwxMS43MDQgMWMuMzQxLS4wMDMuNzI0LjAzMi45LjM0em0tMy40MzIuNDAzYS4wNi4wNiAwIDAwLS4wNTIuMDNMNi4yNTQgNi43ODhhLjE1Ny4xNTcgMCAwMS0uMTM1LjA3OEgzLjI1M2MtLjA1NiAwLS4wNy4wMjUtLjA0MS4wNzRsNS44MSAxMC4xNTZjLjAyNS4wNDIuMDEzLjA2Mi0uMDM0LjA2M2wtMi43OTUuMDE1YS4yMTguMjE4IDAgMDAtLjIuMTE2bC0xLjMyIDIuMzFjLS4wNDQuMDc4LS4wMjEuMTE4LjA2OC4xMThsNS43MTYuMDA4Yy4wNDYgMCAuMDguMDIuMTA0LjA2MWwxLjQwMyAyLjQ1NGMuMDQ2LjA4MS4wOTIuMDgyLjEzOSAwbDUuMDA2LTguNzYuNzgzLTEuMzgyYS4wNTUuMDU1IDAgMDEuMDk2IDBsMS40MjQgMi41M2EuMTIyLjEyMiAwIDAwLjEwNy4wNjJsMi43NjMtLjAyYS4wNC4wNCAwIDAwLjAzNS0uMDIuMDQxLjA0MSAwIDAwMC0uMDRsLTIuOS01LjA4NmEuMTA4LjEwOCAwIDAxMC0uMTEzbC4yOTMtLjUwNyAxLjEyLTEuOTc3Yy4wMjQtLjA0MS4wMTItLjA2Mi0uMDM1LS4wNjJIOS4yYy0uMDU5IDAtLjA3My0uMDI2LS4wNDMtLjA3N2wxLjQzNC0yLjUwNWEuMTA3LjEwNyAwIDAwMC0uMTE0TDkuMjI1IDEuNzc0YS4wNi4wNiAwIDAwLS4wNTMtLjAzMXptNi4yOSA4LjAyYy4wNDYgMCAuMDU4LjAyLjAzNC4wNmwtLjgzMiAxLjQ2NS0yLjYxMyA0LjU4NWEuMDU2LjA1NiAwIDAxLS4wNS4wMjkuMDU4LjA1OCAwIDAxLS4wNS0uMDI5TDguNDk4IDkuODQxYy0uMDItLjAzNC0uMDEtLjA1Mi4wMjgtLjA1NGwuMjE2LS4wMTIgNi43MjItLjAxMnoiIGZpbGw9InVybCgjbG9iZS1pY29ucy1xd2VuLV9SXzBfKSIgZmlsbC1ydWxlPSJub256ZXJvIj48L3BhdGg+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJsb2JlLWljb25zLXF3ZW4tX1JfMF8iIHgxPSIwJSIgeDI9IjEwMCUiIHkxPSIwJSIgeTI9IjAlIj48c3RvcCBvZmZzZXQ9IjAlIiBzdG9wLWNvbG9yPSIjNjMzNkU3IiBzdG9wLW9wYWNpdHk9Ii44NCI+PC9zdG9wPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iIzZGNjlGNyIgc3RvcC1vcGFjaXR5PSIuODQiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=',
+    MiMo: 'data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPlhpYW9taU1pTW88L3RpdGxlPjxwYXRoIGQ9Ik0uOTU4IDE1LjkzNmEuNDU5LjQ1OSAwIDAxLjQ1OS40NHYyLjcyOWEuNDYuNDYgMCAwMS0uOTE4IDB2LTIuNzI5YS40NTkuNDU5IDAgMDEuNDU5LS40NHptNC44MTQtMi4wMzVhLjQ2LjQ2IDAgMDEuNTUzLjQ1djQuNzU0YS40NTguNDU4IDAgMTEtLjkxOCAwVjE1LjQ4TDMuNzQgMTcuMjAyYS40NjIuNDYyIDAgMDEtLjY1NS4wMTYuNDYyLjQ2MiAwIDAxLS4wNjUtLjA4MkwuNjI4IDE0LjY3YS40NTkuNDU5IDAgMDEuNjU4LS42MzdsMi4xMjQgMi4xODcgMi4xMjctMi4xODhhLjQ2LjQ2IDAgMDEuMjM1LS4xM3ptMi4wNjguMDA0YS40Ni40NiAwIDAxLjQ1OC40NDV2NC43NTVhLjQ2LjQ2IDAgMDEtLjQ1OC40NTguNDU5LjQ1OSAwIDAxLS40NTgtLjQ1OFYxNC4zNWEuNDU5LjQ1OSAwIDAxLjQ1OC0uNDQ1em0xLjk3MyAyLjAxNGEuNDYuNDYgMCAwMS40Ni40NTd2Mi43MjlhLjQ2LjQ2IDAgMDEtLjc4NC4zMjQuNDYuNDYgMCAwMS0uMTM0LS4zMjR2LTIuNzI5YS40Ni40NiAwIDAxLjQ1OC0uNDU4em0uMDAyLTIuMDQ1YS40NTguNDU4IDAgMDEuMzI4LjE1N2wyLjEyNyAyLjE5IDIuMTI1LTIuMTlhLjQ1OS40NTkgMCAwMS43ODQuMzE4djQuNzU2YS40Ni40NiAwIDAxLS40NTUuNDU4LjQ2LjQ2IDAgMDEtLjQ1OC0uNDU4VjE1LjQ4bC0xLjY2NyAxLjcyM2EuNDYuNDYgMCAwMS0uNjUuMDA4bC0uMDA1LS4wMDVjMC0uMDAyLS4wMDItLjAwMi0uMDA0LS4wMDNsLTIuNDU1LTIuNTM0YS40Ni40NiAwIDAxLS4wMDgtLjY2Ny40NjEuNDYxIDAgMDEuMzM4LS4xMjh6bTYuNzk3IDEuMjA2YS40Ni40NiAwIDAxLjUzLjY1MUExLjk2NiAxLjk2NiAwIDAwMTkuODEgMTguNGEuNDYyLjQ2MiAwIDAxLjYyMy4xOC40Ni40NiAwIDAxLS4xODEuNjI0IDIuODYzIDIuODYzIDAgMDEtMS4zOC4zNTNsLS4xNDItLjAwNGEyLjg4IDIuODggMCAwMS0yLjM5My00LjI2My40NjEuNDYxIDAgMDEuMjc0LS4yMXptLjg2NC0uOTMxYTIuODg0IDIuODg0IDAgMDEzLjkxNSAzLjkxNC40Ni40NiAwIDAxLS40MDIuMjRsLS4wNTctLjAwNGEuNDU4LjQ1OCAwIDAxLS4xNjQtLjA1NS40Ni40NiAwIDAxLS4xODItLjYyMiAxLjk2NyAxLjk2NyAwIDAwLTIuNjY5LTIuNjcuNDU5LjQ1OSAwIDExLS40NDEtLjgwM3pNOS41OSA2LjM2OGMxLjQ4MSAwIDEuNjk2IDEuMjAyIDEuNjk2IDEuNjU0djIuNjQ4aC0uOTE3di0uNDMyYy0uMjYuMzQ2LS43OTIuNTM1LTEuMzYuNTM1LS4xMzMgMC0xLjI4OS0uMDMtMS4zODQtMS4xMzYtLjA4Mi0uOTMyLjY3NS0xLjYxIDIuMDUzLTEuNjFoLjY5MWMwLS41NjMtLjM2Ny0uODg2LS45ODMtLjg4Ni0uNDQuMDEzLS44NjQuMTc0LTEuMi40NThsLS4zNi0uNjY0Yy40ODQtLjM3OSAxLjAxMi0uNTY3IDEuNzY0LS41Njd6bTQuNDI3LjFjMS4yNjMgMCAyLjA4Mi45NyAyLjA4MyAyLjE1IDAgMS4xODEtLjgyNCAyLjE1NC0yLjA4MyAyLjE1NC0xLjI2IDAtMi4wODQtLjk3Mi0yLjA4NC0yLjE1MiAwLTEuMTguODItMi4xNTMgMi4wODQtMi4xNTN6bTYuODAxLjAxNWMuNjggMCAxLjIwMi40NjUgMS4xOTcgMS41NDh2Mi42NDJIMjEuMVY4LjI5YzAtLjMxMi0uMDAyLS45OC0uNjMtLjk4cy0uNjI4LjY2Ny0uNjI4LjgzOHYyLjUyNGgtLjg5VjguMTQ4YzAtLjE3LS4wMDEtLjgzOC0uNjMtLjgzOC0uNjI4IDAtLjYyOC42NjgtLjYyOC45OHYyLjM4M2gtLjkxN3YtNC4wM2guOTE3VjdhMS4yMiAxLjIyIDAgMDEuOTQ3LS41MTZjLjM5OCAwIC43Ni4xOTMuOTgyLjY4NmExLjMyMSAxLjMyMSAwIDAxMS4xOTUtLjY4NnptLTE4LjA5My44NzJsMS40NTctMS43NzJINS4zMkwzLjMxMSA4LjA3bDIuMTQgMi42MDJINC4yNEwyLjcyNSA4Ljc5NiAxLjIxIDEwLjY3MkgwTDIuMTM4IDguMDcuMTMgNS41ODNoMS4xMzhsMS40NTggMS43NzJ6bTQuMTQ5IDMuMzE3aC0uOTE2VjYuNjQ0aC45MTZ2NC4wMjh6bTE2Ljk5IDBoLS45MTZWNi42NDRoLjkxNnY0LjAyOHpNOS45MjUgOC43MWMtMS4wNTUgMC0xLjM1OS40MTItMS4zMjYuNzQyLjAzMi4zMjkuMzI0LjUzNy43NTcuNTM3YTEuMDEzIDEuMDEzIDAgMDAxLjAxNC0uOTY4bC4wMDItLjMxaC0uNDQ3ek0xNC4wMTggNy4zYy0uNjYzIDAtMS4xODQuNDg3LTEuMTg0IDEuMzIgMCAuODMyLjUyIDEuMzIgMS4xODQgMS4zMi42NjIgMCAxLjE4Mi0uNDkgMS4xODItMS4zMiAwLS44MzItLjUyLTEuMzItMS4xODItMS4zMnpNNi40MTcgNS4wMDFhLjU2OC41NjggMCAwMS41ODcuNTgyLjU4OC41ODggMCAwMS0xLjE3NSAwQS41Ny41NyAwIDAxNi40MTcgNXptMTYuOTkxIDBhLjU3LjU3IDAgMDEuNTkyLjU4Mi41ODguNTg4IDAgMDEtMS4xNzQgMCAuNTcuNTcgMCAwMS4zNTctLjU0Mi41NzIuNTcyIDAgMDEuMjI1LS4wNHoiPjwvcGF0aD48L3N2Zz4=',
+    Step: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5TdGVwZnVuPC90aXRsZT48cGF0aCBkPSJNMjIuMDEyIDBoMS4wMzJ2LjkyN0gyNHYuOTY4aC0uOTU2VjMuNzhoLTEuMDMyVjEuODk2aC0xLjg3OHYtLjk3aDEuODc4VjB6TTIuNiAxMi4zNzFWMS44N2guOTY5djEwLjUwMmgtLjk3em0xMC40MjMuNjZoMTAuOTV2LjkxOGgtNi4yMDh2OS41NzloLTQuNzQyVjEzLjAzek01LjYyOSAzLjMzM3YxMi4zNTZIMHY0LjUxaDEwLjM4NlY4TDIwLjg1OSA4bC0uMDAzLTQuNjY4LTE1LjIyNy4wMDF6IiBmaWxsPSJ1cmwoI2xvYmUtaWNvbnMtc3RlcGZ1bi1fUl8wXykiIGZpbGwtcnVsZT0iZXZlbm9kZCI+PC9wYXRoPjxkZWZzPjxsaW5lYXJHcmFkaWVudCBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgaWQ9ImxvYmUtaWNvbnMtc3RlcGZ1bi1fUl8wXyIgeDE9IjEuNjQ2IiB4Mj0iMTguMzQyIiB5MT0iMS45MTYiIHkyPSIyMi4wOTEiPjxzdG9wIHN0b3AtY29sb3I9IiMwMUE5RkYiPjwvc3RvcD48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMTYwRkYiPjwvc3RvcD48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48L3N2Zz4=',
+    MiniMax: 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDgiIGhlaWdodD0iNDgiIHZpZXdCb3g9IjAgMCA0OCA0OCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTMyLjU1NiA0QzM0Ljg2OCA0IDM2Ljc0MiA1Ljg1NCAzNi43NDIgOC4xNFYzMy4xNDJDMzYuNzU4MSAzMy41MjUxIDM2LjkyMjEgMzMuODg2OSAzNy4xOTk3IDM0LjE1MTRDMzcuNDc3MiAzNC40MTU5IDM3Ljg0NjYgMzQuNTYyNCAzOC4yMyAzNC41NkMzOC42MTMgMzQuNTYxOSAzOC45ODE5IDM0LjQxNTIgMzkuMjU5IDM0LjE1MDdDMzkuNTM2MiAzMy44ODYzIDM5LjcgMzMuNTI0NyAzOS43MTYgMzMuMTQyVjE4LjE5OEMzOS43MTg5IDE3LjY1NyAzOS44MjgzIDE3LjEyMTggNDAuMDM4IDE2LjYyM0M0MC4yNDc3IDE2LjEyNDMgNDAuNTUzNiAxNS42NzE3IDQwLjkzODMgMTUuMjkxMUM0MS4zMjI5IDE0LjkxMDYgNDEuNzc4NyAxNC42MDk2IDQyLjI3OTcgMTQuNDA1MkM0Mi43ODA2IDE0LjIwMDggNDMuMzE3IDE0LjA5NzEgNDMuODU4IDE0LjFDNDQuMzk5MiAxNC4wOTcxIDQ0LjkzNTcgMTQuMjAwOSA0NS40MzY4IDE0LjQwNTRDNDUuOTM3OSAxNC42MDk5IDQ2LjM5MzggMTQuOTExMSA0Ni43Nzg0IDE1LjI5MTlDNDcuMTYzMSAxNS42NzI2IDQ3LjQ2OSAxNi4xMjU0IDQ3LjY3ODYgMTYuNjI0NEM0Ny44ODgxIDE3LjEyMzQgNDcuOTk3NCAxNy42NTg4IDQ4IDE4LjJWMzEuMzIyQzQ3Ljk5NzkgMzEuNjY1OSA0Ny44NTk0IDMxLjk5NDkgNDcuNjE0OSAzMi4yMzY4QzQ3LjM3MDQgMzIuNDc4NiA0Ny4wMzk5IDMyLjYxMzYgNDYuNjk2IDMyLjYxMkM0Ni41MjU1IDMyLjYxMzEgNDYuMzU2NSAzMi41ODA1IDQ2LjE5ODcgMzIuNTE2M0M0Ni4wNDA4IDMyLjQ1MiA0NS44OTcxIDMyLjM1NzMgNDUuNzc1OCAzMi4yMzc1QzQ1LjY1NDYgMzIuMTE3NyA0NS41NTgxIDMxLjk3NTIgNDUuNDkxOSAzMS44MTgxQzQ1LjQyNTcgMzEuNjYxIDQ1LjM5MSAzMS40OTI1IDQ1LjM5IDMxLjMyMlYxOC4yQzQ1LjM4OSAxNy45OTk5IDQ1LjM0ODUgMTcuODAxOSA0NS4yNzA5IDE3LjYxNzRDNDUuMTkzNCAxNy40MzI5IDQ1LjA4MDIgMTcuMjY1NSA0NC45MzggMTcuMTI0N0M0NC43OTU3IDE2Ljk4MzkgNDQuNjI3MSAxNi44NzI2IDQ0LjQ0MTggMTYuNzk2OUM0NC4yNTY1IDE2LjcyMTMgNDQuMDU4MSAxNi42ODI5IDQzLjg1OCAxNi42ODRDNDMuNjU3OSAxNi42ODI5IDQzLjQ1OTUgMTYuNzIxMyA0My4yNzQyIDE2Ljc5NjlDNDMuMDg4OSAxNi44NzI2IDQyLjkyMDMgMTYuOTgzOSA0Mi43NzggMTcuMTI0N0M0Mi42MzU4IDE3LjI2NTUgNDIuNTIyNiAxNy40MzI5IDQyLjQ0NTEgMTcuNjE3NEM0Mi4zNjc1IDE3LjgwMTkgNDIuMzI3IDE3Ljk5OTkgNDIuMzI2IDE4LjJWMzMuMTQ0QzQyLjMyMzEgMzMuNjc5IDQyLjIxNDkgMzQuMjA4MiA0Mi4wMDc1IDM0LjcwMTRDNDEuODAwMSAzNS4xOTQ2IDQxLjQ5NzYgMzUuNjQyMSA0MS4xMTcyIDM2LjAxODNDNDAuNzM2OSAzNi4zOTQ2IDQwLjI4NjEgMzYuNjkyMyAzOS43OTA3IDM2Ljg5NDNDMzkuMjk1MyAzNy4wOTY0IDM4Ljc2NSAzNy4xOTg5IDM4LjIzIDM3LjE5NkMzNy42OTUgMzcuMTk4OSAzNy4xNjQ3IDM3LjA5NjQgMzYuNjY5MyAzNi44OTQzQzM2LjE3MzkgMzYuNjkyMyAzNS43MjMxIDM2LjM5NDYgMzUuMzQyOCAzNi4wMTgzQzM0Ljk2MjQgMzUuNjQyMSAzNC42NTk5IDM1LjE5NDYgMzQuNDUyNSAzNC43MDE0QzM0LjI0NTEgMzQuMjA4MiAzNC4xMzY5IDMzLjY3OSAzNC4xMzQgMzMuMTQ0VjguMTQ0QzM0LjExNzQgNy43Mzc3NiAzMy45NDM5IDcuMzUzNzkgMzMuNjUgNy4wNzI5QzMzLjM1NiA2Ljc5MjAxIDMyLjk2NDYgNi42MzYxMSAzMi41NTggNi42MzhDMzIuMTUxNCA2LjYzNTU3IDMxLjc1OTcgNi43OTA5NyAzMS40NjU0IDcuMDcxNDlDMzEuMTcxMSA3LjM1MjAxIDMwLjk5NzEgNy43MzU3NyAzMC45OCA4LjE0MkwzMC45NzggMzkuOTVDMzAuOTcxNyA0MS4wMzAyIDMwLjUzNjYgNDIuMDYzNiAyOS43Njg1IDQyLjgyM0MyOS4wMDA0IDQzLjU4MjUgMjcuOTYyMiA0NC4wMDU5IDI2Ljg4MiA0NEMyNi4zNDcgNDQuMDAyOSAyNS44MTY3IDQzLjkwMDQgMjUuMzIxMyA0My42OTgzQzI0LjgyNTkgNDMuNDk2MyAyNC4zNzUxIDQzLjE5ODYgMjMuOTk0OCA0Mi44MjIzQzIzLjYxNDQgNDIuNDQ2MSAyMy4zMTE5IDQxLjk5ODYgMjMuMTA0NSA0MS41MDU0QzIyLjg5NzEgNDEuMDEyMiAyMi43ODg5IDQwLjQ4MyAyMi43ODYgMzkuOTQ4VjM2LjA4QzIyLjc4NiAzNS4zNjggMjMuMzcgMzQuNzkgMjQuMDkgMzQuNzlDMjQuODEgMzQuNzkgMjUuMzk0IDM1LjM2OCAyNS4zOTQgMzYuMDhWMzkuOTQ4QzI1LjM5NCA0MC40NzQgMjUuNjc4IDQwLjk2IDI2LjEzOCA0MS4yMjRDMjYuNTk4IDQxLjQ4NiAyNy4xNjYgNDEuNDg2IDI3LjYyNiA0MS4yMjRDMjcuODUxNyA0MS4wOTYgMjguMDM5NSA0MC45MTA1IDI4LjE3MDIgNDAuNjg2NEMyOC4zMDA5IDQwLjQ2MjIgMjguMzY5OCA0MC4yMDc1IDI4LjM3IDM5Ljk0OFY4LjE0QzI4LjM3IDUuODU0IDMwLjI0NCA0IDMyLjU1NiA0Wk0yMS4yMDggNEMyMy41MiA0IDI1LjM5NCA1Ljg1NCAyNS4zOTQgOC4xNFYzMS4xODZDMjUuMzkzMiAzMS4zNTY0IDI1LjM1ODggMzEuNTI0OSAyNS4yOTI5IDMxLjY4MkMyNS4yMjY5IDMxLjgzOSAyNS4xMzA2IDMxLjk4MTYgMjUuMDA5NSAzMi4xMDE0QzI0Ljg4ODMgMzIuMjIxMiAyNC43NDQ4IDMyLjMxNTkgMjQuNTg3IDMyLjM4MDJDMjQuNDI5MyAzMi40NDQ1IDI0LjI2MDQgMzIuNDc3MSAyNC4wOSAzMi40NzZDMjMuOTE5NiAzMi40NzcxIDIzLjc1MDcgMzIuNDQ0NSAyMy41OTMgMzIuMzgwMkMyMy40MzUyIDMyLjMxNTkgMjMuMjkxNiAzMi4yMjEyIDIzLjE3MDUgMzIuMTAxNEMyMy4wNDk0IDMxLjk4MTYgMjIuOTUzMSAzMS44MzkgMjIuODg3MSAzMS42ODJDMjIuODIxMiAzMS41MjQ5IDIyLjc4NjggMzEuMzU2NCAyMi43ODYgMzEuMTg2VjguMTRDMjIuNzgzNCA3LjcyMzk2IDIyLjYxNTcgNy4zMjU5NyAyMi4zMTk4IDcuMDMzNDdDMjIuMDIzOSA2Ljc0MDk3IDIxLjYyNCA2LjU3Nzg3IDIxLjIwOCA2LjU4QzIwLjc5MiA2LjU3Nzg3IDIwLjM5MjEgNi43NDA5NyAyMC4wOTYyIDcuMDMzNDdDMTkuODAwMyA3LjMyNTk3IDE5LjYzMjYgNy43MjM5NiAxOS42MyA4LjE0VjM2LjE2NkMxOS42MjM3IDM3LjI1OCAxOS4xODQgMzguMzAyOCAxOC40MDc3IDM5LjA3MDlDMTcuNjMxNSAzOS44Mzg5IDE2LjU4MiA0MC4yNjczIDE1LjQ5IDQwLjI2MkMxNC4zOTc2IDQwLjI2NzkgMTMuMzQ3NyAzOS44Mzk3IDEyLjU3MSAzOS4wNzE2QzExLjc5NDIgMzguMzAzNSAxMS4zNTQzIDM3LjI1ODMgMTEuMzQ4IDM2LjE2NlYxOC4yQzExLjM0NyAxNy45OTk5IDExLjMwNjUgMTcuODAxOSAxMS4yMjg5IDE3LjYxNzRDMTEuMTUxNCAxNy40MzI5IDExLjAzODIgMTcuMjY1NSAxMC44OTYgMTcuMTI0N0MxMC43NTM3IDE2Ljk4MzkgMTAuNTg1MSAxNi44NzI2IDEwLjM5OTggMTYuNzk2OUMxMC4yMTQ1IDE2LjcyMTMgMTAuMDE2MSAxNi42ODI5IDkuODE2IDE2LjY4NEM5LjYxNTg2IDE2LjY4MjkgOS40MTc0OCAxNi43MjEzIDkuMjMyMTggMTYuNzk2OUM5LjA0Njg4IDE2Ljg3MjYgOC44NzgyOCAxNi45ODM5IDguNzM2MDIgMTcuMTI0N0M4LjU5Mzc2IDE3LjI2NTUgOC40ODA2MiAxNy40MzI5IDguNDAzMDYgMTcuNjE3NEM4LjMyNTUxIDE3LjgwMTkgOC4yODUwNSAxNy45OTk5IDguMjg0IDE4LjJWMjUuOEM4LjI4MTEyIDI2LjM0MSA4LjE3MTcgMjYuODc2MiA3Ljk2MTk4IDI3LjM3NUM3Ljc1MjI2IDI3Ljg3MzcgNy40NDYzNiAyOC4zMjYzIDcuMDYxNzQgMjguNzA2OUM2LjY3NzEyIDI5LjA4NzQgNi4yMjEzMSAyOS4zODg0IDUuNzIwMzQgMjkuNTkyOEM1LjIxOTM3IDI5Ljc5NzIgNC42ODMwNSAyOS45MDA5IDQuMTQyIDI5Ljg5OEMzLjYwMDk1IDI5LjkwMDkgMy4wNjQ2MyAyOS43OTcyIDIuNTYzNjYgMjkuNTkyOEMyLjA2MjY5IDI5LjM4ODQgMS42MDY4OCAyOS4wODc0IDEuMjIyMjYgMjguNzA2OUMwLjgzNzYzNyAyOC4zMjYzIDAuNTMxNzM2IDI3Ljg3MzcgMC4zMjIwMiAyNy4zNzVDMC4xMTIzMDQgMjYuODc2MiAwLjAwMjg4MTM4IDI2LjM0MSAwIDI1LjhMMCAyMy4wNDRDMCAyMi4zMyAwLjU4NCAyMS43NTIgMS4zMDQgMjEuNzUyQzIuMDI0IDIxLjc1MiAyLjYxIDIyLjMzMiAyLjYxIDIzLjA0NFYyNS44QzIuNjEgMjYuNjM2IDMuMjk2IDI3LjMxNCA0LjE0MiAyNy4zMTRDNC45ODggMjcuMzE0IDUuNjc0IDI2LjYzNiA1LjY3NCAyNS44VjE4LjE5OEM1LjY4MDM1IDE3LjEwNiA2LjExOTk3IDE2LjA2MTIgNi44OTYyNiAxNS4yOTMxQzcuNjcyNTQgMTQuNTI1MSA4LjcyMTk5IDE0LjA5NjcgOS44MTQgMTQuMTAyQzEwLjkwNjQgMTQuMDk2MSAxMS45NTYzIDE0LjUyNDMgMTIuNzMzIDE1LjI5MjRDMTMuNTA5OCAxNi4wNjA1IDEzLjk0OTcgMTcuMTA1NyAxMy45NTYgMTguMTk4VjM2LjE2NkMxMy45NTYgMzcuMDA0IDE0LjY0MiAzNy42ODIgMTUuNDkgMzcuNjgyQzE2LjMzNiAzNy42ODIgMTcuMDIyIDM3LjAwNCAxNy4wMjIgMzYuMTY2VjguMTRDMTcuMDIyIDUuODU0IDE4Ljg5NiA0IDIxLjIwOCA0WiIgZmlsbD0idXJsKCNwYWludDBfbGluZWFyXzMxMDdfMTIzNykiLz4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0icGFpbnQwX2xpbmVhcl8zMTA3XzEyMzciIHgxPSIwIiB5MT0iMjQuMDI4IiB4Mj0iNDguMDg4IiB5Mj0iMjQuMDI4IiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSI+CjxzdG9wIHN0b3AtY29sb3I9IiNFMjE2N0UiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjRkU2MDNDIi8+CjwvbGluZWFyR3JhZGllbnQ+CjwvZGVmcz4KPC9zdmc+Cg==',
+    Hy: 'data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5IdW55dWFuPC90aXRsZT48Y2lyY2xlIGN4PSIxMiIgY3k9IjEyIiBmaWxsPSIjMDA1NUU5IiByPSIxMiI+PC9jaXJjbGU+PHBhdGggZD0iTTEyIDBjLjUxOCAwIDEuMDI4LjAzMyAxLjUyOC4wOTZBNi4xODggNi4xODggMCAwMTEyLjEyIDEyLjI4bC0uMTIuMDAxYy0yLjk5IDAtNS4yNDIgMi4xNzktNS41NTQgNS4xMS0uMjIzIDIuMDg2LjM1MyA0LjQxMiAyLjI0MiA2LjE0NkMzLjY3MiAyMi4xIDAgMTcuNDc5IDAgMTIgMCA1LjM3MyA1LjM3MyAwIDEyIDB6IiBmaWxsPSIjQThERkY1Ij48L3BhdGg+PHBhdGggZD0iTTUuMjg2IDVhMi40MzggMi40MzggMCAwMS42ODIgMy4zOGMtMy45NjIgNS45NjYtMy4yMTUgMTAuNzQzIDIuNjQ4IDE1LjEzNkMzLjYzNiAyMi4wNTYgMCAxNy40NTIgMCAxMmMwLTEuNzg3LjM5LTMuNDgyIDEuMDktNS4wMDYuMjUzLS40MzUuNTI1LS44NzIuODE3LTEuMzExQTIuNDM4IDIuNDM4IDAgMDE1LjI4NiA1eiIgZmlsbD0iIzAwNTVFOSI+PC9wYXRoPjxwYXRoIGQ9Ik0xMi45OC4wNGMuMjcyLjAyMS41NDMuMDUzLjgxLjA5My41ODMuMTA2IDEuMTE3LjI1NCAxLjUzOC40NCA2LjYzOCAyLjkyNyA4LjA3IDEwLjA1MiAxLjc0OCAxNS42NDJhNC4xMjUgNC4xMjUgMCAwMS01LjgyMi0uMzU4Yy0xLjUxLTEuNzA2LTEuMy00LjE4NC4zNTctNS44MjIuODU4LS44NDggMy4xMDgtMS4yMjMgNC4wNDUtMi40NDEgMS4yNTctMS42MzQgMi4xMjItNi4wMDktMi41MjMtNy41MDZMMTIuOTguMDM5eiIgZmlsbD0iIzAwQkNGRiI+PC9wYXRoPjxwYXRoIGQ9Ik0xMy41MjguMDk2QTYuMTg3IDYuMTg3IDAgMDExMiAxMi4yODFhNS43NSA1Ljc1IDAgMDAtMS43MS4yNTVjLjE0Ny0uOTA1LjU5NS0xLjc4NCAxLjMyMS0yLjUwMS44NTgtLjg0OCAzLjEwOC0xLjIyMyA0LjA0NS0yLjQ0MSAxLjI3LTEuNjUxIDIuMTQtNi4xMDQtMi42NzYtNy41NTQuMTg0LjAxNC4zNjcuMDMzLjU0OC4wNTZ6IiBmaWxsPSIjRUNFQ0VFIj48L3BhdGg+PC9zdmc+'
+  };
+  var LOGO_IMG = {};
+  Object.keys(LOGOS).forEach(function(k){
+    var img = new Image();
+    img.onload = function(){ chart.draw(); };
+    img.src = LOGOS[k];
+    LOGO_IMG[k] = img;
+  });
+
+  var nodePlugin = {id:'nodeLabels', afterDatasetsDraw:function(ch){
+    var ctx = ch.ctx, area = ch.chartArea;
+    var nodes = [];
+    var inside = function(el){ return el.x >= area.left && el.x <= area.right && el.y >= area.top && el.y <= area.bottom; };
+    ch.data.datasets.forEach(function(d, i){
+      if (!ch.isDatasetVisible(i)) return;
+      var els = ch.getDatasetMeta(i).data;
+      var last = -1;
+      els.forEach(function(el, j){ if (inside(el)) last = j; });
+      els.forEach(function(el, j){
+        if (!inside(el)) return;
+        var p = d.data[j];
+        nodes.push({px:el.x, py:el.y, color:d.borderColor, letter:d.letter, fam:d.fam, lv:p.lv, y:p.y, x:p.x, label:d.label, named:j === last, dashed:!!d.dashed});
+      });
+    });
+
+    var order = nodes.slice().sort(function(a, b){
+      if (a.named !== b.named) return a.named ? -1 : 1;
+      return (b.y - a.y) || ((RANK[b.lv] || 0) - (RANK[a.lv] || 0));
+    });
+    var occupied = nodes.map(function(n){ return {l:n.px-12, t:n.py-12, r:n.px+12, b:n.py+12}; });
+    var segs = [];
+    ch.data.datasets.forEach(function(d, i){
+      if (!ch.isDatasetVisible(i) || !d.showLine) return;
+      var els = ch.getDatasetMeta(i).data;
+      for (var j = 1; j < els.length; j++) segs.push([els[j-1].x, els[j-1].y, els[j].x, els[j].y]);
+    });
+    var placed = [];
+    function hit(a, b){ return !(a.r <= b.l || a.l >= b.r || a.b <= b.t || a.t >= b.b); }
+    // Liang–Barsky：线段是否穿过矩形
+    function segHit(box, s){
+      var x0 = s[0], y0 = s[1], dx = s[2] - x0, dy = s[3] - y0, t0 = 0, t1 = 1;
+      var p = [-dx, dx, -dy, dy], q = [x0 - box.l, box.r - x0, y0 - box.t, box.b - y0];
+      for (var k = 0; k < 4; k++){
+        if (p[k] === 0){ if (q[k] < 0) return false; continue; }
+        var r = q[k] / p[k];
+        if (p[k] < 0){ if (r > t1) return false; if (r > t0) t0 = r; }
+        else { if (r < t0) return false; if (r < t1) t1 = r; }
+      }
+      return true;
+    }
+    function gap(n, box){
+      var dx = Math.max(box.l - n.px, 0, n.px - box.r), dy = Math.max(box.t - n.py, 0, n.py - box.b);
+      return Math.sqrt(dx * dx + dy * dy);
+    }
+    var h = 16;
+    var FONT_B = '600 11px system-ui, sans-serif', FONT_R = '11px system-ui, sans-serif';
+    var items = [];
+
+    order.forEach(function(n){
+      var name = n.named ? n.label : '';
+      var rest = n.y + ' · ' + (LV[n.lv] || n.lv) + ' · $' + n.x.toFixed(2);
+      ctx.font = FONT_B;
+      var nw = name ? ctx.measureText(name).width + 6 : 0;
+      ctx.font = FONT_R;
+      var w = nw + ctx.measureText(rest).width + 10;
+      var cands = [];
+      var add = function(l, t){ cands.push({l:l, r:l+w, t:t, b:t+h}); };
+      [14, 30, 48, 68, 92, 120].forEach(function(d){
+        [0,-1,1,-2,2,-3,3,-4,4,-5,5].forEach(function(st){
+          add(n.px + d, n.py + st * h - h/2);
+          add(n.px - d - w, n.py + st * h - h/2);
+        });
+      });
+      [13, 30, 48].forEach(function(d){
+        [0, -w/2 + 6, w/2 - 6].forEach(function(o){
+          add(n.px - w/2 + o, n.py - d - h);
+          add(n.px - w/2 + o, n.py + d);
+        });
+      });
+      var best = null, fallback = null;
+      cands.forEach(function(box){
+        if (box.l < area.left || box.r > area.right || box.t < area.top || box.b > area.bottom) return;
+        var lines = 0, clash = 0;
+        for (var z = 0; z < segs.length; z++) if (segHit(box, segs[z])) lines++;
+        for (var z1 = 0; z1 < placed.length; z1++) if (hit(box, placed[z1])) clash++;
+        for (var z2 = 0; z2 < occupied.length; z2++) if (hit(box, occupied[z2])) clash++;
+        var score = gap(n, box) + lines * 40;
+        if (!clash && (!best || score < best.score)) best = {box:box, score:score};
+        var fs = clash * 1000 + score;
+        if (!fallback || fs < fallback.score) fallback = {box:box, score:fs};
+      });
+      // 实在放不下时，非型号名标注直接省略（悬停提示仍可看），避免文字互相覆盖
+      if ((!best && !n.named) || !fallback) return;
+      var pick = (best || fallback).box;
+      placed.push(pick);
+      items.push({n:n, name:name, nw:nw, rest:rest, w:w, box:pick, leader:gap(n, pick) > 18});
+    });
+
+    ctx.save();
+    ctx.lineWidth = 0.75;
+    items.forEach(function(it){
+      if (!it.leader) return;
+      var b = it.box, cx = Math.max(b.l, Math.min(it.n.px, b.r)), cy = Math.max(b.t, Math.min(it.n.py, b.b));
+      ctx.strokeStyle = tint(tone(it.n.color), 0.5);
+      ctx.beginPath();
+      ctx.moveTo(it.n.px, it.n.py);
+      ctx.lineTo(cx, cy);
+      ctx.stroke();
+    });
+    ctx.restore();
+
+    ctx.save();
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = '600 12px system-ui, sans-serif';
+    nodes.forEach(function(n){
+      ctx.beginPath();
+      ctx.arc(n.px, n.py, 11, 0, Math.PI * 2);
+      if (n.dashed){
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        // Safari 会忽略整圆 arc 上的 setLineDash，所以逐段画短弧来做虚线
+        var segs = 16, step = Math.PI * 2 / segs;
+        ctx.lineWidth = 2;
+        ctx.lineCap = 'butt';
+        ctx.strokeStyle = n.color;
+        for (var s = 0; s < segs; s++){
+          ctx.beginPath();
+          ctx.arc(n.px, n.py, 10, s * step, s * step + step * 0.55);
+          ctx.stroke();
+        }
+      } else {
+        ctx.fillStyle = n.color;
+        ctx.fill();
+        ctx.lineWidth = 1.5;
+        ctx.strokeStyle = THEME.surf;
+        ctx.stroke();
+      }
+      var logo = LOGO_IMG[n.fam];
+      if (logo && logo.complete && logo.naturalWidth){
+        ctx.beginPath();
+        ctx.arc(n.px, n.py, 9, 0, Math.PI * 2);
+        ctx.fillStyle = '#ffffff';
+        ctx.fill();
+        var sc = 13 / Math.max(logo.naturalWidth, logo.naturalHeight);
+        var lw = logo.naturalWidth * sc, lh = logo.naturalHeight * sc;
+        ctx.drawImage(logo, n.px - lw / 2, n.py - lh / 2, lw, lh);
+      } else {
+        ctx.fillStyle = '#ffffff';
+        ctx.fillText(n.letter, n.px, n.py + 0.5);
+      }
+    });
+
+    ctx.textAlign = 'left';
+    items.forEach(function(it){
+      var b = it.box, my = (b.t + b.b) / 2 + 0.5;
+      ctx.globalAlpha = 0.94;
+      ctx.fillStyle = THEME.surf;
+      pill(ctx, b.l, b.t, it.w, h, 4);
+      ctx.fill();
+      ctx.globalAlpha = 1;
+      ctx.fillStyle = ink(it.n.color);
+      if (it.name){
+        ctx.font = FONT_B;
+        ctx.fillText(it.name, b.l + 5, my);
+      }
+      ctx.font = FONT_R;
+      ctx.fillText(it.rest, b.l + 5 + it.nw, my);
+    });
+    ctx.restore();
+  }};
+
+  function buildDatasets(){
+    return SERIES.map(function(s){
+      // 按思考档位顺序连线（同档位再按花费），避免花费与档位顺序不一致时折线回绕
+      var pts = s.pts.slice().sort(function(a, b){ return (RANK[a[2]] - RANK[b[2]]) || (a[0] - b[0]); }).map(function(p){
+        return {x:p[0], y:p[1], lv:p[2]};
+      });
+      return {label:s.name, letter:s.letter, fam:s.fam, dashed:!!s.dashed, borderColor:s.color, backgroundColor:s.color,
+        pointRadius:0, pointHoverRadius:0, hitRadius:12, hoverRadius:12,
+        borderWidth:2, borderDash:s.dashed ? [4,3] : [], showLine:pts.length > 1, tension:0, data:pts};
+    });
+  }
+
+  // 散点图左上角的数据来源角标
+  var aaMark = {id:'aaMark', afterDraw:function(ch){
+    var a = ch.chartArea, ctx = ch.ctx;
+    var t1 = 'AA', t2 = 'Artificial Analysis 数据';
+    ctx.save();
+    ctx.font = '700 12px system-ui, sans-serif';
+    var w1 = ctx.measureText(t1).width;
+    ctx.font = '11px system-ui, sans-serif';
+    var w2 = ctx.measureText(t2).width;
+    var x = a.left + 10, y = a.top + 10, h = 20, w = w1 + w2 + 22;
+    ctx.globalAlpha = 0.94;
+    ctx.fillStyle = THEME.surf;
+    pill(ctx, x, y, w, h, 5); ctx.fill();
+    ctx.globalAlpha = 1;
+    ctx.strokeStyle = THEME.grid; ctx.lineWidth = 1; ctx.stroke();
+    ctx.textBaseline = 'middle'; ctx.textAlign = 'left';
+    ctx.font = '700 12px system-ui, sans-serif';
+    ctx.fillStyle = THEME.dark ? '#f0efec' : '#0b0b0b';
+    ctx.fillText(t1, x + 8, y + h / 2);
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.fillStyle = THEME.sec;
+    ctx.fillText(t2, x + 14 + w1, y + h / 2);
+    ctx.restore();
+  }};
+
+  // 十字线吸附到悬浮节点，绘制在数据和标注下方。
+  var crosshairPlugin = {id:'nodeCrosshair', beforeDatasetsDraw:function(ch){
+    var active = ch.getActiveElements();
+    if (!active.length) return;
+    var item = active[0], point = item.element, area = ch.chartArea;
+    if (!ch.isDatasetVisible(item.datasetIndex) ||
+        point.x < area.left || point.x > area.right ||
+        point.y < area.top || point.y > area.bottom) return;
+    var ctx = ch.ctx;
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(area.left, area.top, area.right - area.left, area.bottom - area.top);
+    ctx.clip();
+    ctx.strokeStyle = ch.data.datasets[item.datasetIndex].borderColor;
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([5, 4]);
+    ctx.beginPath();
+    ctx.moveTo(area.left, point.y);
+    ctx.lineTo(area.right, point.y);
+    ctx.moveTo(point.x, area.top);
+    ctx.lineTo(point.x, area.bottom);
+    ctx.stroke();
+    ctx.restore();
+  }};
+
+  function makeChart(id, xs, ys, ticks, yStep, yTicks){
+    return new Chart(document.getElementById(id), {
+      type:'scatter',
+      data:{datasets:buildDatasets()},
+      plugins:[crosshairPlugin, nodePlugin, aaMark],
+      options:{
+        responsive:true, maintainAspectRatio:false,
+        interaction:{mode:'nearest', intersect:true},
+        layout:{padding:{left:8, right:28, top:20, bottom:4}},
+        plugins:{
+          legend:{display:false},
+          tooltip:{callbacks:{
+            title:function(items){var p=items[0]; return p.dataset.label + '  ·  ' + (LV[p.raw.lv] || p.raw.lv);},
+            label:function(c){
+              var lines = ['智力指数 ' + c.raw.y, '每任务花费 $' + c.raw.x.toFixed(2)];
+              if (c.dataset.dashed) lines.push('虚线：评分与实际表现存在差异');
+              return lines;
+            }
+          }}
+        },
+        scales:{
+          x:{type:'logarithmic', min:xs[0], max:xs[1],
+            title:{display:true, text:'AA 每任务花费（美元，对数刻度）', color:THEME.muted},
+            afterBuildTicks:function(a){a.ticks = ticks.map(function(v){return {value:v};});},
+            ticks:{color:THEME.muted, callback:function(v){return '$' + v;}},
+            grid:{color:THEME.grid}},
+          y:{min:ys[0], max:ys[1],
+            title:{display:true, text:'AA 智力指数（Artificial Analysis）', color:THEME.muted},
+            afterBuildTicks:function(a){ if (yTicks) a.ticks = yTicks.map(function(v){return {value:v};}); },
+            ticks:{color:THEME.muted, stepSize:yStep},
+            grid:{color:THEME.grid}}
+        }
+      }
+    });
+  }
+
+  var chart = makeChart('c', [0.03, 30], [16, 68], [0.05,0.1,0.2,0.5,1,2,5,10,20,30], 4);
+  // 下界留到 39.4，让 40 分一排的标注有地方放；39 分及以下的点不进放大图
+  var zoom = makeChart('cz', [0.2, 30], [39.4, 66], [0.2,0.5,1,2,3,5,10,20,30], 2, [40,42,44,46,48,50,52,54,56,58,60,62,64,66]);
+  var VENDOR_COLOR = {Claude:'#c96a3d', GPT:'#10a37f', Gemini:'#4285f4', Muse:'#a855f7', Grok:'#6b7280', Qwen:'#14b8a6', MiMo:'#f59e0b', Step:'#4f46e5', GLM:'#84cc16', DeepSeek:'#1e3a8a', Kimi:'#db2777', MiniMax:'#dc2626', Hy:'#0ea5e9'};
+  function tint(c, a){
+    var rgb = c.charAt(0) === '#'
+      ? [parseInt(c.substr(1, 2), 16), parseInt(c.substr(3, 2), 16), parseInt(c.substr(5, 2), 16)]
+      : c.match(/\d+/g).slice(0, 3);
+    return 'rgba(' + rgb[0] + ',' + rgb[1] + ',' + rgb[2] + ',' + a + ')';
+  }
+
+  function hatch(color){
+    var c = document.createElement('canvas');
+    c.width = 8; c.height = 8;
+    var g = c.getContext('2d');
+    g.strokeStyle = color; g.lineWidth = 2;
+    g.beginPath();
+    g.moveTo(-2, 10); g.lineTo(10, -2);
+    g.moveTo(-2, 2); g.lineTo(2, -2);
+    g.moveTo(6, 10); g.lineTo(10, 6);
+    g.stroke();
+    return g.createPattern(c, 'repeat');
+  }
+  // 所有型号的所有档位混排，按智力从高到低（同分按花费从低到高）；只保留智力 ≥ BAR_MIN 的档位
+  // 颜色深浅按该档位在本型号内的名次：最高档最深
+  var BAR_MIN = 35;
+  var SHADE = [1, 0.78, 0.62, 0.5, 0.4];
+  var BARS = [];
+  SERIES.forEach(function(s){
+    var pts = s.pts.length ? s.pts.slice() : [[null, s.index, s.indexLv || 'max']];
+    pts.sort(function(a, b){ return (RANK[b[2]] || 0) - (RANK[a[2]] || 0); });
+    pts.forEach(function(p, k){
+      if (p[1] < BAR_MIN) return;
+      BARS.push({name:s.name, value:p[1], tier:p[2], cost:p[0], fam:s.fam, dashed:!!s.dashed, shade:SHADE[Math.min(k, SHADE.length - 1)]});
+    });
+  });
+  BARS.sort(function(a, b){
+    return (b.value - a.value) || ((a.cost == null ? 1e9 : a.cost) - (b.cost == null ? 1e9 : b.cost));
+  });
+  document.querySelector('.chart-bar').style.height = (BARS.length * 17 + 70) + 'px';
+  function barColor(b){ return tint(tone(VENDOR_COLOR[b.fam]), b.shade); }
+  var barLabels = {id:'barLabels', afterDatasetsDraw:function(ch){
+    var ctx = ch.ctx;
+    ctx.save();
+    ctx.font = '11px system-ui, sans-serif';
+    ctx.textBaseline = 'middle';
+    ctx.textAlign = 'left';
+    ch.getDatasetMeta(0).data.forEach(function(el, i){
+      var b = BARS[i];
+      if (!b) return;
+      ctx.fillStyle = tone(VENDOR_COLOR[b.fam]);
+      ctx.fillText(b.value + ' · ' + (b.cost == null ? '花费未列出' : '$' + b.cost.toFixed(2)), el.x + 6, el.y);
+    });
+    ctx.restore();
+  }};
+  var barChart = new Chart(document.getElementById('cb'), {
+    type:'bar',
+    data:{
+      labels:BARS.map(function(b){ return b.name + ' · ' + (LV[b.tier] || b.tier); }),
+      datasets:[{
+        data:BARS.map(function(b){ return b ? b.value : null; }),
+        backgroundColor:BARS.map(function(b){ return !b ? 'transparent' : b.dashed ? hatch(barColor(b)) : barColor(b); }),
+        borderColor:BARS.map(function(b){ return b ? barColor(b) : 'transparent'; }),
+        borderWidth:1,
+        borderRadius:2,
+        barPercentage:0.9, categoryPercentage:0.9
+      }]
+    },
+    plugins:[barLabels],
+    options:{
+      indexAxis:'y',
+      responsive:true, maintainAspectRatio:false,
+      layout:{padding:{right:90}},
+      plugins:{
+        legend:{display:false},
+        tooltip:{filter:function(c){ return !!BARS[c.dataIndex]; }, callbacks:{
+          title:function(items){ var b = BARS[items[0].dataIndex]; return b.name + '  ·  ' + (LV[b.tier] || b.tier); },
+          label:function(c){
+            var b = BARS[c.dataIndex];
+            var lines = ['智力指数 ' + b.value, '每任务花费 ' + (b.cost == null ? '未列出' : '$' + b.cost.toFixed(2))];
+            if (b.dashed) lines.push('斜纹：评分与实际表现存在差异');
+            return lines;
+          }
+        }}
+      },
+      scales:{
+        x:{min:BAR_MIN - 1, max:66,
+          title:{display:true, text:'智力指数（Artificial Analysis，从 ' + BAR_MIN + ' 起）', color:THEME.muted},
+          afterBuildTicks:function(ax){ var t = []; for (var v = BAR_MIN; v <= 66; v += 3) t.push({value:v}); ax.ticks = t; },
+          ticks:{color:THEME.muted},
+          grid:{color:THEME.grid}},
+        y:{
+          ticks:{autoSkip:false, font:{size:11}, color:function(){ return THEME.sec; }},
+          grid:{display:false}}
+      }
+    }
+  });
+
+  function refreshTheme(){
+    readTheme();
+    [chart, zoom, barChart].forEach(function(c){
+      c.options.scales.x.title.color = THEME.muted;
+      c.options.scales.x.ticks.color = THEME.muted;
+      c.options.scales.x.grid.color = THEME.grid;
+      c.options.scales.y.title.color = THEME.muted;
+      if (c !== barChart) c.options.scales.y.ticks.color = THEME.muted;
+      c.options.scales.y.grid.color = THEME.grid;
+      c.update();
+    });
+  }
+  if (window.matchMedia){
+    var mq = window.matchMedia('(prefers-color-scheme: dark)');
+    if (mq.addEventListener) mq.addEventListener('change', refreshTheme);
+  }
+
+  function cell(tag, text, cls){
+    var el = document.createElement(tag);
+    if (cls) el.className = cls;
+    el.textContent = text;
+    return el;
+  }
+
+  var VENDOR_NAME = {Claude:'Anthropic', GPT:'OpenAI', Gemini:'Google', GLM:'智谱（Zhipu）', DeepSeek:'DeepSeek', Kimi:'月之暗面（Moonshot）', Muse:'Meta（Muse）', Grok:'xAI（Grok）', Qwen:'阿里巴巴（Qwen）', MiMo:'小米（MiMo）', Step:'阶跃星辰（StepFun）', MiniMax:'MiniMax（稀宇）', Hy:'腾讯（Hy）'};
+  // 已移出图表、只在详细数据表里保留一行说明的型号
+  var REMOVED = [
+    {name:'GPT-6 Astra', fam:'GPT', color:'#897f73', pts:[]},
+    {name:'GPT-6.1 Sol', fam:'GPT', color:'#897f73', pts:[]},
+    {name:'Qwen 3.8 Max (0902)', fam:'Qwen', color:'#14b8a6', pts:[]},
+    {name:'Kimi K3', fam:'Kimi', color:'#7f77dd', pts:[]},
+    {name:'Claude Fable 5.1', fam:'Claude', color:'#155e75', pts:[]}
+  ];
+  var tbody = document.getElementById('rows');
+  var vendors = [];
+  SERIES.forEach(function(s){ if (vendors.indexOf(s.fam) === -1) vendors.push(s.fam); });
+
+  vendors.forEach(function(fam){
+    var groups = SERIES.concat(REMOVED).filter(function(s){ return s.fam === fam; }).map(function(s){
+      var inc = s.pts.slice().sort(function(a, b){ return RANK[a[2]] - RANK[b[2]]; }).map(function(p){
+        return {lv:p[2], y:p[1], x:p[0], incl:true, note:s.note};
+      });
+      var exc = EXCL.filter(function(e){ return e.name === s.name; }).map(function(e){
+        return {lv:e.lv, y:e.y, x:e.x, incl:false, note:e.why};
+      });
+      return {model:s, rows:inc.concat(exc)};
+    });
+    var total = 0;
+    groups.forEach(function(g){ total += g.rows.length; });
+    var first = true;
+    groups.forEach(function(g){
+      g.rows.forEach(function(r, k){
+        var tr = document.createElement('tr');
+        var cls = [];
+        if (!r.incl) cls.push('muted');
+        if (first){
+          var vt = cell('td', VENDOR_NAME[fam] || fam, 'vendor');
+          vt.rowSpan = total;
+          tr.appendChild(vt);
+          cls.push('grp');
+          first = false;
+        }
+        if (k === 0){
+          var mt = document.createElement('td');
+          mt.rowSpan = g.rows.length;
+          var dot = document.createElement('span');
+          dot.className = 'dot';
+          dot.style.background = g.model.color;
+          mt.appendChild(dot);
+          mt.appendChild(document.createTextNode(g.model.name));
+          tr.appendChild(mt);
+        }
+        tr.appendChild(cell('td', LV_EN[r.lv] || r.lv));
+        tr.appendChild(cell('td', LV[r.lv] || (r.lv === 'non-reasoning' ? '非推理' : r.lv)));
+        tr.appendChild(cell('td', String(r.y), 'num'));
+        tr.appendChild(cell('td', typeof r.x === 'number' ? '$' + r.x.toFixed(2) : r.x, 'num'));
+        tr.appendChild(cell('td', r.incl ? '是' : '否'));
+        tr.appendChild(cell('td', r.note, 'note'));
+        tr.className = cls.join(' ');
+        tbody.appendChild(tr);
+      });
+    });
+  });
+
+  var FAST = [
+    {name:'Claude Opus 5.5', fam:'Claude', std:[4, 0.2, 20], fast:2, ultra:null,
+     note:'Claude Opus 5.5：仅 Claude API（含 Managed Agents）与 Microsoft Foundry 中托管在 Azure 的部署提供，不支持 Batch API 与 Priority Tier；缓存输入为缓存命中价（0.05 倍），缓存倍率叠加在快速价格上。'},
+    {name:'GPT-6.2 Sol', fam:'GPT', std:[2, 0.1, 10], fast:2, ultra:3},
+    {name:'GPT-6.1 Terra', fam:'GPT', std:[1, 0.05, 5], fast:2, ultra:null},
+    {name:'GPT-6.2 Astra', fam:'GPT', std:[8, 0.4, 40], fast:2, ultra:3},
+    {name:'GPT-6 Luna', fam:'GPT', std:[0.1, 0.01, 0.5], fast:2, ultra:null, extra:[[0.01,10,'low']]},
+    // 高速版缓存命中价不翻倍，单价按官方价直接列出；每任务花费仍按 2 倍估算，是上限
+    {name:'Kimi K3.1 Pro', fam:'Kimi', std:[2, 0.2, 10], fast:2, fastStd:[4, 0.2, 20], ultra:null}
+  ];
+  function usd(v){ return '$' + (v < 0.01 ? v.toFixed(4) : v.toFixed(2)); }
+  function modelCell(f, span){
+    var s = SERIES.filter(function(x){ return x.name === f.name; })[0];
+    var td = document.createElement('td');
+    td.rowSpan = span;
+    td.className = 'fm';
+    var dot = document.createElement('span');
+    dot.className = 'dot';
+    dot.style.background = s.color;
+    td.appendChild(dot);
+    td.appendChild(document.createTextNode(f.name));
+    td.appendChild(cell('div', VENDOR_NAME[f.fam] || f.fam, 'fm-vendor'));
+    return td;
+  }
+
+  var fastPrice = document.getElementById('fast-price');
+  FAST.forEach(function(f){
+    var modes = [['标准', 1], ['快速模式', f.fast]];
+    if (f.ultra) modes.push(['超快（Ultrafast）', f.ultra]);
+    modes.forEach(function(m, k){
+      var tr = document.createElement('tr');
+      if (k === 0){ tr.appendChild(modelCell(f, modes.length)); tr.className = 'grp'; }
+      if (m[1] === 1) tr.className += ' base';
+      tr.appendChild(cell('td', m[0]));
+      tr.appendChild(cell('td', m[1] + '×', 'num'));
+      var prices = (m[1] === f.fast && f.fastStd) ? f.fastStd : f.std.map(function(v){ return v * m[1]; });
+      prices.forEach(function(v){ tr.appendChild(cell('td', usd(v), 'num')); });
+      fastPrice.appendChild(tr);
+    });
+  });
+  var fastNotes = document.getElementById('fast-notes');
+  [FAST[0].note,
+   'OpenAI：Priority processing 已于 2026-07-30 更名为 Fast mode；GPT-6.2 Astra 和 Sol 的 Fast 为标准价 2 倍。Ultrafast 在 2027-02-28 前（含当天，太平洋时间）为 3 倍，2027-03-01 起为 6 倍。表中为输入 ≤272K token 的价格。',
+   'Kimi K3.1 Pro：高速版为单独的模型名 kimi-k3.1-pro-highspeed，约 2–3 倍速度；输入、输出为标准价 2 倍，缓存命中价不变（$0.20），所以每任务花费按 2 倍估算是上限。Kimi K3 没有高速版。',
+   '以上价格于 2026-10-18 对照 Anthropic 与 OpenAI 官方价格页核实（GPT-6.1 Terra 于 2026-10-27 核对，GPT-6.2 Astra、Sol 于 2026-11-18 核对）；Kimi 价格于 2026-10-24 对照 Moonshot 官方价格页（platform.moonshot.ai）核实。'
+  ].forEach(function(t){ fastNotes.appendChild(cell('li', t)); });
+
+  var fastTask = document.getElementById('fast-task');
+  FAST.forEach(function(f){
+    var s = SERIES.filter(function(x){ return x.name === f.name; })[0];
+    // 档位横排：每个型号一行智力、一行标准花费，再按模式各一行；只有默认档的型号合并成一格
+    var pts = s.pts.concat(f.extra || []);
+    var byLv = {};
+    pts.forEach(function(p){ byLv[p[2]] = p; });
+    var tiers = ['low', 'medium', 'high', 'xhigh', 'max'];
+    var only = byLv['default'];
+    var rows = [['智力指数', null, 'iq'], ['标准', 1, 'base'], ['快速模式', f.fast, '']];
+    if (f.ultra) rows.push(['超快', f.ultra, '']);
+    rows.forEach(function(r, k){
+      var tr = document.createElement('tr');
+      if (k === 0){ tr.appendChild(modelCell(f, rows.length)); tr.className = 'grp'; }
+      if (r[2]) tr.className += ' ' + r[2];
+      tr.appendChild(cell('td', r[0]));
+      function val(p){ return r[1] === null ? String(p[1]) : usd(p[0] * r[1]); }
+      if (only){
+        var td = cell('td', (k === 0 ? '默认档（AA 未标档位）：' : '') + val(only), 'span');
+        td.colSpan = 5;
+        tr.appendChild(td);
+      } else {
+        tiers.forEach(function(t){
+          var p = byLv[t];
+          tr.appendChild(cell('td', p ? val(p) : '—', 'num' + (p ? '' : ' na')));
+        });
+      }
+      fastTask.appendChild(tr);
+    });
+  });
+
+  // 统一的 12px 图例色块：dot 实心圆、dash 虚线圆、bar 圆角方块、hatch 斜纹方块
+  function swatch(color, kind){
+    var el = document.createElement('span');
+    el.className = 'sw';
+    var shape;
+    if (kind === 'dash') shape = '<circle cx="6" cy="6" r="5" fill="none" stroke="' + color + '" stroke-width="2" stroke-dasharray="1.8 1.4"/>';
+    else if (kind === 'bar') shape = '<rect x="1" y="1" width="10" height="10" rx="2" fill="' + color + '"/>';
+    else if (kind === 'hatch') shape = '<defs><pattern id="hp" width="3" height="3" patternUnits="userSpaceOnUse" patternTransform="rotate(45)"><rect width="1.5" height="3" fill="' + color + '"/></pattern></defs>'
+      + '<rect x="1" y="1" width="10" height="10" rx="2" fill="url(#hp)" stroke="' + color + '" stroke-width="1"/>';
+    else shape = '<circle cx="6" cy="6" r="5" fill="' + color + '"/>';
+    el.innerHTML = '<svg width="12" height="12" viewBox="0 0 12 12">' + shape + '</svg>';
+    return el;
+  }
+
+  var legendEl = document.getElementById('legend');
+  vendors.forEach(function(fam){
+    var models = [];
+    SERIES.forEach(function(s, i){ if (s.fam === fam && s.pts.length) models.push({s:s, i:i}); });
+    if (!models.length) return;
+    var grp = document.createElement('div');
+    grp.className = 'vg';
+    grp.style.setProperty('--accent', tone(VENDOR_COLOR[fam] || '#888888'));
+    var head = document.createElement('div');
+    head.className = 'vg-head';
+    if (LOGOS[fam]){
+      var logo = document.createElement('img');
+      logo.className = 'vg-logo';
+      logo.src = LOGOS[fam];
+      logo.alt = '';
+      head.appendChild(logo);
+    }
+    var name = document.createElement('span');
+    name.className = 'vg-name';
+    name.textContent = VENDOR_NAME[fam] || fam;
+    head.appendChild(name);
+    head.appendChild(cell('span', String(models.length), 'vg-count'));
+    grp.appendChild(head);
+    var list = document.createElement('div');
+    list.className = 'vg-items';
+    models.forEach(function(m){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'lg';
+      b.appendChild(swatch(m.s.color, m.s.dashed ? 'dash' : 'dot'));
+      b.appendChild(document.createTextNode(m.s.name));
+      b.addEventListener('click', function(){
+        var on = chart.isDatasetVisible(m.i);
+        [chart, zoom].forEach(function(c){ c.setDatasetVisibility(m.i, !on); c.update(); });
+        b.classList.toggle('off', on);
+      });
+      list.appendChild(b);
+    });
+    grp.appendChild(list);
+    legendEl.appendChild(grp);
+  });
+  var keyNote = document.getElementById('legend-key');
+  keyNote.insertBefore(swatch(THEME.sec, 'dash'), keyNote.firstChild);
+
+  var barLegend = document.getElementById('bar-legend');
+  vendors.forEach(function(fam){
+    var sp = document.createElement('span');
+    sp.className = 'lgs';
+    sp.appendChild(swatch(tone(VENDOR_COLOR[fam]), 'bar'));
+    sp.appendChild(document.createTextNode(VENDOR_NAME[fam] || fam));
+    barLegend.appendChild(sp);
+  });
+  var barNote = document.getElementById('bar-key');
+  barNote.insertBefore(swatch(THEME.sec, 'hatch'), barNote.firstChild);
+
+  var btn = document.getElementById('export');
+  var toolbar = document.getElementById('toolbar');
+  var PARTS = [
+    {key:'head',  short:'标题'},
+    {key:'chart', short:'图表'},
+    {key:'zoom', short:'放大图'},
+    {key:'bar', short:'条形图'},
+    {key:'table', short:'详细数据'},
+    {key:'fast', short:'快速模式'},
+    {key:'notes', short:'说明'}
+  ];
+
+  function partEls(key){
+    return [document.getElementById('part-' + key)];
+  }
+
+  function checkedParts(){
+    return PARTS.filter(function(p){
+      var cb = toolbar.querySelector('input[data-part="' + p.key + '"]');
+      return cb && cb.checked;
+    });
+  }
+
+  btn.addEventListener('click', function(){
+    if (typeof html2canvas !== 'function'){
+      alert('导出组件加载失败，请检查网络后重试。');
+      return;
+    }
+    var on = checkedParts();
+    if (!on.length){
+      alert('请至少勾选一个分区。');
+      return;
+    }
+    var keep = on.map(function(p){ return p.key; });
+    var label = btn.textContent;
+    var inputs = toolbar.querySelectorAll('input');
+    btn.disabled = true;
+    inputs.forEach(function(i){ i.disabled = true; });
+    btn.textContent = '导出中…';
+    PARTS.forEach(function(p){
+      var hide = keep.indexOf(p.key) === -1;
+      partEls(p.key).forEach(function(el){ if (el) el.hidden = hide; });
+    });
+    toolbar.hidden = true;
+    var bg = getComputedStyle(document.body).backgroundColor;
+    var suffix = on.length === PARTS.length ? '' : '（' + on.map(function(p){ return p.short; }).join('、') + '）';
+    html2canvas(document.querySelector('.wrap'), {
+      backgroundColor: bg,
+      scale: Math.max(2, window.devicePixelRatio || 1),
+      // Safari 下 html2canvas 会把 <canvas> 里的后备文字叠画在左上角，克隆时清掉
+      onclone: function(doc){
+        doc.querySelectorAll('canvas').forEach(function(c){ while (c.firstChild) c.removeChild(c.firstChild); });
+      }
+    }).then(function(canvas){
+      smallPng(canvas, function(blob){
+        var url = URL.createObjectURL(blob);
+        var a = document.createElement('a');
+        a.href = url;
+        a.download = document.title + suffix + '.png';
+        document.body.appendChild(a);
+        a.click();
+        a.remove();
+        setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+      });
+    }).catch(function(err){
+      console.error(err);
+      alert('导出失败：' + err.message);
+    }).then(function(){
+      PARTS.forEach(function(p){ partEls(p.key).forEach(function(el){ if (el) el.hidden = false; }); });
+      toolbar.hidden = false;
+      inputs.forEach(function(i){ i.disabled = false; });
+      btn.disabled = false;
+      btn.textContent = label;
+    });
+  });
+})();
+</script>
+
+</body></html>

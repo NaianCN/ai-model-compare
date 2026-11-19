@@ -1,0 +1,647 @@
+<!doctype html><html lang="zh-CN"><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>$20 档套餐可用量（Beta）</title>
+<style>
+:root{
+  --bg:#ffffff; --fg:#0b0b0b; --sec:#52514e; --muted:#898781;
+  --card:#fcfcfb; --chip:rgba(137,135,129,0.22); --grid:rgba(137,135,129,0.22); --line:#e1e0d9; --sel:#0b0b0b; --selfg:#ffffff;
+  --c-claude:#c2410c; --c-gpt:#0f8a5f; --c-glm:#0ea5e9; --c-qoder:#a16207; --c-mimo:#6250d6; --c-kimi:#d0397a; --c-ds:#1d4ed8; --c-cc:#0e7490; --c-oc:#9333ea;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#161615; --fg:#f0efec; --sec:#c3c2b7; --muted:#898781;
+    --card:#1c1c1b; --chip:rgba(137,135,129,0.3); --grid:rgba(137,135,129,0.22); --line:#383835; --sel:#f0efec; --selfg:#161615;
+    --c-claude:#dd6e3d; --c-gpt:#1ea574; --c-glm:#4f96d6; --c-qoder:#b58624; --c-mimo:#8d80e3; --c-kimi:#dc6699; --c-ds:#4a78e8; --c-cc:#22d3ee; --c-oc:#c084fc;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#161615; --fg:#f0efec; --sec:#c3c2b7; --muted:#898781;
+  --card:#1c1c1b; --chip:rgba(137,135,129,0.3); --grid:rgba(137,135,129,0.22); --line:#383835; --sel:#f0efec; --selfg:#161615;
+  --c-claude:#dd6e3d; --c-gpt:#1ea574; --c-glm:#4f96d6; --c-qoder:#b58624; --c-mimo:#8d80e3; --c-kimi:#dc6699; --c-ds:#4a78e8; --c-cc:#22d3ee; --c-oc:#c084fc;
+  color-scheme:dark;
+}
+[hidden]{display:none!important}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:14px/1.6 system-ui,-apple-system,"PingFang SC","Noto Sans SC",sans-serif;
+}
+.wrap{
+  max-width:1100px; margin:0 auto; padding-block:28px 56px;
+  padding-left:max(16px, env(safe-area-inset-left, 0px));
+  padding-right:max(16px, env(safe-area-inset-right, 0px));
+}
+h1{font-size:22px; font-weight:600; margin:0 0 4px; text-wrap:balance}
+h2{font-size:16px; font-weight:600; margin:32px 0 2px}
+.sub{color:var(--sec); margin:0 0 16px; text-wrap:pretty}
+.sub a, .notes a, td a{color:inherit}
+.find{margin:0 0 20px; padding:0 0 0 18px; font-size:14px}
+.find li{margin-bottom:4px}
+.card{background:var(--card); border:0.5px solid var(--line); border-radius:12px; padding:16px}
+.toolbar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; margin:0 0 12px}
+.parts{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:13px; color:var(--sec)}
+.parts label{display:inline-flex; align-items:center; gap:5px; cursor:pointer}
+.export{flex:none; font:inherit; font-size:13px; color:var(--fg); background:var(--card); border:0.5px solid var(--line); border-radius:8px; padding:6px 12px; cursor:pointer}
+.export:disabled{opacity:.6; cursor:default}
+.bar{display:flex; flex-wrap:wrap; align-items:center; justify-content:space-between; gap:10px 16px; margin:0 0 14px}
+.groups{display:inline-flex; gap:2px; padding:3px; border:0.5px solid var(--line); border-radius:10px; background:var(--bg)}
+.groups button{font:inherit; font-size:13px; border:0; background:none; color:var(--sec); cursor:pointer; border-radius:7px; padding:5px 14px}
+.groups button[aria-pressed="true"]{background:var(--sel); color:var(--selfg); font-weight:600}
+.key{display:flex; flex-wrap:wrap; gap:6px 14px; font-size:12px; color:var(--sec); margin:0 0 8px}
+.key span{display:inline-flex; align-items:center; gap:6px}
+.key svg{flex:none; color:var(--muted)}
+.chart{--lab:172px; display:grid; grid-template-columns:repeat(2, minmax(0,1fr)); gap:0 24px}
+.ccol{min-width:0}
+.axis, .row{display:grid; grid-template-columns:var(--lab) minmax(0,1fr); column-gap:12px}
+.axis{position:relative; height:20px; font-size:11px; color:var(--muted)}
+.axis .ticks{position:relative; grid-column:2}
+.axis .ticks span{position:absolute; transform:translateX(-50%); white-space:nowrap}
+.axis .ticks span:first-child{transform:none}
+.axis .ticks span:last-child{transform:translateX(-100%)}
+.vgroup{margin-top:8px; padding-top:8px; border-top:0.5px solid var(--line)}
+.vhead{display:flex; flex-wrap:wrap; align-items:center; gap:2px 8px; margin-bottom:4px; font-size:14px}
+.vhead b{font-weight:600}
+.vhead small{font-size:12px; color:var(--sec)}
+.logo{width:18px; height:18px; border-radius:4px; background:#fff; padding:1px; box-sizing:border-box; flex:none}
+.logo.dot{background:var(--dotc); border-radius:50%; padding:0; width:12px; height:12px; margin:3px}
+.row{align-items:center; min-height:38px}
+.mlabel{display:flex; flex-direction:column; align-items:flex-start; gap:2px; min-width:0}
+.mname{font-size:12px; line-height:16px; color:var(--fg)}
+.src{display:inline-block; font-size:11px; line-height:15px; font-weight:600; border-radius:4px; padding:0 5px; border:1px solid transparent; white-space:nowrap}
+.src.off{background:var(--fg); color:var(--bg); border-color:var(--fg)}
+.src.est{color:var(--fg); border-color:var(--fg)}
+.src.mea{background:var(--chip); color:var(--fg); border-color:var(--chip)}
+.src.thi{color:var(--sec); border:1px dashed var(--sec); font-weight:500}
+.track{position:relative; height:38px}
+.gl{position:absolute; top:0; bottom:0; width:1px; background:var(--grid)}
+.seg{position:absolute; top:25px; height:0; border-top:2px solid var(--c)}
+.seg.est{border-top-style:dashed}
+.pt{position:absolute; top:19px; width:14px; height:14px; margin-left:-7px; border-radius:50%; box-sizing:border-box; background:var(--c); border:2px solid var(--card); padding:0; cursor:help}
+.pt.open{background:var(--card); border:2px solid var(--c); width:12px; height:12px; margin-left:-6px; top:20px}
+.pt::after{content:""; position:absolute; inset:-8px}
+.val{position:absolute; top:1px; font-size:12px; line-height:18px; white-space:nowrap; font-variant-numeric:tabular-nums; color:var(--fg); font-weight:600}
+.val i{font-style:normal; font-weight:400; color:var(--sec)}
+@media (max-width:900px){ .chart{grid-template-columns:minmax(0,1fr)} }
+#tip{position:fixed; z-index:9; max-width:300px; background:var(--bg); color:var(--fg); border:0.5px solid var(--line); border-radius:8px; padding:8px 10px; font-size:12px; line-height:1.55; box-shadow:0 4px 16px rgba(0,0,0,.14); pointer-events:none}
+#tip b{font-weight:600}
+#tip[hidden]{display:none}
+.tablewrap{overflow-x:auto; border:0.5px solid var(--line); border-radius:12px; background:var(--card); margin-top:10px}
+table{border-collapse:collapse; width:100%; font-size:13px; font-variant-numeric:tabular-nums}
+th,td{padding:8px 12px; vertical-align:top; line-height:20px; text-align:left; border-bottom:0.5px solid var(--line)}
+th{color:var(--sec); font-weight:600; white-space:nowrap}
+td.num, th.num{text-align:right; white-space:nowrap}
+td.nw{white-space:nowrap}
+tbody tr:last-child td{border-bottom:0}
+tr.first td{border-top:0.5px solid var(--line)}
+td.why{min-width:225px; color:var(--sec); font-size:12.5px}
+td.rule{min-width:360px; color:var(--sec); font-size:12.5px}
+.tag{display:inline-block; line-height:16px; font-size:11px; color:var(--sec); border:0.5px solid var(--line); border-radius:4px; padding:0 4px; margin-right:6px; white-space:nowrap}
+.tag.low{border-style:dashed}
+.raw{display:grid; grid-template-columns:repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap:12px; margin-top:10px}
+.raw h3{display:flex; align-items:center; gap:6px; font-size:13px; font-weight:600; margin:0 0 6px}
+ul.notes{padding:0 0 0 18px; margin:0; color:var(--sec); font-size:13px}
+ul.notes li{margin-bottom:6px}
+.notes-sec{margin-top:10px}
+.lead{color:var(--sec); font-size:13px; margin:2px 0 0; text-wrap:pretty}
+@media (max-width:640px){
+  .axis, .row{grid-template-columns:minmax(0,1fr)}
+  .row{margin-bottom:4px}
+  .mlabel{flex-direction:row; flex-wrap:wrap; align-items:center; gap:2px 6px; margin-top:2px}
+  .axis .blank{display:none}
+  .axis .ticks{grid-column:1; height:20px}
+}
+.beta{display:inline-block; vertical-align:middle; padding:2px 7px; border:1px solid currentColor; border-radius:999px; font-size:12px; font-weight:600; line-height:1.4; color:var(--sec)}
+</style>
+</head><body>
+<div class="wrap">
+  <div id="part-head">
+  <h1>$20 档套餐可用量 <span class="beta">Beta</span></h1>
+  <p class="sub">对比每月花 $20（约 ¥134.28）可用的 token 量。图表可切换实际价格与 $20 等比折算，数据来源标在各行。另见 <a href="AI%20模型花费与智力对比.html">AI 模型花费与智力对比</a>、<a href="Arena%20排行榜.html">Arena 排行榜</a>。</p>
+
+  <ul class="find">
+    <li><b>按 $20 等比折算，DeepSeek V4.1 Flash 最划算</b>：OpenCode Go（$10）给 103.52 亿、Command Code GOAT（$10）给 72.46 亿，等比折算到 $20 是 207.04 亿和 144.93 亿；而 ¥134 按量付费只有高峰 10.4 亿、低谷 20.9 亿。</li>
+    <li><b>Claude / ChatGPT 的 $20 档按置信度重算</b>：Claude Pro 收 4 个模型（7.82–64.73 亿），ChatGPT Plus 收 8 个（1.59–92.03 亿）。旧的 Sonnet 5.5 61.08 亿、Haiku 5.5 596.42 亿是低置信推算，已剔除；GPT-6.1 Sol 由 8.70 亿更新为 15.16 亿，Claude Opus 5.5 为 30.46 亿。</li>
+    <li><b>主力模型里不再只看 Claude Opus 5.5</b>：同为 $20，GPT-6 Luna 92.03 亿、GPT 5.6 Luna 70.58 亿（均为高置信实测）比 Opus 5.5 的 30.46 亿更多，但它们是轻量模型，不能只看 token 数，见明细表的 AA 智力列。</li>
+    <li>这些总量里约 97% 是缓存读取。不算缓存读取时，主力模型每月只剩 0.15–1.2 亿，排名也会变，见明细表的"不含缓存读取"一列。</li>
+    <li><b>用积分的四家都列了本页估算，和第三方并排</b>。GLM、MiMo 官方公布了每 token 的系数，算出来较准。Kimi、Qoder CN 官方只给倍数和每次请求的消耗，token 数仍是估算：Qoder CN 专业版折算后约 0.57–0.76 亿，高级版约 0.60–0.79 亿（均为 Auto 档）；Kimi Plus 折算后约 1.7–3.9 亿。</li>
+  </ul>
+  </div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="groups" role="group" aria-label="价格口径">
+      <button type="button" data-mode="norm" aria-pressed="true">等比折算到 $20</button>
+      <button type="button" data-mode="real" aria-pressed="false">按实际档位价</button>
+    </div>
+    <div class="parts">
+      <label><input type="checkbox" data-part="head" checked> 标题与结论</label>
+      <label><input type="checkbox" data-part="stats" checked> 置信度统计</label>
+      <label><input type="checkbox" data-part="chart" checked> 用量图</label>
+      <label><input type="checkbox" data-part="detail"> 明细</label>
+      <label><input type="checkbox" data-part="rules"> 限额规则</label>
+      <label><input type="checkbox" data-part="raw"> 原始数字</label>
+      <label><input type="checkbox" data-part="notes"> 说明</label>
+    </div>
+    <button class="export" id="export" type="button">导出为图片</button>
+  </div>
+
+  <div class="card" id="part-chart">
+    <div class="key" aria-label="图例">
+      <span><b>数据来源：</b></span>
+      <span><em class="src off" style="font-style:normal">官方</em>官方系数或价格计算</span>
+      <span><em class="src est" style="font-style:normal">本页估算</em>官方规则加假设</span>
+      <span><em class="src mea" style="font-style:normal">第三方实测</em>账号实测</span>
+      <span><em class="src thi" style="font-style:normal">第三方估算</em>计算或推算</span>
+    </div>
+    <div class="key">
+      <span><b>标签 = 实测来源 + 置信度：</b></span>
+      <span><em class="src mea" style="font-style:normal">维护者 Codex 实测 · 高</em>维护者本机 Codex / Plus 面板 / Claude Code、社区账号 NTRYourWaifu 轮询、awesome-coding-plan 实测</span>
+      <span><em class="src thi" style="font-style:normal">realapipricing.com 推算 · 中</em>由同套餐基准按价格比推算</span>
+    </div>
+    <div class="key">
+      <span><b>非实测以网站命名：</b></span>
+      <span><em class="src off" style="font-style:normal">commandcode.ai · 中</em>官方逐模型 allowance 表</span>
+      <span><em class="src off" style="font-style:normal">opencode.ai · 中</em>官方 Go 档 Usage 表</span>
+      <span>「高 / 中」= 额度置信度；低置信已剔除，有更高置信度时取更高</span>
+    </div>
+    <div class="key">
+      <span><svg width="12" height="12" aria-hidden="true"><circle cx="6" cy="6" r="5" fill="currentColor"/></svg>单一数值</span>
+      <span><svg width="34" height="12" aria-hidden="true"><line x1="5" y1="6" x2="29" y2="6" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="6" r="4" fill="var(--card)" stroke="currentColor" stroke-width="2"/><circle cx="28" cy="6" r="5" fill="currentColor"/></svg>贵时段 → 便宜时段</span>
+      <span><svg width="34" height="12" aria-hidden="true"><line x1="5" y1="6" x2="29" y2="6" stroke="currentColor" stroke-width="2" stroke-dasharray="4 3"/><circle cx="6" cy="6" r="5" fill="currentColor"/><circle cx="28" cy="6" r="5" fill="currentColor"/></svg>估算区间</span>
+    </div>
+    <p class="lead">人民币价格按 2026-10-30 中间价折算（<a href="https://www.chinanews.com.cn/cj/2026/10-30/10723119.shtml">1 美元 = 6.7138 元</a>）。四款美元订阅的数据截至 2026-11-10，其余数据整理于 2026-11-01。</p>
+    <p class="lead" id="mode-note" style="margin:0 0 10px"></p>
+    <div class="chart" id="chart" role="img" aria-label="各套餐每月 token 量的点图，对数横轴。Claude Pro Opus 5.5 约 30.46 亿；ChatGPT Plus GPT-6.1 Sol 15.16 亿、GPT-6 Luna 92.03 亿；Command Code GOAT 的 DeepSeek V4.1 Flash 72.46 亿；OpenCode Go 的 DeepSeek V4.1 Flash 103.52 亿；DeepSeek 按量付费 V4.1 Flash 高峰 10.4 亿、低谷 20.9 亿。完整数值见下方明细表。"></div>
+  </div>
+
+  <section id="part-stats">
+  <h2>按额度置信度重新统计</h2>
+  <p class="lead">数据源：<a href="https://realapipricing.com/#lang=zh&amp;view=allowance&amp;fee=0-30&amp;vendors=Anthropic&amp;vendors=DeepSeek&amp;vendors=OpenAI&amp;channels=Anthropic&amp;channels=OpenAI&amp;channels=Command+Code&amp;channels=OpenCode&amp;billing=subscription&amp;confidence=high&amp;confidence=medium" style="color:inherit">realapipricing.com · 订阅额度视图</a>（数据版本 2026-11-10）。筛选：厂商 Anthropic / DeepSeek / OpenAI，渠道 Anthropic / OpenAI / Command Code / OpenCode，订阅计费，月费 $0–30，额度置信度「高 + 中」。<b>只采用中、高置信；同一模型在同一套餐有多条记录时取置信度最高的那条</b>（本次范围内没有重复）；低置信全部剔除。两个 $10 套餐按「以 DeepSeek 为准」只收 DeepSeek 模型。单位：亿 token / 月，统一负载 97% 缓存读取、每月 4 周。</p>
+  <div class="tablewrap"><table id="stats"><thead><tr>
+    <th>套餐</th><th class="num">月费</th><th class="num">收录模型</th><th class="num">高置信</th><th class="num">中置信</th><th class="num">可用量范围<br><span style="font-weight:400;color:var(--sec)">实际档位</span></th><th class="num">折算到 $20</th><th>处理说明</th>
+  </tr></thead><tbody>
+      <tr><td class="nw"><b>Claude Pro</b></td><td class="num">$20</td><td class="num">4</td><td class="num">2</td><td class="num">2</td><td class="num">7.82–64.73</td><td class="num">7.82–64.73</td><td>剔除 3 条低置信推算（Opus 4.8、Sonnet 5.5、Haiku 5.5）；Opus 5.5 由 30.54 更新为 30.46 亿。</td></tr>
+      <tr><td class="nw"><b>ChatGPT Plus</b></td><td class="num">$20</td><td class="num">8</td><td class="num">5</td><td class="num">3</td><td class="num">1.59–92.03</td><td class="num">1.59–92.03</td><td>GPT-6.1 Sol 由 8.70 更新为 15.16 亿；旧的本页推算 GPT-6.1 Terra 17.4 亿不再收录。</td></tr>
+      <tr><td class="nw"><b>Command Code GOAT</b></td><td class="num">$10</td><td class="num">6</td><td class="num">0</td><td class="num">6</td><td class="num">2.57–72.46</td><td class="num">5.15–144.93</td><td>以 DeepSeek 为准：另有 5 条 GPT / Claude 模型中置信额度不列入。</td></tr>
+      <tr><td class="nw"><b>OpenCode Go</b></td><td class="num">$10</td><td class="num">2</td><td class="num">0</td><td class="num">2</td><td class="num">3.14–103.52</td><td class="num">6.28–207.04</td><td>以 DeepSeek 为准：另有 3 条 GPT / Claude 模型中置信额度不列入。</td></tr>
+      <tr class="first"><td class="nw"><b>合计</b></td><td class="num">—</td><td class="num">20</td><td class="num">7</td><td class="num">13</td><td class="num">—</td><td class="num">—</td><td>站点按 URL 条件共 31 条记录：3 条低置信不采用；余下 28 条中 / 高置信里，再按「以 DeepSeek 为准」去掉 8 条 $10 套餐的非 DeepSeek 模型，最终采用 20 条。</td></tr>
+  </tbody></table></div>
+  <p class="lead" style="margin-top:8px">"折算到 $20"沿用本页的等比口径：$10 档 ×2 只是把花费拉齐，不代表真能一次买到 $20 的额度。GLM、Qoder CN、MiMo、Kimi 和 DeepSeek 按量付费不在本次站点筛选范围内，数字沿用 2026-11-01 整理的结果。</p>
+
+  </section>
+
+  <section id="part-detail">
+  <h2>明细</h2>
+  <p class="lead">统一负载：97% 缓存读取、2.5% 未命中缓存的输入、0.5% 输出（<a href="https://github.com/Fei2411/real-api-pricing" style="color:inherit">real-api-pricing</a> 的标准负载，接近智能体编程的实际情况）。一个月按 4 周算。单位：亿 token。四个订阅套餐按 realapipricing.com 2026-11-10 的额度置信度重新统计，只收中 / 高置信，$10 两档按 DeepSeek 模型收录；标签前半是实测来源（维护者面板 / 本机 Codex / 社区账号轮询 / 第三方实测），非实测的以来源网站命名（realapipricing.com、commandcode.ai、opencode.ai），末尾「高 / 中」是额度置信度。</p>
+  <div class="tablewrap"><table id="detail"><thead><tr>
+    <th>服务与档位</th><th>模型</th><th class="num">实际档位 / 月</th><th class="num">折算到 $20 / 月</th><th class="num">不含缓存读取 / 月</th><th class="num">AA 智力</th><th>依据</th>
+  </tr></thead><tbody></tbody></table></div>
+  <p class="lead" style="margin-top:8px">"不含缓存读取"一列口径不完全相同：Claude、ChatGPT 来自 Wokey，含输入、输出和缓存写入；Kimi 来自 Wokey，只算未命中缓存的输入；Qoder CN 来自 CSDN 估算；GLM、MiMo、DeepSeek 是按官方系数算的纯未命中缓存输入。这一列都按实际档位价，没有折算。本次新增的订阅额度行没有对应的 Wokey 分项，留空显示「—」。</p>
+
+  </section>
+
+  <section id="part-rules">
+  <h2>档位与限额规则</h2>
+  <div class="tablewrap"><table id="rules"><thead><tr>
+    <th>服务</th><th>档位</th><th class="num">月费</th><th class="num">约合美元</th><th>额度与时段</th>
+  </tr></thead><tbody></tbody></table></div>
+
+  </section>
+
+  <section id="part-raw">
+  <h2>各来源的原始数字</h2>
+  <p class="lead">原始数据使用各来源的模型和负载口径，适合查阅，不宜直接比较。</p>
+  <div class="raw" id="raw"></div>
+
+  </section>
+
+  <section id="part-notes">
+  <h2>怎么算的、要注意什么</h2>
+  <div class="notes-sec"><ul class="notes">
+    <li><b>能从官方数字算出来的有六家</b>：GLM、MiMo、DeepSeek 按量付费，以及 Command Code、OpenCode 的 DeepSeek 额度。公式是"额度或预算 ÷ 统一负载下每 token 的消耗"，结果和 real-api-pricing 一致。Claude、ChatGPT 不公布 token 额度，数字来自账号实测，实测又受缓存率和模型影响。Plus 只有每 token 的 credits 费率，没有公布 Plus 含多少 credits，所以没做积分估算。</li>
+    <li><b>总量对缓存率非常敏感</b>。Wokey 观测的 Claude Pro 真实流量缓存读取只占 83%，每周约 1.41 亿 token，比 97% 负载下少很多。自己的缓存率低，实际可用量会明显低于图上的数字。</li>
+    <li><b>"等比折算"不是真实能买到的档位</b>，只是把花费拉到同一水平：GLM ¥118 × 1.14，MiMo 和 Kimi ¥99 × 1.36，Qoder ¥59 × 2.28，Qoder ¥169 × 0.79，Kimi ¥199 × 0.67。实际买不到 ¥134 的档位。Qoder 可以用 ¥59 专业版加 ¥40 资源包，¥99 共 3000 Credits。</li>
+    <li><b>Qoder CN 的本页估算</b>。官方没有 token 换算，只给了 50K 上下文下 Ask 约 3–4 Credits / 次。按一次 Ask 约等于一次 5 万 token 的调用，1 Credit ≈ 1.25–1.67 万 token（含缓存）。假设这个参考值对应默认的 Auto（0.5×），其他模型按官方系数缩放，而官方说系数不是抵扣依据。两个对照结果接近：¥59 按 Qwen3.8-Max 的 API 价（CreditsPlan 所列）买统一负载约 0.30 亿；CSDN 单人估算折算后 0.20–0.33 亿。CSDN 按一次任务（约 1.5 万输入、3000 输出，扣三四十 Credits）倒推，我把它当作不含缓存的 token，再按 3% 占比换成总量。</li>
+    <li><b>Kimi 的本页估算</b>。官方只有额度倍数和模型消耗倍数，没有 token 额度。Pro 用 Wokey 测的每窗口 token 限额换算到统一负载，缓存读取按输入的 1/10 得 2.47 亿，按免费得 5.77 亿。Plus 取一半，没有计入 256K 版可能的折扣。codingplan.fyi 认为 Pro 的 Code 额度是 Plus 的 5 倍，若如此 Plus 还要再低。</li>
+    <li><b>四个订阅套餐已按额度置信度重算</b>。数据源是 <a href="https://realapipricing.com/">realapipricing.com</a> 2026-11-10 的数据，筛选条件为厂商 Anthropic / DeepSeek / OpenAI、渠道 Anthropic / OpenAI / Command Code / OpenCode、订阅计费、月费 $0–30。<b>只收「高」「中」置信，同一模型有更高置信度时取更高，低置信全部剔除</b>：Claude Pro 少了 3 条（Opus 4.8、Sonnet 5.5、Haiku 5.5，都是按倍率推算），ChatGPT Plus 去掉了本页旧的 GPT-6.1 Terra 17.4 亿推算值。两个 $10 套餐按「以 DeepSeek 为准」只收 DeepSeek 模型，另有 8 条 GPT / Claude 模型中置信额度没有列入。合计采用 20 条，其中高置信 7 条、中置信 13 条。<b>每个标签都写明实测来源，非实测的以来源网站命名</b>，末尾的「高 / 中」才是置信度。</li>
+    <li><b>GPT-6.1 Sol 从 8.70 亿改成 15.16 亿</b>：维护者 11-09 周窗的两条标准负载读数等权中点，旧的 31pp / 8.70 亿与整周 67% 外推都不再入权。GPT-6 Astra 的 1.59 亿仍是实测原始负载，没换算到统一负载；GPT 5.6 Sol 6.16 亿也是没有分项、保留 raw 的样本。</li>
+    <li><b>两个 $10 套餐的折算要看清</b>。Command Code GOAT、OpenCode Go 都只卖 $10 一档，页面默认"等比折算到 $20"时按 ×2 放大，只是把花费拉齐，不代表真能一次买到 $20 的额度；切到"按实际档位价"看真实额度。两者的额度来自官方逐模型 allowance / Usage 表，置信度为「中」；DeepSeek V4.1 Flash 在 OpenCode Go 的 103.52 亿是 2026-10-30 上调后的值。</li>
+    <li><b>额度会变</b>。Wokey 记录 Plus 每周价值从 10-08 的 $92 降到 10-26 的 $55；本次采用的 GPT-6.1 Sol 15.16 亿来自 11-09 的新读数，比 09-30 的 8.70 亿还高，说明不同周窗差异很大。Claude Pro 的 Opus 5.5 由 09-22~09-27 的实测合并了 11-07 的满窗读数。</li>
+    <li><b>明细表的 AA 智力</b>来自 <a href="AI%20模型花费与智力对比.html">AI 模型花费与智力对比</a> 的 AA 智力指数，取各模型最高思考档。本次新增的订阅额度行只在该页收录过的模型上填分数，其余显示「—」：realapipricing.com 用的是 AA v4.3，与本页 v5.x 口径不同，不混用。用低思考档时分数更低、消耗的 token 也更少，表里的用量没有按档位区分。</li>
+    <li><b>Wokey 卖按量 API</b>，与订阅有利益关系；Kimi 数字中 Max 的基准只有一个账号。SemiAnalysis 正文付费，这里用的是公开部分和 explainx 的转述。</li>
+    <li><b>置信度不是精度</b>。「高」表示有账号面板或本机实测，「中」表示官方额度换算或由同套餐基准推算，「低」是按倍率外推；高置信的数字仍可能随周窗和缓存率大幅变化。realapipricing.com 的置信度只针对额度，不代表模型能力评价。</li>
+    <li>价格都是连续包月原价，不含首购、包年折扣。GLM 老用户可按 ¥49 / ¥149 / ¥469 续订旧版，新用户买不到。GLM 的月费来自 codingplan.fyi、pingfan 等第三方（互相一致），未对照智谱购买页核实。</li>
+  </ul></div>
+  </section>
+</div>
+<div id="tip" hidden role="status"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pako/1.0.11/pako.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/upng-js/2.1.0/UPNG.min.js"></script>
+<script>
+// 导出压缩：量化成 256 色 PNG，分辨率不变；压缩组件没加载时退回普通 PNG
+function smallPng(canvas, done){
+  try {
+    var w = canvas.width, h = canvas.height;
+    var rgba = canvas.getContext('2d').getImageData(0, 0, w, h).data.buffer;
+    done(new Blob([UPNG.encode([rgba], w, h, 256)], {type:'image/png'}));
+  } catch (e) {
+    canvas.toBlob(done, 'image/png');
+  }
+}
+</script>
+<script>
+(function(){
+  var FX = 6.7138, USD = 20, BUDGET = USD * FX;
+  var LOGOS = {"Claude": "data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPkFudGhyb3BpYzwvdGl0bGU+PHBhdGggZD0iTTEzLjgyNyAzLjUyaDMuNjAzTDI0IDIwaC0zLjYwM2wtNi41Ny0xNi40OHptLTcuMjU4IDBoMy43NjdMMTYuOTA2IDIwaC0zLjY3NGwtMS4zNDMtMy40NjFINS4wMTdsLTEuMzQ0IDMuNDZIMEw2LjU3IDMuNTIyem00LjEzMiA5Ljk1OUw4LjQ1MyA3LjY4NyA2LjIwNSAxMy40OEgxMC43eiI+PC9wYXRoPjwvc3ZnPg==", "GPT": "data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPk9wZW5BSTwvdGl0bGU+PHBhdGggZD0iTTkuMjA1IDguNjU4di0yLjI2YzAtLjE5LjA3Mi0uMzMzLjIzOC0uNDI4bDQuNTQzLTIuNjE2Yy42MTktLjM1NyAxLjM1Ni0uNTIzIDIuMTE3LS41MjMgMi44NTQgMCA0LjY2MiAyLjIxMiA0LjY2MiA0LjU2NiAwIC4xNjcgMCAuMzU3LS4wMjQuNTQ3bC00LjcxLTIuNzU5YS43OTcuNzk3IDAgMDAtLjg1NiAwbC01Ljk3IDMuNDczem0xMC42MDkgOC44VjEyLjA2YzAtLjMzMy0uMTQzLS41Ny0uNDI5LS43MzdsLTUuOTctMy40NzMgMS45NS0xLjExOGEuNDMzLjQzMyAwIDAxLjQ3NiAwbDQuNTQzIDIuNjE3YzEuMzA5Ljc2IDIuMTg5IDIuMzc4IDIuMTg5IDMuOTQ4IDAgMS44MDgtMS4wNyAzLjQ3My0yLjc2IDQuMTYzek03LjgwMiAxMi43MDNsLTEuOTUtMS4xNDJjLS4xNjctLjA5NS0uMjM5LS4yMzgtLjIzOS0uNDI4VjUuODk5YzAtMi41NDUgMS45NS00LjQ3MiA0LjU5MS00LjQ3MiAxIDAgMS45MjcuMzMzIDIuNzEyLjkyOEw4LjIzIDUuMDY3Yy0uMjg1LjE2Ni0uNDI4LjQwNC0uNDI4LjczN3Y2Ljg5OHpNMTIgMTUuMTI4bC0yLjc5NS0xLjU3di0zLjMzTDEyIDguNjU4bDIuNzk1IDEuNTd2My4zM0wxMiAxNS4xMjh6bTEuNzk2IDcuMjNjLTEgMC0xLjkyNy0uMzMyLTIuNzEyLS45MjdsNC42ODYtMi43MTJjLjI4NS0uMTY2LjQyOC0uNDA0LjQyOC0uNzM3di02Ljg5OGwxLjk3NCAxLjE0MmMuMTY3LjA5NS4yMzguMjM4LjIzOC40Mjh2NS4yMzNjMCAyLjU0NS0xLjk3NCA0LjQ3Mi00LjYxNCA0LjQ3MnptLTUuNjM3LTUuMzAzbC00LjU0NC0yLjYxN2MtMS4zMDgtLjc2MS0yLjE4OC0yLjM3OC0yLjE4OC0zLjk0OEE0LjQ4MiA0LjQ4MiAwIDAxNC4yMSA2LjMyN3Y1LjQyM2MwIC4zMzMuMTQzLjU3MS40MjguNzM4bDUuOTQ3IDMuNDQ5LTEuOTUgMS4xMThhLjQzMi40MzIgMCAwMS0uNDc2IDB6bS0uMjYyIDMuOWMtMi42ODggMC00LjY2Mi0yLjAyMS00LjY2Mi00LjUxOSAwLS4xOS4wMjQtLjM4LjA0Ny0uNTdsNC42ODYgMi43MWMuMjg2LjE2Ny41NzEuMTY3Ljg1NiAwbDUuOTctMy40NDh2Mi4yNmMwIC4xOS0uMDcuMzMzLS4yMzcuNDI4bC00LjU0MyAyLjYxNmMtLjYxOS4zNTctMS4zNTYuNTIzLTIuMTE3LjUyM3ptNS44OTkgMi44M2E1Ljk0NyA1Ljk0NyAwIDAwNS44MjctNC43NTZDMjIuMjg3IDE4LjMzOSAyNCAxNS44NCAyNCAxMy4yOTZjMC0xLjY2NS0uNzEzLTMuMjgyLTEuOTk4LTQuNDQ4LjExOS0uNS4xOS0uOTk5LjE5LTEuNDk4IDAtMy40MDEtMi43NTktNS45NDctNS45NDYtNS45NDctLjY0MiAwLTEuMjYuMDk1LTEuODguMzFBNS45NjIgNS45NjIgMCAwMDEwLjIwNSAwYTUuOTQ3IDUuOTQ3IDAgMDAtNS44MjcgNC43NTdDMS43MTMgNS40NDcgMCA3Ljk0NSAwIDEwLjQ5YzAgMS42NjYuNzEzIDMuMjgzIDEuOTk4IDQuNDQ4LS4xMTkuNS0uMTkgMS0uMTkgMS40OTkgMCAzLjQwMSAyLjc1OSA1Ljk0NiA1Ljk0NiA1Ljk0Ni42NDIgMCAxLjI2LS4wOTUgMS44OC0uMzA5YTUuOTYgNS45NiAwIDAwNC4xNjIgMS43MTN6Ij48L3BhdGg+PC9zdmc+", "GLM": "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5aaGlwdTwvdGl0bGU+PHBhdGggZD0iTTExLjk5MSAyMy41MDNhLjI0LjI0IDAgMDAtLjI0NC4yNDguMjQuMjQgMCAwMC4yNDQuMjQ5LjI0LjI0IDAgMDAuMjQ1LS4yNDkuMjQuMjQgMCAwMC0uMjItLjI0N2wtLjAyNS0uMDAxek05LjY3MSA1LjM2NWExLjY5NyAxLjY5NyAwIDAxMS4wOTkgMi4xMzJsLS4wNzEuMTcyLS4wMTYuMDQtLjAxOC4wNTRjLS4wNy4xNi0uMTA0LjMyLS4xMDQuNDk4LS4wMzUuNzEuNDcgMS4yNzkgMS4xODYgMS4zMTRoLjM2NmMxLjMwOS4wNTMgMi4zMzggMS4xNzMgMi4yODYgMi41MjMtLjA1MiAxLjMzMi0xLjE1MiAyLjM4LTIuNDc4IDIuMzI3aC0uMTc0Yy0uNzE1LjAxOC0xLjI3NC42NC0xLjIzOSAxLjM2OCAwIC4xMjQuMDE4LjIzLjA1My4zMzcuMjA5LjM3My41NC42NTguOTYuOC43NS4yMyAxLjUxNy0uMTI1IDEuOS0uNzgybC4wMTgtLjAzNWMuNDAyLS42NCAxLjE3LS45NiAxLjkyLS43MTEuODU0LjI4NCAxLjM3OCAxLjIyNiAxLjA5OSAyLjE2N2ExLjY2MSAxLjY2MSAwIDAxLTIuMDc3IDEuMTAyIDEuNzExIDEuNzExIDAgMDEtLjkwNy0uNzExbC0uMDE3LS4wMzVjLS4yLS4zMjMtLjQ2My0uNTgtLjg1MS0uNzExbC0uMDU2LS4wMThhMS42NDYgMS42NDYgMCAwMC0xLjk1NC43NDYgMS42NiAxLjY2IDAgMDEtMS4wNjUuNzY0IDEuNjc3IDEuNjc3IDAgMDEtMS45ODktMS4yNzljLS4yMDktLjkwNi4zMzItMS44MyAxLjI1Ny0yLjA0M2ExLjUxIDEuNTEgMCAwMS4yOTYtLjAzNWguMDE4Yy42OC0uMDcxIDEuMTUxLS42MjIgMS4xMTYtMS4zMzNhMS4zMDcgMS4zMDcgMCAwMC0uMjI3LS42OTMgMi41MTUgMi41MTUgMCAwMS0uMzY2LTEuNDAzIDIuMzkgMi4zOSAwIDAxLjM2Ni0xLjIwOGMuMTQtLjE5NS4yMS0uNDQ0LjIyNy0uNjkzLjAxOC0uNzEtLjUwNi0xLjI2MS0xLjE4Ni0xLjMzMmwtLjA3LS4wMThhMS40MyAxLjQzIDAgMDEtLjI5OS0uMDdsLS4wNS0uMDE5YTEuNyAxLjcgMCAwMS0xLjA0Ny0yLjExNCAxLjY4IDEuNjggMCAwMTIuMDk0LTEuMTAxem0tNS41NzUgMTAuMTFjLjI2LS4yNjQuNjM5LS4zNjcuOTk0LS4yNy4zNTUuMDk2LjYzMy4zNzkuNzI4Ljc0LjA5NS4zNjItLjAwNy43NDgtLjI2NyAxLjAxMy0uNDAyLjQxLTEuMDUzLjQxLTEuNDU1IDBhMS4wNjIgMS4wNjIgMCAwMTAtMS40ODJ6bTE0Ljg0NS0uMjk0Yy4zNTktLjA5LjczOC4wMjQuOTkyLjI5Ny4yNTQuMjc0LjM0NC42NjUuMjM3IDEuMDI1LS4xMDcuMzYtLjM5Ni42MzQtLjc1Ni43MTgtLjU1MS4xMjgtMS4xLS4yMi0xLjIzLS43ODFhMS4wNSAxLjA1IDAgMDEuNzU3LTEuMjZ6bS0uMDY0LTQuMzljLjMxNC4zMi40OS43NTMuNDkgMS4yMDYgMCAuNDUyLS4xNzYuODg2LS40OSAxLjIwNi0uMzE1LjMyLS43NC41LTEuMTg1LjUtLjQ0NCAwLS44Ny0uMTgtMS4xODQtLjVhMS43MjcgMS43MjcgMCAwMTAtMi40MTIgMS42NTQgMS42NTQgMCAwMTIuMzY5IDB6bS0xMS4yNDMuMTYzYy4zNjQuNDg0LjQ0NyAxLjEyOC4yMTggMS42OTFhMS42NjUgMS42NjUgMCAwMS0yLjE4OC45MjNjLS44NTUtLjM2LTEuMjYtMS4zNTgtLjkwNy0yLjIyOGExLjY4IDEuNjggMCAwMTEuMzMtMS4wMzhjLjU5My0uMDggMS4xODMuMTY5IDEuNTQ3LjY1MnptMTEuNTQ1LTQuMjIxYy4zNjggMCAuNzA4LjIuODkyLjUyNC4xODQuMzI0LjE4NC43MjQgMCAxLjA0OGExLjAyNiAxLjAyNiAwIDAxLS44OTIuNTI0Yy0uNTY4IDAtMS4wMy0uNDctMS4wMy0xLjA0OCAwLS41NzkuNDYyLTEuMDQ4IDEuMDMtMS4wNDh6bS0xNC4zNTggMGMuMzY4IDAgLjcwNy4yLjg5MS41MjQuMTg0LjMyNC4xODQuNzI0IDAgMS4wNDhhMS4wMjYgMS4wMjYgMCAwMS0uODkxLjUyNGMtLjU2OSAwLTEuMDMtLjQ3LTEuMDMtMS4wNDggMC0uNTc5LjQ2MS0xLjA0OCAxLjAzLTEuMDQ4em0xMC4wMzEtMS40NzVjLjkyNSAwIDEuNjc1Ljc2NCAxLjY3NSAxLjcwNnMtLjc1IDEuNzA1LTEuNjc1IDEuNzA1LTEuNjc0LS43NjMtMS42NzQtMS43MDVjMC0uOTQyLjc1LTEuNzA2IDEuNjc0LTEuNzA2em0tMi42MjYtLjY4NGMuMzYyLS4wODIuNjUzLS4zNTYuNzYxLS43MThhMS4wNjIgMS4wNjIgMCAwMC0uMjM4LTEuMDI4IDEuMDE3IDEuMDE3IDAgMDAtLjk5Ni0uMjk0Yy0uNTQ3LjE0LS44ODEuNy0uNzUyIDEuMjU3LjEzLjU1OC42NzUuOTA3IDEuMjI1Ljc4M3ptMCAxNi44NzZjLjM1OS0uMDg3LjY0NC0uMzYuNzUtLjcyYTEuMDYyIDEuMDYyIDAgMDAtLjIzNy0xLjAxOSAxLjAxOCAxLjAxOCAwIDAwLS45ODUtLjMwMSAxLjAzNyAxLjAzNyAwIDAwLS43NjIuNzE3Yy0uMTA4LjM2MS0uMDE3Ljc1NC4yMzkgMS4wMjguMjQ1LjI2My42MDYuMzc3Ljk1My4zMDVsLjA0My0uMDF6TTE3LjE5IDMuNWEuNjMxLjYzMSAwIDAwLjYyOC0uNjRjMC0uMzU1LS4yNzktLjY0LS42MjgtLjY0YS42MzEuNjMxIDAgMDAtLjYyOC42NGMwIC4zNTUuMjguNjQuNjI4LjY0em0tMTAuMzggMGEuNjMxLjYzMSAwIDAwLjYyOC0uNjRjMC0uMzU1LS4yOC0uNjQtLjYyOC0uNjRhLjYzMS42MzEgMCAwMC0uNjI4LjY0YzAgLjM1NS4yNzkuNjQuNjI4LjY0em0tNS4xODIgNy44NTJhLjYzMS42MzEgMCAwMC0uNjI4LjY0YzAgLjM1NC4yOC42MzkuNjI4LjYzOWEuNjMuNjMgMCAwMC42MjctLjYwNmwuMDAxLS4wMzRhLjYyLjYyIDAgMDAtLjYyOC0uNjR6bTUuMTgyIDkuMTNhLjYzMS42MzEgMCAwMC0uNjI4LjY0YzAgLjM1NS4yNzkuNjQuNjI4LjY0YS42MzEuNjMxIDAgMDAuNjI4LS42NGMwLS4zNTUtLjI4LS42NC0uNjI4LS42NHptMTAuMzguMDE4YS42MzEuNjMxIDAgMDAtLjYyOC42NGMwIC4zNTUuMjguNjQuNjI4LjY0YS42MzEuNjMxIDAgMDAuNjI4LS42NGMwLS4zNTUtLjI3OS0uNjQtLjYyOC0uNjR6bTUuMTgyLTkuMTQ4YS42MzEuNjMxIDAgMDAtLjYyOC42NGMwIC4zNTQuMjc5LjYzOS42MjguNjM5YS42MzEuNjMxIDAgMDAuNjI4LS42NGMwLS4zNTUtLjI4LS42NC0uNjI4LS42NHptLS4zODQtNC45OTJhLjI0LjI0IDAgMDAuMjQ0LS4yNDkuMjQuMjQgMCAwMC0uMjQ0LS4yNDkuMjQuMjQgMCAwMC0uMjQ0LjI0OWMwIC4xNDIuMTIyLjI0OS4yNDQuMjQ5ek0xMS45OTEuNDk3YS4yNC4yNCAwIDAwLjI0NS0uMjQ4QS4yNC4yNCAwIDAwMTEuOTkgMGEuMjQuMjQgMCAwMC0uMjQ0LjI0OWMwIC4xMzMuMTA4LjIzNi4yMjMuMjQ3bC4wMjEuMDAxek0yLjAxMSA2LjM2YS4yNC4yNCAwIDAwLjI0NS0uMjQ5LjI0LjI0IDAgMDAtLjI0NC0uMjQ5LjI0LjI0IDAgMDAtLjI0NC4yNDkuMjQuMjQgMCAwMC4yNDQuMjQ5em0wIDExLjI2M2EuMjQuMjQgMCAwMC0uMjQzLjI0OC4yNC4yNCAwIDAwLjI0NC4yNDkuMjQuMjQgMCAwMC4yNDQtLjI0OS4yNTIuMjUyIDAgMDAtLjI0NC0uMjQ4em0xOS45OTUtLjAxOGEuMjQuMjQgMCAwMC0uMjQ1LjI0OC4yNC4yNCAwIDAwLjI0NS4yNS4yNC4yNCAwIDAwLjI0NC0uMjUuMjUyLjI1MiAwIDAwLS4yNDQtLjI0OHoiIGZpbGw9IiMzODU5RkYiIGZpbGwtcnVsZT0ibm9uemVybyI+PC9wYXRoPjwvc3ZnPg==", "DeepSeek": "data:image/svg+xml;base64,PHN2ZyBoZWlnaHQ9IjI0IiBzdHlsZT0iZmxleDpub25lO2xpbmUtaGVpZ2h0OjEiIHZpZXdCb3g9IjAgMCAyNCAyNCIgd2lkdGg9IjI0IiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPjx0aXRsZT5EZWVwU2VlazwvdGl0bGU+PHBhdGggZD0iTTIzLjc0OCA0LjQ4MmMtLjI1NC0uMTI0LS4zNjQuMTEzLS41MTIuMjM0LS4wNTEuMDM5LS4wOTQuMDktLjEzNy4xMzYtLjM3Mi4zOTctLjgwNi42NTctMS4zNzMuNjI2LS44MjktLjA0Ni0xLjUzNy4yMTQtMi4xNjMuODQ4LS4xMzMtLjc4Mi0uNTc1LTEuMjQ4LTEuMjQ3LTEuNTQ4LS4zNTItLjE1Ni0uNzA4LS4zMTEtLjk1NS0uNjUtLjE3Mi0uMjQxLS4yMTktLjUxLS4zMDUtLjc3NC0uMDU1LS4xNi0uMTEtLjMyMy0uMjkzLS4zNS0uMi0uMDMxLS4yNzguMTM2LS4zNTYuMjc2LS4zMTMuNTcyLS40MzQgMS4yMDItLjQyMiAxLjg0LjAyNyAxLjQzNi42MzMgMi41OCAxLjgzOCAzLjM5My4xMzcuMDkzLjE3Mi4xODcuMTI5LjMyMy0uMDgyLjI4LS4xOC41NTItLjI2Ni44MzMtLjA1NS4xNzktLjEzNy4yMTctLjMyOS4xNGE1LjUyNiA1LjUyNiAwIDAxLTEuNzM2LTEuMThjLS44NTctLjgyOC0xLjYzMS0xLjc0Mi0yLjU5Ny0yLjQ1OGExMS4zNjUgMTEuMzY1IDAgMDAtLjY4OS0uNDcxYy0uOTg1LS45NTcuMTMtMS43NDMuMzg4LTEuODM2LjI3LS4wOTguMDkzLS40MzItLjc3OS0uNDI4LS44NzIuMDA0LTEuNjcuMjk1LTIuNjg3LjY4NGEzLjA1NSAzLjA1NSAwIDAxLS40NjUuMTM3IDkuNTk3IDkuNTk3IDAgMDAtMi44ODMtLjEwMmMtMS44ODUuMjEtMy4zOSAxLjEwMi00LjQ5NyAyLjYyM0MuMDgyIDguNjA2LS4yMzEgMTAuNjg0LjE1MiAxMi44NWMuNDAzIDIuMjg0IDEuNTY5IDQuMTc1IDMuMzYgNS42NTMgMS44NTggMS41MzMgMy45OTcgMi4yODQgNi40MzggMi4xNCAxLjQ4Mi0uMDg1IDMuMTMzLS4yODQgNC45OTQtMS44Ni40Ny4yMzQuOTYyLjMyNyAxLjc4LjM5Ny42My4wNTkgMS4yMzYtLjAzIDEuNzA1LS4xMjguNzM1LS4xNTYuNjg0LS44MzcuNDE5LS45NjEtMi4xNTUtMS4wMDQtMS42ODItLjU5NS0yLjExMy0uOTI2IDEuMDk2LTEuMjk2IDIuNzQ2LTIuNjQyIDMuMzkyLTcuMDAzLjA1LS4zNDcuMDA3LS41NjUgMC0uODQ1LS4wMDQtLjE3LjAzNS0uMjM3LjIzLS4yNTZhNC4xNzMgNC4xNzMgMCAwMDEuNTQ1LS40NzVjMS4zOTYtLjc2MyAxLjk2LTIuMDE1IDIuMDkzLTMuNTE3LjAyLS4yMy0uMDA0LS40NjctLjI0Ny0uNTg4ek0xMS41ODEgMThjLTIuMDg5LTEuNjQyLTMuMTAyLTIuMTgzLTMuNTItMi4xNi0uMzkyLjAyNC0uMzIxLjQ3MS0uMjM1Ljc2My4wOS4yODguMjA3LjQ4Ni4zNzEuNzM5LjExNC4xNjcuMTkyLjQxNi0uMTEzLjYwMy0uNjczLjQxNi0xLjg0Mi0uMTQtMS44OTctLjE2Ny0xLjM2MS0uODAyLTIuNS0xLjg2LTMuMzAxLTMuMzA3LS43NzQtMS4zOTMtMS4yMjQtMi44ODctMS4yOTgtNC40ODItLjAyLS4zODYuMDkzLS41MjIuNDc3LS41OTJhNC42OTYgNC42OTYgMCAwMTEuNTI5LS4wMzljMi4xMzIuMzEyIDMuOTQ2IDEuMjY1IDUuNDY4IDIuNzc0Ljg2OC44NiAxLjUyNSAxLjg4NyAyLjIwMiAyLjg5MS43MiAxLjA2NiAxLjQ5NCAyLjA4MiAyLjQ4IDIuOTE0LjM0OC4yOTIuNjI1LjUxNC44OTEuNjc3LS44MDIuMDktMi4xNC4xMS0zLjA1NC0uNjE0em0xLTYuNDRhLjMwNi4zMDYgMCAwMS40MTUtLjI4Ny4zMDIuMzAyIDAgMDEuMi4yODguMzA2LjMwNiAwIDAxLS4zMS4zMDcuMzAzLjMwMyAwIDAxLS4zMDQtLjMwOHptMy4xMSAxLjU5NmMtLjIuMDgxLS4zOTkuMTUxLS41OS4xNmExLjI0NSAxLjI0NSAwIDAxLS43OTgtLjI1NGMtLjI3NC0uMjMtLjQ3LS4zNTgtLjU1Mi0uNzU4YTEuNzMgMS43MyAwIDAxLjAxNi0uNTg4Yy4wNy0uMzI3LS4wMDgtLjUzNy0uMjM5LS43MjctLjE4Ny0uMTU2LS40MjYtLjE5OS0uNjg4LS4xOTlhLjU1OS41NTkgMCAwMS0uMjU0LS4wNzhjLS4xMS0uMDU0LS4yLS4xOS0uMTE0LS4zNTguMDI4LS4wNTQuMTYtLjE4Ni4xOTItLjIxLjM1Ni0uMjAyLjc2Ny0uMTM2IDEuMTQ2LjAxNi4zNTIuMTQ0LjYxOC40MDggMS4wMDEuNzgyLjM5MS40NTEuNDYyLjU3Ni42ODUuOTE0LjE3Ni4yNjUuMzM2LjUzNy40NDUuODQ4LjA2Ny4xOTUtLjAxOS4zNTQtLjI1LjQ1MnoiIGZpbGw9IiM0RDZCRkUiPjwvcGF0aD48L3N2Zz4=", "Kimi": "data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPktpbWk8L3RpdGxlPjxwYXRoIGQ9Ik0yMS44NDYgMGExLjkyMyAxLjkyMyAwIDExMCAzLjg0NkgyMC4xNWEuMjI2LjIyNiAwIDAxLS4yMjctLjIyNlYxLjkyM0MxOS45MjMuODYxIDIwLjc4NCAwIDIxLjg0NiAweiI+PC9wYXRoPjxwYXRoIGQ9Ik0xMS4wNjUgMTEuMTk5bDcuMjU3LTcuMmMuMTM3LS4xMzYuMDYtLjQxLS4xMTYtLjQxSDE0LjNhLjE2NC4xNjQgMCAwMC0uMTE3LjA1MWwtNy44MiA3Ljc1NmMtLjEyMi4xMi0uMzAyLjAxMy0uMzAyLS4xNzlWMy44MmMwLS4xMjctLjA4My0uMjMtLjE4NS0uMjNIMy4xODZjLS4xMDMgMC0uMTg2LjEwMy0uMTg2LjIzVjE5Ljc3YzAgLjEyOC4wODMuMjMuMTg2LjIzaDIuNjljLjEwMyAwIC4xODYtLjEwMi4xODYtLjIzdi0zLjI1YzAtLjA2OS4wMjUtLjEzNS4wNjktLjE3OGwyLjQyNC0yLjQwNmEuMTU4LjE1OCAwIDAxLjIwNS0uMDIzbDYuNDg0IDQuNzcyYTcuNjc3IDcuNjc3IDAgMDAzLjQ1MyAxLjI4M2MuMTA4LjAxMi4yLS4wOTUuMi0uMjN2LTMuMDZjMC0uMTE3LS4wNy0uMjEyLS4xNjQtLjIyN2E1LjAyOCA1LjAyOCAwIDAxLTIuMDI3LS44MDdsLTUuNjEzLTQuMDY0Yy0uMTE3LS4wNzgtLjEzMi0uMjc5LS4wMjgtLjM4MXoiPjwvcGF0aD48L3N2Zz4=", "MiMo": "data:image/svg+xml;base64,PHN2ZyBmaWxsPSIjMTkxOTE5IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIGhlaWdodD0iMjQiIHN0eWxlPSJmbGV4Om5vbmU7bGluZS1oZWlnaHQ6MSIgdmlld0JveD0iMCAwIDI0IDI0IiB3aWR0aD0iMjQiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHRpdGxlPlhpYW9taU1pTW88L3RpdGxlPjxwYXRoIGQ9Ik0uOTU4IDE1LjkzNmEuNDU5LjQ1OSAwIDAxLjQ1OS40NHYyLjcyOWEuNDYuNDYgMCAwMS0uOTE4IDB2LTIuNzI5YS40NTkuNDU5IDAgMDEuNDU5LS40NHptNC44MTQtMi4wMzVhLjQ2LjQ2IDAgMDEuNTUzLjQ1djQuNzU0YS40NTguNDU4IDAgMTEtLjkxOCAwVjE1LjQ4TDMuNzQgMTcuMjAyYS40NjIuNDYyIDAgMDEtLjY1NS4wMTYuNDYyLjQ2MiAwIDAxLS4wNjUtLjA4MkwuNjI4IDE0LjY3YS40NTkuNDU5IDAgMDEuNjU4LS42MzdsMi4xMjQgMi4xODcgMi4xMjctMi4xODhhLjQ2LjQ2IDAgMDEuMjM1LS4xM3ptMi4wNjguMDA0YS40Ni40NiAwIDAxLjQ1OC40NDV2NC43NTVhLjQ2LjQ2IDAgMDEtLjQ1OC40NTguNDU5LjQ1OSAwIDAxLS40NTgtLjQ1OFYxNC4zNWEuNDU5LjQ1OSAwIDAxLjQ1OC0uNDQ1em0xLjk3MyAyLjAxNGEuNDYuNDYgMCAwMS40Ni40NTd2Mi43MjlhLjQ2LjQ2IDAgMDEtLjc4NC4zMjQuNDYuNDYgMCAwMS0uMTM0LS4zMjR2LTIuNzI5YS40Ni40NiAwIDAxLjQ1OC0uNDU4em0uMDAyLTIuMDQ1YS40NTguNDU4IDAgMDEuMzI4LjE1N2wyLjEyNyAyLjE5IDIuMTI1LTIuMTlhLjQ1OS40NTkgMCAwMS43ODQuMzE4djQuNzU2YS40Ni40NiAwIDAxLS40NTUuNDU4LjQ2LjQ2IDAgMDEtLjQ1OC0uNDU4VjE1LjQ4bC0xLjY2NyAxLjcyM2EuNDYuNDYgMCAwMS0uNjUuMDA4bC0uMDA1LS4wMDVjMC0uMDAyLS4wMDItLjAwMi0uMDA0LS4wMDNsLTIuNDU1LTIuNTM0YS40Ni40NiAwIDAxLS4wMDgtLjY2Ny40NjEuNDYxIDAgMDEuMzM4LS4xMjh6bTYuNzk3IDEuMjA2YS40Ni40NiAwIDAxLjUzLjY1MUExLjk2NiAxLjk2NiAwIDAwMTkuODEgMTguNGEuNDYyLjQ2MiAwIDAxLjYyMy4xOC40Ni40NiAwIDAxLS4xODEuNjI0IDIuODYzIDIuODYzIDAgMDEtMS4zOC4zNTNsLS4xNDItLjAwNGEyLjg4IDIuODggMCAwMS0yLjM5My00LjI2My40NjEuNDYxIDAgMDEuMjc0LS4yMXptLjg2NC0uOTMxYTIuODg0IDIuODg0IDAgMDEzLjkxNSAzLjkxNC40Ni40NiAwIDAxLS40MDIuMjRsLS4wNTctLjAwNGEuNDU4LjQ1OCAwIDAxLS4xNjQtLjA1NS40Ni40NiAwIDAxLS4xODItLjYyMiAxLjk2NyAxLjk2NyAwIDAwLTIuNjY5LTIuNjcuNDU5LjQ1OSAwIDExLS40NDEtLjgwM3pNOS41OSA2LjM2OGMxLjQ4MSAwIDEuNjk2IDEuMjAyIDEuNjk2IDEuNjU0djIuNjQ4aC0uOTE3di0uNDMyYy0uMjYuMzQ2LS43OTIuNTM1LTEuMzYuNTM1LS4xMzMgMC0xLjI4OS0uMDMtMS4zODQtMS4xMzYtLjA4Mi0uOTMyLjY3NS0xLjYxIDIuMDUzLTEuNjFoLjY5MWMwLS41NjMtLjM2Ny0uODg2LS45ODMtLjg4Ni0uNDQuMDEzLS44NjQuMTc0LTEuMi40NThsLS4zNi0uNjY0Yy40ODQtLjM3OSAxLjAxMi0uNTY3IDEuNzY0LS41Njd6bTQuNDI3LjFjMS4yNjMgMCAyLjA4Mi45NyAyLjA4MyAyLjE1IDAgMS4xODEtLjgyNCAyLjE1NC0yLjA4MyAyLjE1NC0xLjI2IDAtMi4wODQtLjk3Mi0yLjA4NC0yLjE1MiAwLTEuMTguODItMi4xNTMgMi4wODQtMi4xNTN6bTYuODAxLjAxNWMuNjggMCAxLjIwMi40NjUgMS4xOTcgMS41NDh2Mi42NDJIMjEuMVY4LjI5YzAtLjMxMi0uMDAyLS45OC0uNjMtLjk4cy0uNjI4LjY2Ny0uNjI4LjgzOHYyLjUyNGgtLjg5VjguMTQ4YzAtLjE3LS4wMDEtLjgzOC0uNjMtLjgzOC0uNjI4IDAtLjYyOC42NjgtLjYyOC45OHYyLjM4M2gtLjkxN3YtNC4wM2guOTE3VjdhMS4yMiAxLjIyIDAgMDEuOTQ3LS41MTZjLjM5OCAwIC43Ni4xOTMuOTgyLjY4NmExLjMyMSAxLjMyMSAwIDAxMS4xOTUtLjY4NnptLTE4LjA5My44NzJsMS40NTctMS43NzJINS4zMkwzLjMxMSA4LjA3bDIuMTQgMi42MDJINC4yNEwyLjcyNSA4Ljc5NiAxLjIxIDEwLjY3MkgwTDIuMTM4IDguMDcuMTMgNS41ODNoMS4xMzhsMS40NTggMS43NzJ6bTQuMTQ5IDMuMzE3aC0uOTE2VjYuNjQ0aC45MTZ2NC4wMjh6bTE2Ljk5IDBoLS45MTZWNi42NDRoLjkxNnY0LjAyOHpNOS45MjUgOC43MWMtMS4wNTUgMC0xLjM1OS40MTItMS4zMjYuNzQyLjAzMi4zMjkuMzI0LjUzNy43NTcuNTM3YTEuMDEzIDEuMDEzIDAgMDAxLjAxNC0uOTY4bC4wMDItLjMxaC0uNDQ3ek0xNC4wMTggNy4zYy0uNjYzIDAtMS4xODQuNDg3LTEuMTg0IDEuMzIgMCAuODMyLjUyIDEuMzIgMS4xODQgMS4zMi42NjIgMCAxLjE4Mi0uNDkgMS4xODItMS4zMiAwLS44MzItLjUyLTEuMzItMS4xODItMS4zMnpNNi40MTcgNS4wMDFhLjU2OC41NjggMCAwMS41ODcuNTgyLjU4OC41ODggMCAwMS0xLjE3NSAwQS41Ny41NyAwIDAxNi40MTcgNXptMTYuOTkxIDBhLjU3LjU3IDAgMDEuNTkyLjU4Mi41ODguNTg4IDAgMDEtMS4xNzQgMCAuNTcuNTcgMCAwMS4zNTctLjU0Mi41NzIuNTcyIDAgMDEuMjI1LS4wNHoiPjwvcGF0aD48L3N2Zz4="};
+
+  // 统一负载：缓存读取、未命中输入、输出的占比
+  var MIX = {c:0.97, i:0.025, o:0.005};
+  function blend(c, i, o){ return MIX.c*c + MIX.i*i + MIX.o*o; }
+  // GLM：每周 10000 积分 × 4，官方系数为每万 token 的积分
+  function glm(c, i, o){ return 40000 / (blend(c,i,o)/10000) / 1e8; }
+  // MiMo：月额度 Credits，官方系数为每 token 的 Credits
+  function mimo(pool, c, i, o){ return pool / blend(c,i,o) / 1e8; }
+  // DeepSeek：预算 ÷ 每百万 token 的元价
+  function ds(c, i, o){ return BUDGET / blend(c,i,o) / 100; }
+
+  // Qoder：官方 Ask 约 3–4 Credits / 次，参考值为 50K 上下文；mult 为官方模型系数，以 Auto 0.5× 为基准
+  function qoder(credits, mult){
+    var k = 50000 / 1e8 * (0.5 / mult);
+    return [credits / 4 * k, credits / 3 * k];
+  }
+  // Kimi Pro：Wokey 每窗口 330 万输入或 34.7 万输出，每月 12.7 个窗口；[缓存按输入 1/10, 缓存免费]
+  var KIMI_WIN = 12.7, KIMI_IN = 3.3, KIMI_OUT = 0.347;
+  function kimiUsed(cacheRate){ return MIX.c*cacheRate/KIMI_IN + MIX.i/KIMI_IN + MIX.o/KIMI_OUT; }
+  var kimiPro = [KIMI_WIN / kimiUsed(0.1) / 100, KIMI_WIN / kimiUsed(0) / 100];
+
+  var L = {
+    rap:'<a href="https://github.com/Fei2411/real-api-pricing">real-api-pricing</a>',
+    wokey:'<a href="https://wokey.ai/coding-plan-comparison">Wokey</a>',
+    glm:'<a href="https://docs.bigmodel.cn/cn/coding-plan/overview">智谱官方文档</a>',
+    mimo:'<a href="https://mimo.mi.com/docs/zh-CN/price/token-plan">小米官方文档</a>',
+    ds:'<a href="https://api-docs.deepseek.com/zh-cn/quick_start/pricing/">DeepSeek 官方价格</a>',
+    cp:'<a href="https://codingplan.fyi/platforms/kimi/">codingplan.fyi</a>',
+    qfaq:'<a href="https://docs.qoder.cn/product-overview/account-subscription-faq">官方 FAQ</a>',
+    qhelp:'<a href="https://help.aliyun.com/zh/lingma/credits">阿里云 Credits 说明</a>',
+    qsel:'<a href="https://docs.qoder.cn/user-guide/model-selector">官方模型选择器</a>',
+    qcsdn:'<a href="https://blog.csdn.net/weixin_28832121/article/details/166918939">CSDN 单人估算</a>',
+    qdoc:'<a href="https://docs.qoder.cn/product-overview/model-consumption-reference-update">Qoder 官方倍率</a>',
+    cc:'<a href="https://commandcode.ai/docs/plans/goat">Command Code 官方额度表</a>',
+    oc:'<a href="https://opencode.ai/docs/go/">OpenCode 官方 Go 档说明</a>'
+  };
+
+  function qoderRows(c, plan){
+    var k = c / 2000, a = qoder(c, 0.5), g = qoder(c, 0.8), l = qoder(c, 0.1);
+    return [
+      {m:'Auto、Qwen3.8-Max（0.5×）', aa:34, kind:'est', badge:'本页估算', lo:a[0], hi:a[1], est:1, why:c+' Credits ÷ 每次 3–4 Credits × 5 万 token（'+L.qfaq+'，'+L.qhelp+'）。'},
+      {m:'GLM-5.3（0.8×）', aa:32, kind:'est', badge:'本页估算', lo:g[0], hi:g[1], est:1, why:'上一行 × 0.5 ÷ 0.8，系数见'+L.qsel+'。官方说系数只是相对参考，不是抵扣依据。'},
+      {m:'GLM-5.3（0.8×）', kind:'thi', badge:'CSDN 估算（主力模型）', lo:0.2*k, hi:1/3*k, est:1, fresh:(0.006*k).toFixed(3)+'–'+(0.01*k).toFixed(3), why:c+' Credits × 300–500 token（'+L.qcsdn+'）÷ 3%。'},
+      {m:'GLM-5.3-Flash（0.1×）', kind:'est', badge:'本页估算', lo:l[0], hi:l[1], est:1, why:'第一行 × 0.5 ÷ 0.1。'},
+      {m:'GLM-5.3-Flash（0.1×）', kind:'thi', badge:'CSDN 估算（轻量模型）', lo:0.4*k, hi:0.6*k, est:1, fresh:(0.012*k).toFixed(3)+'–'+(0.018*k).toFixed(3), why:c+' Credits × 600–900 token（'+L.qcsdn+'）÷ 3%。'}
+    ];
+  }
+
+  var V = [
+    {id:"claude", name:"Claude Pro", tier:"$20 / 月", price:20, cur:'USD', logo:"Claude", color:"--c-claude", rows:[
+      {m:"Sonnet 5", kind:"thi", badge:"realapipricing.com 推算 · 中", lo:64.725, why:"由同套餐 Opus 5 的 25.89 亿 × 2.5 推算；基准是两个 Pro 账号 09-14~09-22 的轮询实测。中置信。"},
+      {m:"Opus 5.5", aa:58, kind:"mea", badge:"NTRYourWaifu 轮询 · 高", lo:30.46, fresh:"0.94", why:"两个 Pro 账号轮询 /api/oauth/usage，Opus 5.5 ≥95% 区段 13.97 亿 raw token 对应周 +183pp，合并维护者 11-07 满窗读数。高置信（realapipricing.com 2026-11-10，旧值 30.54 亿）。"},
+      {m:"Opus 5", kind:"mea", badge:"NTRYourWaifu 轮询 · 高", lo:25.89, why:"两个 Pro 账号 09-14~09-22 轮询，Opus 5 共 10.22 亿 raw token = 周 +148pp。高置信。"},
+      {m:"Fable 5.2", aa:65, kind:"mea", badge:"维护者 Claude Code · 中", lo:7.82, why:"维护者本机 Claude Code 44 次调用，同一 5 小时窗 15%→64%、同一周条 22%→29%。中置信（2026-11-09 新发布模型）。"}
+    ]},
+    {id:"gpt", name:"ChatGPT Plus", tier:"$20 / 月", price:20, cur:'USD', logo:"GPT", color:"--c-gpt", rows:[
+      {m:"GPT-6 Luna", aa:28, kind:"mea", badge:"维护者 Codex 实测 · 高", lo:92.03, why:"维护者本机 Codex（effort=max）周窗 6% ≈ 1.376 亿 token，按统一负载折算。高置信（09-27~09-28）。"},
+      {m:"GPT 5.6 Luna", kind:"mea", badge:"维护者 Plus 面板 · 高", lo:70.58, why:"维护者 Plus 面板：1.127 亿 token = 周额度约 6%，按统一负载折算。高置信（09-08）。"},
+      {m:"GPT-6.1 Sol", aa:55, kind:"mea", badge:"维护者 Codex 实测 · 高", lo:15.16, fresh:"0.27", why:"11-09 周窗两条标准负载读数等权中点：周池 3.79 亿 × 4 周 = 15.16 亿；旧的 31pp / 8.70 亿与整周 67% 外推都不入权。高置信（realapipricing.com 2026-11-10 更新）。"},
+      {m:"GPT 5.6 Terra", kind:"thi", badge:"realapipricing.com 推算 · 中", lo:11.915, why:"由同套餐 GPT 5.6 Sol 6.16 亿按 credits 三段价比 1.934 倍推算。中置信。"},
+      {m:"GPT-6 Sol", kind:"mea", badge:"维护者 Codex 实测 · 高", lo:11.0, why:"维护者本机 Codex 当日 1572 万 token = 周额度约 6%，按统一负载折算。高置信（09-24）。"},
+      {m:"GPT 5.6 Sol", kind:"mea", badge:"awesome-coding-plan 实测 · 中", lo:6.16, why:"awesome-coding-plan 07-30 实测；样本无 token 分项，保留 raw 口径。中置信。"},
+      {m:"GPT 5.5", kind:"thi", badge:"realapipricing.com 推算 · 中", lo:4.766, why:"由同套餐 GPT 5.6 Sol 6.16 亿 × 0.774 推算。中置信。"},
+      {m:"GPT-6 Astra", aa:57, kind:"mea", badge:"维护者 Plus 面板 · 高", lo:1.59, why:"维护者 Plus 面板：1034 万 token = 周窗剩余 26pt；原始负载，未折算到统一负载。高置信（09-11）。"}
+    ]},
+    {id:"cc", name:"Command Code GOAT", tier:"$10 / 月", price:10, cur:'USD', color:"--c-cc", rows:[
+      {m:"V4.1 Flash", aa:32, kind:"off", badge:"commandcode.ai · 中", lo:72.464, why:"commandcode.ai 官方每模型 allowance 与三段价，按 97% 缓存读取的统一负载折算。中置信（realapipricing.com 2026-11-10，官方数据 2026-09-30）。$10 / 月含 $70 credits。"},
+      {m:"V4 Flash", kind:"off", badge:"commandcode.ai · 中", lo:62.112, why:"commandcode.ai 官方每模型 allowance 与三段价，按 97% 缓存读取的统一负载折算。中置信（realapipricing.com 2026-11-10，官方数据 2026-09-30）。$10 / 月含 $70 credits。"},
+      {m:"V4.1 Flash Fast", kind:"off", badge:"commandcode.ai · 中", lo:26.762, why:"commandcode.ai 官方每模型 allowance 与三段价，按 97% 缓存读取的统一负载折算。中置信（realapipricing.com 2026-11-10，官方数据 2026-09-30）。$10 / 月含 $70 credits。"},
+      {m:"V4 Flash Vision Exp", kind:"off", badge:"commandcode.ai · 中", lo:20.704, why:"commandcode.ai 官方每模型 allowance 与三段价，按 97% 缓存读取的统一负载折算。中置信（realapipricing.com 2026-11-10，官方数据 2026-09-30）。$10 / 月含 $70 credits。"},
+      {m:"V4 Pro", kind:"off", badge:"commandcode.ai · 中", lo:4.189, why:"commandcode.ai 官方每模型 allowance 与三段价，按 97% 缓存读取的统一负载折算。中置信（realapipricing.com 2026-11-10，官方数据 2026-09-30）。$10 / 月含 $70 credits。"},
+      {m:"V4 Flash Fast", kind:"off", badge:"commandcode.ai · 中", lo:2.574, why:"commandcode.ai 官方每模型 allowance 与三段价，按 97% 缓存读取的统一负载折算。中置信（realapipricing.com 2026-11-10，官方数据 2026-09-30）。$10 / 月含 $70 credits。"}
+    ]},
+    {id:"oc", name:"OpenCode Go", tier:"$10 / 月", price:10, cur:'USD', color:"--c-oc", rows:[
+      {m:"V4.1 Flash", aa:32, kind:"off", badge:"opencode.ai · 中", lo:103.52, why:"opencode.ai 官方 Go 档每模型 Usage 与三段价，按统一负载折算。中置信（realapipricing.com 2026-11-10，V4.1 Flash 额度 2026-10-30 更新）。$10 / 月。"},
+      {m:"V4 Pro", kind:"off", badge:"opencode.ai · 中", lo:3.142, why:"opencode.ai 官方 Go 档每模型 Usage 与三段价，按统一负载折算。中置信（realapipricing.com 2026-11-10，V4.1 Flash 额度 2026-10-30 更新）。$10 / 月。"}
+    ]},
+    {id:'glm', name:'GLM Coding Lite', tier:'¥118 / 月', price:118, cur:'CNY', logo:'GLM', color:'--c-glm', rows:[
+      {m:'GLM-5.3', aa:32, kind:'off', badge:'官方系数计算', lo:glm(1.7,6.9,24), hi:glm(1.7,6.9,24)*2, lab:['高峰','低谷'], fresh:'0.58–1.16', why:'每周 10000 积分，系数 缓存 1.7 / 输入 6.9 / 输出 24，低谷按 50% 抵扣（'+L.glm+'）。'},
+      {m:'GLM-5.3', kind:'thi', badge:'codingplan.fyi 估算', lo:1.93, hi:3.86, lab:['高峰','低谷'], why:'95% 缓存、0.5% 输出（<a href="https://www.codingplan.fyi/platforms/zhipu/">codingplan.fyi</a>）。real-api-pricing 用 97% 缓存，结果与官方系数计算相同。'},
+      {m:'GLM-5.3-Flash', kind:'off', badge:'官方系数计算', lo:glm(0.56,2.3,8), hi:glm(0.56,2.3,8)*2, lab:['高峰','低谷'], fresh:'1.74–3.48', why:'系数 0.56 / 2.3 / 8（'+L.glm+'）。'},
+      {m:'GLM-5.3-Flash', kind:'thi', badge:'codingplan.fyi 估算', lo:5.85, hi:11.7, lab:['高峰','低谷'], why:'同上，95% 缓存。'}
+    ]},
+    {id:'qoder', name:'Qoder CN 专业版', tier:'¥59 / 月，2000 Credits', price:59, cur:'CNY', color:'--c-qoder', rows:qoderRows(2000, '专业版')},
+    {id:'qoderplus', name:'Qoder CN 高级版', tier:'¥169 / 月，6000 Credits，超出 $20', price:169, cur:'CNY', color:'--c-qoder', rows:qoderRows(6000, '高级版')},
+    {id:'mimo', name:'MiMo Token Plan Standard', tier:'¥99 / 月', price:99, cur:'CNY', logo:'MiMo', color:'--c-mimo', rows:[
+      {m:'MiMo-V2.6-Pro', aa:30, kind:'off', badge:'官方系数计算', lo:mimo(11e9,2.5,300,600), hi:mimo(11e9,2.5,300,600)/0.8, lab:['日间','夜间'], fresh:'0.37–0.46', why:'每月 110 亿 Credits，系数 缓存 2.5 / 未命中 300 / 输出 600；0:00–8:00 消耗 × 0.8（'+L.mimo+'）。'},
+      {m:'MiMo-V2.6-Pro', kind:'thi', badge:'real-api-pricing 估算', lo:8.51, hi:10.64, lab:['日间','夜间'], why:L.rap+'，算法相同；面板对照偏差 −6.6%。'},
+      {m:'MiMo-V2.6-Flash', aa:27, kind:'off', badge:'官方系数计算', lo:mimo(11e9,2,100,200), hi:mimo(11e9,2,100,200)/0.8, lab:['日间','夜间'], fresh:'1.10–1.38', why:'系数 2 / 100 / 200（'+L.mimo+'）。'},
+      {m:'MiMo-V2.6-Flash', kind:'thi', badge:'real-api-pricing 估算', lo:20.22, hi:25.28, lab:['日间','夜间'], why:L.rap+'，算法相同。'}
+    ]},
+    {id:'kimi', name:'Kimi Plus', tier:'¥99 / 月', price:99, cur:'CNY', logo:'Kimi', color:'--c-kimi', rows:[
+      {m:'K3.1-Pro 256K', aa:46, kind:'est', badge:'本页估算', lo:kimiPro[0]/2, hi:kimiPro[1]/2, est:1, why:'Pro 的估算 ÷ 2，依据官方额度倍数 Plus 2×、Pro 4×（<a href="https://www.kimi.com/membership/pricing">Kimi 价格页</a>）。这个倍数写的是 Agent 额度，Kimi Code 是否同比未确认。'},
+      {m:'K3.1-Pro 256K', kind:'thi', badge:'codingplan.fyi 估算', lo:0.38, why:L.cp+'，95% 缓存。'},
+      {m:'K3', kind:'thi', badge:'codingplan.fyi 估算', lo:0.33, why:L.cp+'，95% 缓存；256K 上下文 0.65 亿。'},
+      {m:'K3', kind:'mea', badge:'real-api-pricing 实测推算', lo:1.95, why:L.rap+'，由旧版 Allegretto 单日读数推算。'}
+    ]},
+    {id:'kimipro', name:'Kimi Pro', tier:'¥199 / 月，超出 $20', price:199, cur:'CNY', logo:'Kimi', color:'--c-kimi', rows:[
+      {m:'K3.1-Pro', aa:46, kind:'est', badge:'本页估算', lo:kimiPro[0], hi:kimiPro[1], est:1, fresh:'0.42', why:'<a href="https://wokey.ai/kimi-code-limits">Wokey</a> 19 个账号：每 5 小时 330 万未命中输入或 34.7 万输出，每月约 12.7 个窗口。缓存读取按输入的 1/10 算得下限，按免费算得上限。'},
+      {m:'K3.1-Pro', kind:'thi', badge:'codingplan.fyi 估算', lo:1.91, why:L.cp+'，95% 缓存。'},
+      {m:'K3', kind:'thi', badge:'codingplan.fyi 估算', lo:1.62, why:L.cp+'，95% 缓存。'},
+      {m:'K3', kind:'mea', badge:'real-api-pricing 实测推算', lo:9.73, why:L.rap+'，由旧版 Allegretto 单日读数推算。'}
+    ]},
+    {id:'ds', name:'DeepSeek API', tier:'按量付费，$20 ≈ ¥134.28', price:BUDGET, cur:'CNY', logo:'DeepSeek', color:'--c-ds', rows:[
+      {m:'V4.1 Flash', aa:32, kind:'off', badge:'官方价格计算', lo:ds(0.04,2,8), hi:ds(0.02,1,4), lab:['高峰','低谷'], fresh:'0.67–1.34', why:'高峰 缓存 ¥0.04 / 未命中 ¥2 / 输出 ¥8，低谷减半（'+L.ds+'）。'},
+      {m:'V4-Pro', kind:'off', badge:'官方价格计算', lo:ds(0.3,9,27), hi:ds(0.15,4.5,13.5), lab:['高峰','低谷'], fresh:'0.15–0.30', why:'高峰 ¥0.30 / ¥9 / ¥27，低谷减半（'+L.ds+'）。'}
+    ]}
+  ];
+
+  var RULES = [
+    ['Claude','Pro','$20',null,'5 小时窗口加每周上限，token 数不公布。Wokey 估一周约 15 个满窗口。SemiAnalysis 称 Fable 5.1 不在 Pro 内。'],
+    ['ChatGPT','Plus','$20',null,'5 小时窗口加每周上限。OpenAI 只给消息数估算（每 5 小时）：GPT-6.1 Sol 15–160，Terra 35–285，GPT-6 Astra 5–45，Luna 350–3000。'],
+    ['Command Code','GOAT','$10',null,'$10 / 月含 $70 credits。官方按模型公布 allowance 与缓存 / 输入 / 输出三段价，real-api-pricing 按 97% 缓存读取折算；额度置信度中。本页按「以 DeepSeek 为准」只收 DeepSeek 模型。'],
+    ['OpenCode','Go','$10',null,'$10 / 月。官方 Go 档按模型公布 Usage 与三段价；V4.1 Flash 的额度在 2026-10-30 上调为 103.52 亿 / 月。额度置信度中。本页只收 DeepSeek 模型。'],
+    ['GLM','Lite',118,118,'2000 积分 / 5 小时，10000 积分 / 周。高峰为周一至周五 14:00–18:00，其余时间按 50% 抵扣。包年 ¥991。'],
+    ['GLM','Pro',538,538,'12000 积分 / 5 小时，60000 积分 / 周。'],
+    ['Qoder CN','专业版',59,59,'2000 Credits / 月，不结转。官方典型消耗：Ask 约 3–4 Credits / 次，Agent 约 7–12（按 50K 上下文），约 500–667 次 Ask 或 167–286 次 Agent。资源包 ¥40 / 1000 Credits，1 个月有效。新客首月 ¥19.9（限量），续费送 1000 Qwen Credits；签到 30 天累计 3000 Credits。官方系数：Qwen3.8-Max 0.5×，DeepSeek-V4-Pro 0.5×，GLM-5.3 0.8×，Kimi-K3.1-Pro 1.0×，GLM-5.3-Flash、DeepSeek-Flash 0.1×。'],
+    ['Qoder CN','高级版',169,169,'6000 Credits / 月，同样不结转。约 1500–2000 次 Ask 或 500–857 次 Agent。新客首订送 6000 Qwen Credits，续费送 2000（仅限 Qwen 模型，有效期 30 天）；签到 30 天累计 3000 Credits。年付 ¥1,825.2。功能比专业版多"新模型优先使用"。本页 token 估算未计赠送和签到额度。'],
+    ['MiMo','Lite',39,39,'41 亿 Credits / 月。'],
+    ['MiMo','Standard',99,99,'110 亿 Credits / 月，用完即停。每天 0:00–8:00 消耗 × 0.8。首购 88 折。'],
+    ['MiMo','Pro',329,329,'380 亿 Credits / 月。'],
+    ['Kimi','Go',49,49,'不含 Kimi Code 额度。'],
+    ['Kimi','Plus',99,99,'官方额度倍数 2×（Go 为基准）。新套餐取消周限，保留滚动 5 小时窗口和月总量。可用 K3，不含 1M 上下文和高速版。官方系数：高速版消耗 2 倍，k3 1M 约为 k3-256k 的 2 倍。'],
+    ['Kimi','Pro',199,199,'官方额度倍数 4×。规则同上，含高速版。'],
+    ['DeepSeek','按量',null,null,'DeepSeek 官方没有订阅套餐（本页两个 $10 套餐里的 DeepSeek 模型是第三方订阅），充值后按 token 扣费。高峰为周一至周五 9:00–12:00、14:00–18:00（节假日除外），其余时间半价。每百万 token：V4.1 Flash 高峰 ¥0.04 / ¥2 / ¥8，V4-Pro 高峰 ¥0.30 / ¥9 / ¥27（缓存 / 未命中 / 输出）。2026-11-01 起搜索和抓取另收 ¥5 / 千次。']
+  ];
+
+  var RAW = [
+    ['Claude Pro','Claude',null,[
+      '<a href="https://wokey.ai/claude-usage-limits">Wokey</a> 103 账号，10-19 至 10-26：每周约 $157 API 价值（≈ $681 / 月，34 倍）；1.41 亿 token / 周，其中 83% 是缓存读取；非缓存 2360 万 / 周（输出 170 万）；5 小时窗口约 $11。',
+      '<a href="https://explainx.ai/blog/semianalysis-claude-vs-chatgpt-subscription-api-value-limit-testing-2026">SemiAnalysis（explainx 转述）</a>，10 月：Opus 5.5 $1,178 / 月（58.9 倍）。',
+      '<a href="https://realapipricing.com/">realapipricing.com</a>（2026-11-10，中 / 高置信）：Opus 5.5 30.46 亿 / 月，Opus 5 25.89 亿，Sonnet 5 64.73 亿，Fable 5.2 7.82 亿。低置信的 Opus 4.8 25.89、Sonnet 5.5 61.08、Haiku 5.5 596.42 亿已剔除。',
+      '实测来源：Opus 5.5 / Opus 5 来自 issue #52、#53（NTRYourWaifu，两个 Pro 账号轮询 /api/oauth/usage 的 seven_day %），Opus 5.5 另合并维护者 11-07 满 5 小时窗与 Reddit 满窗段；Fable 5.2 是维护者本机 Claude Code 的 44 次调用读数。Sonnet 5 为 realapipricing.com 按 Opus 5 × 2.5 的推算。',
+      '<a href="https://github.com/mahonzhan/awesome-coding-plan">awesome-coding-plan</a>：Opus 4.8 3.97 亿 / 周，促销期数据，已过期。',
+      '<a href="https://finopsllm.com/research/claude-pro-max-tokens-limit">FinOps LLM</a>：5 小时窗口按 Max 5x 推算约 800 万 token，非实测。'
+    ]],
+    ['ChatGPT Plus','GPT',null,[
+      '<a href="https://wokey.ai/coding-plan-comparison">Wokey</a> 12 账号，10-26：每周 $55（≈ $237 / 月，12 倍）；非缓存 680 万 / 周；5 小时窗口 $10。10-08 为 $92，10-19 为 $58。',
+      '<a href="https://explainx.ai/blog/semianalysis-claude-vs-chatgpt-subscription-api-value-limit-testing-2026">SemiAnalysis（explainx 转述）</a>：GPT-6.1 Sol $211 / 月（10.6 倍），GPT-6 Astra $162 / 月（8.1 倍）。',
+      '<a href="https://realapipricing.com/">realapipricing.com</a>（2026-11-10，中 / 高置信）：GPT-6 Luna 92.03 亿、GPT 5.6 Luna 70.58 亿、GPT-6.1 Sol 15.16 亿、GPT 5.6 Terra 11.92 亿、GPT-6 Sol 11.0 亿、GPT 5.6 Sol 6.16 亿、GPT 5.5 4.77 亿、GPT-6 Astra 1.59 亿（每月）。',
+      '实测来源：GPT-6 Luna、GPT-6 Sol、GPT-6.1 Sol 来自维护者本机 Codex（周窗增量 / 面板读数）；GPT 5.6 Luna、GPT-6 Astra 来自维护者 Plus 面板；GPT 5.6 Sol 来自 awesome-coding-plan 2026-07-30 实测。GPT 5.6 Terra、GPT 5.5 是 realapipricing.com 按同套餐 Sol 基准与 credits 价比的推算。',
+      '<a href="https://simplemetrics.xyz/chatgpt-codex-limits-2026/">SimpleMetrics</a>：credits 费率（每百万 token，输入 / 缓存 / 输出）：Sol 50 / 2.5 / 250，Terra 25 / 1.25 / 125，Astra 250 / 25 / 1250，Luna 2.5 / 0.25 / 12.5。',
+      '<a href="https://github.com/mahonzhan/awesome-coding-plan">awesome-coding-plan</a>：GPT-5.6 Sol 1.54 亿 / 周，旧模型。'
+    ]],
+    ['Command Code GOAT',null,'--c-cc',[
+      L.cc+'：$10 / 月 → $70 credits；官方逐模型给出 allowance 与三段价（'+L.rap+' 2026-09-30 归档）。',
+      '<a href="https://realapipricing.com/">realapipricing.com</a>（中置信，亿 token / 月，统一负载）：DeepSeek V4.1 Flash 72.464、V4 Flash 62.112、V4.1 Flash Fast 26.762、V4 Flash Vision Exp 20.704、V4 Pro 4.189、V4 Flash Fast 2.574。',
+      '同套餐另有 GPT-6 Luna 13.605、Claude Haiku 5.5 13.605、GPT 5.6 Luna 6.579、Claude Sonnet 5.5 0.508、GPT 5.6 Sol 0.263 亿（均为中置信），按「以 DeepSeek 为准」未列入本页。'
+    ]],
+    ['OpenCode Go',null,'--c-oc',[
+      L.oc+'：$10 / 月；官方按模型公布 Usage 与三段价（V4.1 Flash 于 2026-10-30 更新）。',
+      '<a href="https://realapipricing.com/">realapipricing.com</a>（中置信，亿 token / 月，统一负载）：DeepSeek V4.1 Flash 103.52、V4 Pro 3.142。',
+      '同套餐另有 GPT-6 Luna / Claude Haiku 5.5 各 10.204、GPT 5.6 Luna 4.934 亿（均为中置信），按「以 DeepSeek 为准」未列入本页。'
+    ]],
+    ['GLM Coding Plan','GLM',null,[
+      L.glm+'：Lite 每周 GLM-5.3 0.48–0.97 亿（95% 缓存），0.52–1.04 亿（98% 缓存）；Flash 1.46–2.92 亿（95%），1.58–3.17 亿（98%）。',
+      '<a href="https://www.codingplan.fyi/platforms/zhipu/">codingplan.fyi</a>（95% 缓存）：Lite 5 小时 0.10 / 0.19 亿；月 1.93 / 3.86 亿（周 × 4，高峰 / 低谷）。',
+      '<a href="https://blog.csdn.net/kuyu05/article/details/163857784">CSDN</a>（90.9% 缓存）：Lite 每周 0.43–0.87 亿。作者实测 Pro 4.23 亿 / 周（94% 缓存）。',
+      L.rap+'：Lite GLM-5.3 2.06 / 4.12 亿 / 月，Flash 6.24 / 12.49 亿。'
+    ]],
+    ['Qoder CN',null,'--c-qoder',[
+      L.qfaq+'：Editor Ask 约 3–4 Credits / 次，Agent 约 7–12。'+L.qhelp+'称这些是 50K 上下文的参考值，Agent 通常是 Ask 的 2–4 倍。',
+      L.qsel+'（相对系数，不是抵扣依据）：Auto 0.5×，Fast 0.8×，Qwen3.8-Max 0.5×，DeepSeek-V4-Pro 0.5×，GLM-5.3 0.8×，Kimi-K3.1-Pro 1.0×，Qwen3.8-Flash、DeepSeek-Flash、GLM-5.3-Flash、MiniMax-M3.1-Flash 0.1×。没有公布每 token 的 Credits。',
+      L.qcsdn+'：1 Credit ≈ 轻量 600–900，主力 300–500，旗舰 150–250 token。',
+      '<a href="https://developer.aliyun.com/article/1757177">阿里云开发者社区</a>帖子：Editor Ask 3–4 Credits / 次，Agent 7–12，Quest 约 50，写于 9 月系数调整前。Quest 约 50 Credits / 次，只见于这篇，专业版约 40 次。',
+      '<a href="https://creditsplan.cn/plans/qoder-cn-pro/">CreditsPlan</a> 称 Qwen3.8-Flash 自 09-18 起限时不消耗 Credits，官方页未核实。',
+      '<a href="https://github.com/Fei2411/real-api-pricing">real-api-pricing</a>、Wokey、SemiAnalysis 都没有 Qoder 数据。'
+    ]],
+    ['MiMo Token Plan','MiMo',null,[
+      L.mimo+'：Lite / Standard / Pro / Max 每月 41 / 110 / 380 / 820 亿 Credits；按 Flash 估每月中等到复杂任务约 200 / 1600 / 5600 / 12800 个。',
+      L.mimo+'举例：1000 万未命中缓存的 V2.6-Pro 输入消耗 30 亿 Credits。',
+      L.rap+'：Standard V2.6-Pro 8.51 / 10.64 亿，Flash 20.22 / 25.28 亿，与按官方系数计算一致；面板对照偏差 −6.6%。',
+      '<a href="https://github.com/mahonzhan/awesome-coding-plan">awesome-coding-plan</a>：Pro ¥329 用 V2.5-Pro 约 13 亿 / 月。'
+    ]],
+    ['Kimi Code','Kimi',null,[
+      '<a href="https://www.kimi.com/membership/pricing">官方价格页</a>：额度倍数 Go 基准，Plus 2×，Pro 4×，Max 14×，Ultra 28×。官方不公布 token 或积分额度，加油包价格"近似官方 API 价"。',
+      L.cp+'（95% 缓存，估算，不是实测）：Plus K3 0.33 亿 / 月，K3 256K 0.65，K2.8-Preview 0.50；Pro K3.1-Pro 1.91，K3 1.62，高速版 0.96。5 小时 = 月 ÷ 25。',
+      L.rap+'：Plus K3 1.95 亿，Pro 9.73 亿，Max 29.19 亿；旧版 Allegretto ¥199 19.46 亿。新版按旧版 ÷ 2 算，是维护者的判断。',
+      '<a href="https://wokey.ai/kimi-code-limits">Wokey</a>，K3.1 Pro：Pro 每 5 小时 330 万未命中输入或 34.7 万输出，约 12.7 个窗口 / 月；"缓存命中几乎不计"。',
+      '<a href="https://github.com/Fei2411/real-api-pricing/pull/138">real-api-pricing PR #138</a>，旧版 Allegretto 一次 22 分钟会话：1596 万 token（95.27% 缓存）消耗周额度 16.33%，反推高速版约 0.98 亿 / 周。',
+      '<a href="https://blog.csdn.net/kuyu05/article/details/163857784">CSDN</a>：旧版 Moderato K3 约 2400 万 / 周，Allegretto 约 1 亿 / 周。'
+    ]],
+    ['DeepSeek','DeepSeek',null,[
+      L.ds+'：V4.1 Flash 低谷 ¥0.02 / ¥1 / ¥4，V4-Pro 低谷 ¥0.15 / ¥4.5 / ¥13.5（缓存 / 未命中 / 输出，每百万 token）。',
+      L.rap+' 统一负载单价：V4.1 Flash 低谷 $0.00966、高峰 $0.01932；V4-Pro 低谷 $0.04774、高峰 $0.09548（每百万 token）。',
+      '<a href="https://github.com/mahonzhan/awesome-coding-plan">awesome-coding-plan</a> 单次修 Bug 任务：V4 Flash 532 万 token，$0.04，3 次全过；V4-Pro 610 万 token，$0.11，3 次过 2 次。'
+    ]]
+  ];
+
+  var DMIN = 0.1, DMAX = 1000;
+  function pos(v){ return Math.log10(v/DMIN) / Math.log10(DMAX/DMIN) * 100; }
+  function fmt(v){
+    if (v >= 10) return v.toFixed(1);
+    return v.toFixed(2);
+  }
+  function factor(p){ return BUDGET / (p.cur === 'USD' ? p.price * FX : p.price); }
+  function logo(p){
+    return p.logo ? '<img class="logo" alt="" src="' + LOGOS[p.logo] + '">'
+      : '<span class="logo dot" style="--dotc:var(' + p.color + ')"></span>';
+  }
+
+  var chart = document.getElementById('chart');
+  var mode = 'norm';
+
+  function axis(){
+    var t = [[0.1,'1000 万'],[1,'1 亿'],[10,'10 亿'],[100,'100 亿'],[1000,'1000 亿']];
+    return '<div class="axis"><div class="blank"></div><div class="ticks">' +
+      t.map(function(x){ return '<span style="left:' + pos(x[0]) + '%">' + x[1] + '</span>'; }).join('') + '</div></div>';
+  }
+
+  function badge(r){ return '<span class="src ' + r.kind + '">' + r.badge + '</span>'; }
+  function grid(){ return [0,25,50,75,100].map(function(x){ return '<i class="gl" style="left:' + x + '%"></i>'; }).join(''); }
+  function dot(x, cls, r, p, tipId){
+    return '<button type="button" class="pt' + cls + '" data-tip="' + tipId + '" aria-label="' + p.name + ' ' + r.m + ' ' + r.badge + '" style="left:' + x + '%"></button>';
+  }
+  function label(x, v, word){
+    return '<span class="val" data-x="' + x + '">' + (word ? '<i>' + word + '</i> ' : '') + fmt(v) + '</span>';
+  }
+
+  function groupHtml(p){
+    var f = mode === 'norm' ? factor(p) : 1;
+    var html = '<div class="vgroup"><div class="vhead">' + logo(p) + '<b>' + p.name + '</b><small>' + p.tier + '</small></div>';
+    p.rows.forEach(function(r, ri){
+      var lo = r.lo * f, hi = r.hi != null ? r.hi * f : null;
+      var a = pos(lo), b = hi != null ? pos(hi) : a;
+      var tipId = p.id + ':' + ri;
+      var same = ri > 0 && p.rows[ri-1].m === r.m;
+      html += '<div class="row"><div class="mlabel">' + (same ? '' : '<span class="mname">' + r.m + '</span>') + badge(r) + '</div>';
+      html += '<div class="track" style="--c:var(' + p.color + ')">' + grid();
+      if (hi != null) html += '<span class="seg' + (r.est ? ' est' : '') + '" style="left:' + a + '%;width:' + (b-a) + '%"></span>';
+      html += dot(a, r.lab ? ' open' : '', r, p, tipId);
+      if (hi != null) html += dot(b, '', r, p, tipId);
+      html += label(a, lo, r.lab && r.lab[0]);
+      if (hi != null) html += label(b, hi, r.lab && r.lab[1]);
+      html += '</div></div>';
+    });
+    return html + '</div>';
+  }
+  function vendor(id){ return V.filter(function(x){ return x.id === id; })[0]; }
+  function column(ids){ return '<div class="ccol">' + axis() + ids.map(function(id){ return groupHtml(vendor(id)); }).join('') + '</div>'; }
+
+  function render(){
+    chart.innerHTML = column(['claude','gpt','cc','oc','ds']) + column(['glm','qoder','qoderplus','mimo','kimi','kimipro']);
+    layoutLabels(document);
+    document.getElementById('mode-note').textContent = (mode === 'norm'
+      ? '每家的 token 量按 ¥134.28 ÷ 实际月费等比缩放，比的是同样花费能买多少；$10 的 Command Code GOAT / OpenCode Go 按 ×2 折算。'
+      : '每家用不超过 $20 的最高档，$10 的两个编程订阅按实际额度，Kimi 和 Qoder CN 另列超出 $20 的 ¥199、¥169 档，不缩放。DeepSeek 按量付费仍按 ¥134.28。')
+      + '圆点上的数字单位为亿 token / 月，对数横轴，负载统一（97% 缓存读取）。四个订阅套餐取自 realapipricing.com 2026-11-10，其余数据整理于 2026-11-01。';
+  }
+
+  // 数字放在圆点正上方；一行两个数字放不下时，以两点中间为界向两侧排开，并限制在轨道内
+  function layoutLabels(root){
+    [].forEach.call(root.querySelectorAll('.track'), function(t){
+      var tw = t.offsetWidth, vs = t.querySelectorAll('.val');
+      if (!tw || !vs.length) return;
+      var x = function(v){ return +v.dataset.x / 100 * tw; };
+      var w0 = vs[0].offsetWidth, l0 = x(vs[0]) - w0 / 2, shift = 0;
+      if (vs.length === 1){
+        vs[0].style.left = Math.max(0, Math.min(tw - w0, l0)) + 'px';
+        return;
+      }
+      var w1 = vs[1].offsetWidth, l1 = x(vs[1]) - w1 / 2;
+      if (l0 + w0 + 6 > l1){
+        var mid = (x(vs[0]) + x(vs[1])) / 2;
+        l0 = mid - 3 - w0; l1 = mid + 3;
+      }
+      if (l0 < 0) shift = -l0;
+      else if (l1 + w1 > tw) shift = tw - w1 - l1;
+      vs[0].style.left = l0 + shift + 'px';
+      vs[1].style.left = l1 + shift + 'px';
+    });
+  }
+  addEventListener('resize', function(){ layoutLabels(document); });
+
+  document.querySelector('.groups').addEventListener('click', function(e){
+    var b = e.target.closest('button'); if (!b) return;
+    mode = b.dataset.mode;
+    this.querySelectorAll('button').forEach(function(x){ x.setAttribute('aria-pressed', x === b); });
+    hideTip();
+    render();
+  });
+
+  // 悬停提示
+  var tip = document.getElementById('tip');
+  function showTip(el){
+    var k = el.dataset.tip.split(':'), p = V.filter(function(x){ return x.id === k[0]; })[0], r = p.rows[+k[1]];
+    var f = mode === 'norm' ? factor(p) : 1;
+    var txt = r.hi != null ? (r.lab ? r.lab[0] + ' ' + fmt(r.lo*f) + ' 亿，' + r.lab[1] + ' ' + fmt(r.hi*f) + ' 亿' : fmt(r.lo*f) + '–' + fmt(r.hi*f) + ' 亿') : fmt(r.lo*f) + ' 亿';
+    tip.innerHTML = '<b>' + p.name + ' · ' + r.m + '</b><br>' + txt + ' / 月（' + (mode === 'norm' ? '折算到 $20' : '实际档位') + '）<br>来源：' + r.badge + (r.aa ? '<br>AA 智力指数：' + r.aa : '');
+    tip.hidden = false;
+    var b = el.getBoundingClientRect(), w = tip.offsetWidth, h = tip.offsetHeight;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, b.left + b.width/2 - w/2)) + 'px';
+    tip.style.top = (b.top - h - 8 < 8 ? b.bottom + 8 : b.top - h - 8) + 'px';
+  }
+  function hideTip(){ tip.hidden = true; }
+  chart.addEventListener('mouseover', function(e){ var t = e.target.closest('.pt'); if (t) showTip(t); });
+  chart.addEventListener('mouseout', function(e){ if (e.target.closest('.pt')) hideTip(); });
+  chart.addEventListener('focusin', function(e){ var t = e.target.closest('.pt'); if (t) showTip(t); });
+  chart.addEventListener('focusout', hideTip);
+  addEventListener('scroll', hideTip, {passive:true});
+
+  render();
+
+  // 明细表
+  var dt = '';
+  V.forEach(function(p){
+    var f = factor(p);
+    p.rows.forEach(function(r, i){
+      var rng = function(k){ return r.hi != null ? fmt(r.lo*k) + '–' + fmt(r.hi*k) : fmt(r.lo*k); };
+      dt += '<tr' + (i === 0 ? ' class="first"' : '') + '>' +
+        '<td class="nw">' + (i === 0 ? '<span style="display:inline-flex;align-items:center;gap:6px">' + logo(p) + p.name + '</span><br><span style="color:var(--sec);font-size:12px">' + p.tier + '</span>' : '') + '</td>' +
+        '<td class="nw">' + r.m + '<br>' + badge(r) + (r.lab ? ' <span style="color:var(--sec);font-size:12px">' + r.lab[0] + '–' + r.lab[1] + '</span>' : '') + '</td>' +
+        '<td class="num">' + rng(1) + '</td><td class="num">' + rng(f) + '</td><td class="num">' + (r.fresh || '—') + '</td><td class="num">' + (r.aa || '—') + '</td>' +
+        '<td class="why">' + r.why + '</td></tr>';
+    });
+  });
+  document.querySelector('#detail tbody').innerHTML = dt;
+
+  // 限额规则表
+  var last = '';
+  document.querySelector('#rules tbody').innerHTML = RULES.map(function(x){
+    var first = x[0] !== last; last = x[0];
+    var fee = x[2] == null ? '—' : (typeof x[2] === 'string' ? x[2] : '¥' + x[2]);
+    var usd = x[3] == null ? (typeof x[2] === 'string' ? x[2] : '—') : '$' + (x[3]/FX).toFixed(1);
+    return '<tr' + (first ? ' class="first"' : '') + '><td class="nw">' + (first ? x[0] : '') + '</td><td class="nw">' + x[1] + '</td><td class="num">' + fee + '</td><td class="num">' + usd + '</td><td class="rule">' + x[4] + '</td></tr>';
+  }).join('');
+
+  // 原始数字
+  document.getElementById('raw').innerHTML = RAW.map(function(x){
+    var icon = x[1] ? '<img class="logo" alt="" src="' + LOGOS[x[1]] + '">' : '<span class="logo dot" style="--dotc:var(' + x[2] + ')"></span>';
+    return '<div class="card"><h3>' + icon + x[0] + '</h3><ul class="notes">' + x[3].map(function(t){ return '<li>' + t + '</li>'; }).join('') + '</ul></div>';
+  }).join('');
+
+  // 导出：勾选分区拼成一张图，固定按桌面宽度排版
+  var btn = document.getElementById('export'), toolbar = document.getElementById('toolbar');
+  var PARTS = ['head','stats','chart','detail','rules','raw','notes'];
+  function partEl(k){ return document.getElementById('part-' + k); }
+  function partOn(k){ return toolbar.querySelector('input[data-part="' + k + '"]').checked; }
+  function frame(){ return new Promise(function(r){ requestAnimationFrame(function(){ requestAnimationFrame(r); }); }); }
+
+  btn.addEventListener('click', function(){
+    if (typeof html2canvas !== 'function'){ alert('导出组件加载失败，请检查网络后重试。'); return; }
+    var on = PARTS.filter(partOn);
+    if (!on.length){ alert('请至少勾选一个分区。'); return; }
+    var wrap = document.querySelector('.wrap'), EXPORT_W = 1100;
+    var bg = getComputedStyle(document.body).backgroundColor, label = btn.textContent;
+    var inputs = toolbar.querySelectorAll('input, button');
+    hideTip();
+    inputs.forEach(function(i){ i.disabled = true; });
+    btn.textContent = '导出中…';
+    toolbar.hidden = true;
+    PARTS.forEach(function(k){ partEl(k).hidden = !partOn(k); });
+    wrap.style.width = EXPORT_W + 'px'; wrap.style.maxWidth = 'none'; wrap.style.boxSizing = 'border-box'; wrap.style.paddingBottom = '28px';
+
+    frame().then(function(){
+      var h = wrap.offsetHeight, W = wrap.offsetWidth;
+      var scale = Math.max(2, window.devicePixelRatio || 1);
+      scale = Math.max(0.75, Math.min(scale, 15000 / h, Math.sqrt(1.5e7 / (W * h))));
+      return html2canvas(wrap, {
+        backgroundColor: bg, scale: scale, windowWidth: Math.max(window.innerWidth, EXPORT_W + 40),
+        onclone: function(doc){ layoutLabels(doc); }
+      });
+    }).then(function(canvas){
+      return new Promise(function(res, rej){
+        smallPng(canvas, function(blob){
+          if (!blob) return rej(new Error('图片过大，请少选几个分区'));
+          var url = URL.createObjectURL(blob), a = document.createElement('a');
+          a.href = url;
+          a.download = document.title + '（' + (mode === 'norm' ? '折算到 $20' : '实际档位') + '）.png';
+          document.body.appendChild(a);
+          a.click();
+          a.remove();
+          setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+          res();
+        });
+      });
+    }).catch(function(err){
+      console.error(err);
+      alert('导出失败：' + err.message);
+    }).then(function(){
+      toolbar.hidden = false;
+      PARTS.forEach(function(k){ partEl(k).hidden = false; });
+      wrap.style.width = wrap.style.maxWidth = wrap.style.boxSizing = wrap.style.paddingBottom = '';
+      inputs.forEach(function(i){ i.disabled = false; });
+      btn.textContent = label;
+      layoutLabels(document);
+    });
+  });
+})();
+</script>
+</body></html>

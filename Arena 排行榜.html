@@ -90,7 +90,7 @@ ul.notes li{margin-bottom:6px}
   <div class="head" id="part-head">
     <div>
       <h1>Arena 排行榜</h1>
-      <p class="sub">汇总 <a href="https://arena.ai/leaderboard">Arena</a> 的智能体、对话、编程、图像和视频榜单，每榜最多显示 15 名。2026-11-20 更新智能体、文本及网页开发榜。另见 <a href="AI%20模型花费与智力对比.html">AI 模型花费与智力对比</a>、<a href="20%20美元套餐可用量对比.html">$20 套餐可用量</a>。</p>
+      <p class="sub">汇总 <a href="https://arena.ai/leaderboard">Arena</a> 的智能体、对话、编程、图像和视频榜单，每榜最多显示 15 名。本站于 2026-11-20 核对全部 14 榜，官方日期见各榜。另见 <a href="AI%20模型花费与智力对比.html">AI 模型花费与智力对比</a>、<a href="20%20美元套餐可用量对比.html">$20 套餐可用量</a>。</p>
     </div>
   </div>
 
@@ -144,7 +144,7 @@ ul.notes li{margin-bottom:6px}
     <ul class="notes">
       <li>数据来自 <a href="https://arena.ai/leaderboard">Arena</a>。盲评分数只在同榜内比较，智能体任务和对齐指数采用各自的指标。</li>
       <li>横轴从接近最低分处起画。细线为置信区间，更新榜单采用以分数为中心的近似区间，斜纹表示初步排名。</li>
-      <li>输入和输出价格按每百万 token 计，任务花费按 Arena 公布的中位数列示。</li>
+      <li>花费为 Arena 公布的中位数，按任务、单张图或单段视频列示。</li>
     </ul>
   </section>
 </div>
@@ -179,15 +179,15 @@ function smallPng(canvas, done){
     [13,'GPT-6.1 Terra (Max)','OpenAI',1230,15,0,null,null,'$0.85'], [14,'Gemini 4 Argon (High)','Google',1229,12,0,null,null,'$0.69'],
     [15,'Muse Wonder Full (Max)','Meta',1201,12,0,null,null,null]
   ]},
-  'agent/alignment':{total:64, rows:[
-    [1,'GPT-6.1 Terra','OpenAI',84.7,2,0], [2,'GPT-6 Astra','OpenAI',84.4,3.2,0],
-    [3,'GPT-6.1 Sol','OpenAI',84.2,2.4,0], [4,'GPT-6 Sol','OpenAI',81,2.8,0],
-    [5,'GPT-6 Luna','OpenAI',80.5,2.1,0], [6,'Claude Fable 5.2','Anthropic',78.4,4.3,0],
-    [7,'Kimi K3.1 Pro','Moonshot',77.6,3,0], [8,'GPT-5.6 Sol','OpenAI',75.4,3,0],
-    [9,'GPT-5.6 Terra','OpenAI',72.8,2.7,0], [10,'GPT-5.6 Luna','OpenAI',71.9,2.5,0],
-    [11,'Gemini 4 Hydrogen','Google',71.4,3.4,0], [12,'Grok 4.7','SpaceXAI',70.5,2.5,0],
-    [13,'Claude Sonnet 5.5','Anthropic',69.2,3.2,0], [14,'Claude Opus 5.5','Anthropic',68.1,3,0],
-    [15,'Grok 4.6','SpaceXAI',67.8,2.6,0]
+  'agent/alignment':{total:67, date:'2026-11-19', rows:[
+    [1,'GPT-6.2 Sol','OpenAI',85.2,3.5,0,null,null,null], [2,'GPT-6 Astra','OpenAI',84.6,3.5,0,null,null,null],
+    [3,'GPT-6.1 Terra','OpenAI',84.5,2.3,0,null,null,null], [4,'GPT-6.1 Sol','OpenAI',83.9,2.7,0,null,null,null],
+    [5,'GPT-6.2 Astra','OpenAI',83.5,4.4,0,null,null,null], [6,'GPT-6 Sol','OpenAI',81.2,3.1,0,null,null,null],
+    [7,'GPT-6 Luna','OpenAI',80.6,2.2,0,null,null,null], [8,'Claude Fable 5.2','Anthropic',78.2,4.6,0,null,null,null],
+    [9,'Kimi K3.1 Pro','Moonshot',78.2,3.2,0,null,null,null], [10,'GPT-5.6 Sol','OpenAI',75.5,3.2,0,null,null,null],
+    [11,'GPT-5.6 Terra','OpenAI',73.2,2.9,0,null,null,null], [12,'GPT-5.6 Luna','OpenAI',72.3,2.6,0,null,null,null],
+    [13,'Gemini 4 Hydrogen','Google',71,3.7,0,null,null,null], [14,'Grok 4.7','SpaceXAI',70.8,2.6,0,null,null,null],
+    [15,'Gemini 4 Neon','Google',70.4,4.9,0,null,null,null]
   ]},
   'chat/text':{total:426, date:'2026-11-20', rows:[
     [1,'Gemini 4 Carbon (High)','Google',1527,10,0,null,null,'$0.05'], [2,'Gemini 4 Argon (High)','Google',1520,5,0,null,null,'$0.03'],
@@ -199,35 +199,35 @@ function smallPng(canvas, done){
     [13,'Claude Opus 4.6','Anthropic',1496,4,0,null,null,'$0.06'], [14,'Claude Opus 4.7','Anthropic',1494,4,0,null,null,'$0.06'],
     [15,'Muse Spark 1.2 (xHigh)','Meta',1493,6,0,null,null,'$0.01']
   ]},
-  'chat/vision':{total:166, rows:[
-    [1,'Claude Fable 5 (High)','Anthropic',1309,7,0,15536,'$10 / $50'], [2,'Claude Opus 4.7','Anthropic',1300,7,0,23777,'$5 / $25'],
-    [3,'Qwen3.8-Max','Alibaba',1299,7,0,9842,'$2 / $6'], [4,'Claude Opus 4.6 (High)','Anthropic',1299,6,0,22116,'$5 / $25'],
-    [5,'Claude Opus 4.7 (High)','Anthropic',1298,7,0,22609,'$5 / $25'], [6,'Claude Opus 5.5 (High)','Anthropic',1295,10,0,4789,'$4 / $20'],
-    [7,'Muse Spark','Meta',1294,9,0,5843,'N/A'], [8,'Gemini 3.7 Flash (High)','Google',1294,9,1,6840,'$0.75 / $3.75'],
-    [9,'Muse Spark 1.2 (xHigh)','Meta',1294,14,0,1930,'$1.25 / $4.25'], [10,'Claude Opus 4.6','Anthropic',1293,6,0,26627,'$5 / $25'],
-    [11,'Gemini 3.8 Flash (High)','Google',1293,8,1,7624,'$0.75 / $3.75'], [12,'GPT-6.1 Sol (Max)','OpenAI',1293,11,0,3987,'$2 / $10'],
-    [13,'Muse Spark 1.3 (Max)','Meta',1291,8,0,7683,'N/A'], [14,'Gemini 3 Pro','Google',1289,7,0,13547,'$2 / $12'],
-    [15,'Claude Fable 5.1 (Max)','Anthropic',1289,9,0,6296,'$10 / $50']
+  'chat/vision':{total:168, date:'2026-11-20', rows:[
+    [1,'Claude Fable 5 (High)','Anthropic',1309,7,0,null,null,'$0.21'], [2,'Claude Fable 5.2 (Max)','Anthropic',1305,18,0,null,null,'$0.38'],
+    [3,'Claude Opus 4.7','Anthropic',1299,7,0,null,null,'$0.09'], [4,'Claude Opus 4.6 (High)','Anthropic',1298,7,0,null,null,'$0.10'],
+    [5,'Claude Opus 4.7 (High)','Anthropic',1298,7,0,null,null,'$0.10'], [6,'Gemini 3.7 Flash (High)','Google',1294,9,0,null,null,'$0.02'],
+    [7,'Muse Spark','Meta',1294,9,0,null,null,null], [8,'Qwen3.8-Max','Alibaba',1294,8,0,null,null,'$0.04'],
+    [9,'Claude Opus 5.5 (High)','Anthropic',1293,9,0,null,null,'$0.10'], [10,'Muse Spark 1.2 (xHigh)','Meta',1293,14,0,null,null,'$0.03'],
+    [11,'Claude Opus 4.6','Anthropic',1293,6,0,null,null,'$0.09'], [12,'Gemini 3.8 Flash (High)','Google',1293,8,0,null,null,'$0.02'],
+    [13,'GPT-6.1 Sol (Max)','OpenAI',1290,10,0,null,null,'$0.06'], [14,'Claude Fable 5.1 (Max)','Anthropic',1290,8,0,null,null,'$0.44'],
+    [15,'Gemini 3 Pro','Google',1289,7,0,null,null,null]
   ]},
-  'chat/document':{total:45, rows:[
-    [1,'Claude Fable 5.1 (Max)','Anthropic',1515,15,0,1453,'$10 / $50'], [2,'Claude Opus 5 (High)','Anthropic',1509,6,0,16189,'$5 / $25'],
-    [3,'Claude Opus 4.6 (High)','Anthropic',1508,6,0,29456,'$5 / $25'], [4,'Claude Opus 4.6','Anthropic',1506,5,0,47264,'$5 / $25'],
-    [5,'Claude Fable 5 (High)','Anthropic',1497,7,0,12357,'$10 / $50'], [6,'Claude Opus 4.7 (High)','Anthropic',1496,6,0,23327,'$5 / $25'],
-    [7,'Claude Opus 4.7','Anthropic',1495,6,0,23628,'$5 / $25'], [8,'GPT-5.5 (High)','OpenAI',1484,5,0,27324,'$5 / $30'],
-    [9,'Gemini 3.8 Flash (High)','Google',1482,8,1,6950,'$0.75 / $3.75'], [10,'Claude Sonnet 4.6','Anthropic',1482,6,0,61055,'$1.50 / $7.50'],
-    [11,'GPT-5.5','OpenAI',1481,5,0,27751,'$5 / $30'], [12,'GPT-5.6 Sol (xHigh)','OpenAI',1480,7,0,9649,'$4 / $20'],
-    [13,'Gemini 3.7 Flash (High)','Google',1476,8,1,7680,'$0.75 / $3.75'], [14,'Claude Opus 4.8 (High)','Anthropic',1475,7,0,12069,'$5 / $25'],
-    [15,'GPT-5.4','OpenAI',1473,6,0,35183,'$2.50 / $15']
+  'chat/document':{total:46, date:'2026-11-08', rows:[
+    [1,'Claude Fable 5.1 (Max)','Anthropic',1515,15,0,null,null,'$1.57'], [2,'Claude Opus 5 (High)','Anthropic',1509,6,0,null,null,'$0.63'],
+    [3,'Claude Opus 4.6 (High)','Anthropic',1508,7,0,null,null,'$0.54'], [4,'Claude Opus 4.6','Anthropic',1506,5,0,null,null,'$0.50'],
+    [5,'Claude Fable 5 (High)','Anthropic',1497,7,0,null,null,'$1.06'], [6,'Claude Opus 4.7 (High)','Anthropic',1496,7,0,null,null,'$0.72'],
+    [7,'Claude Opus 4.7','Anthropic',1495,7,0,null,null,'$0.71'], [8,'GPT-5.5 (High)','OpenAI',1484,6,0,null,null,'$0.35'],
+    [9,'Gemini 3.8 Flash (High)','Google',1482,8,0,null,null,'$0.05'], [10,'Claude Sonnet 4.6','Anthropic',1482,6,0,null,null,'$0.30'],
+    [11,'GPT-5.5','OpenAI',1481,5,0,null,null,'$0.28'], [12,'GPT-5.6 Sol (xHigh)','OpenAI',1480,7,0,null,null,'$0.41'],
+    [13,'Gemini 3.7 Flash (High)','Google',1476,8,0,null,null,'$0.04'], [14,'Claude Opus 4.8 (High)','Anthropic',1475,7,0,null,null,'$0.72'],
+    [15,'GPT-5.4','OpenAI',1473,6,0,null,null,'$0.12']
   ]},
-  'chat/search':{total:42, rows:[
-    [1,'Qwen3.8-Max','Alibaba',1260,14,0,1998,'$2 / $6'], [2,'GPT-5.6 Sol (xHigh)','OpenAI',1258,6,0,62364,'$4 / $20'],
-    [3,'Claude Opus 4.6 (Search)','Anthropic',1252,5,0,166732,'$5 / $25'], [4,'GPT-5.5 (Search)','OpenAI',1246,5,0,121489,'$5 / $30'],
-    [5,'Claude Opus 5 (High)','Anthropic',1239,7,0,34000,'$5 / $25'], [6,'Claude Fable 5.1 (High)','Anthropic',1237,7,0,33769,'$5 / $25'],
-    [7,'GPT-6 Astra (Max)','OpenAI',1231,8,0,17456,'$10 / $50'], [8,'GPT-6.1 Sol (Max)','OpenAI',1230,8,0,26556,'$2 / $10'],
-    [9,'Claude Opus 4.7','Anthropic',1230,5,0,121890,'$5 / $25'], [10,'Claude Fable 5 (High)','Anthropic',1228,7,0,69528,'$10 / $50'],
-    [11,'ERNIE 5.1','Baidu',1227,10,0,3925,'$0.56 / $2.54'], [12,'Claude Sonnet 4.6 (Search)','Anthropic',1221,5,0,167499,'$1.50 / $7.50'],
-    [13,'Grok 4.5','SpaceXAI',1216,6,0,105282,'$2 / $6'], [14,'Claude Opus 5.5 (Medium)','Anthropic',1213,7,0,31730,'$4 / $20'],
-    [15,'Gemini 3.1 Pro (Grounding)','Google',1210,5,0,171494,'$2.70 / $16.20']
+  'chat/search':{total:45, date:'2026-11-20', rows:[
+    [1,'Amazon-Web-Search-Agent','Amazon',1266,15,0,null,null,null], [2,'Qwen3.8-Max','Alibaba',1261,11,0,null,null,null],
+    [3,'GPT-5.6 Sol (xHigh)','OpenAI',1256,7,0,null,null,'$0.42'], [4,'Claude Opus 4.6 (Search)','Anthropic',1252,5,0,null,null,'$0.29'],
+    [5,'GPT-5.5 (Search)','OpenAI',1246,6,0,null,null,'$0.38'], [6,'Claude Opus 5 (High)','Anthropic',1238,7,0,null,null,'$0.35'],
+    [7,'Claude Fable 5.1 (High)','Anthropic',1237,7,0,null,null,'$0.54'], [8,'GPT-6 Astra (Max)','OpenAI',1231,8,0,null,null,'$0.97'],
+    [9,'Claude Opus 4.7','Anthropic',1230,5,0,null,null,'$0.21'], [10,'GPT-6.1 Sol (Max)','OpenAI',1230,8,0,null,null,'$0.17'],
+    [11,'Claude Fable 5 (High)','Anthropic',1228,7,0,null,null,'$0.47'], [12,'ERNIE 5.1','Baidu',1227,10,0,null,null,'$0.02'],
+    [13,'Claude Sonnet 4.6 (Search)','Anthropic',1220,5,0,null,null,'$0.13'], [14,'Grok 4.5','SpaceXAI',1216,6,0,null,null,'$0.12'],
+    [15,'Claude Opus 5.5 (Medium)','Anthropic',1214,7,0,null,null,'$0.21']
   ]},
   'code/webdev':{total:163, date:'2026-11-20', rows:[
     [1,'Claude Fable 5.2 (xHigh)','Anthropic',1823,16,0,null,null,'$11.62'], [2,'Claude Opus 5.5 (Max)','Anthropic',1818,11,0,null,null,'$8.99'],
@@ -239,73 +239,73 @@ function smallPng(canvas, done){
     [13,'Claude Sonnet 5.5 (High)','Anthropic',1716,8,0,null,null,'$1.29'], [14,'Gemini 4 Hydrogen (High)','Google',1701,14,0,null,null,'$1.36'],
     [15,'Claude Opus 5 (Max)','Anthropic',1692,6,0,null,null,'$4.77']
   ]},
-  'code/image-to-webdev':{total:66, rows:[
-    [1,'Claude Opus 5.5 (Max)','Anthropic',1756,19,0,1313,'$4 / $20'], [2,'Claude Sonnet 5.5 (xHigh)','Anthropic',1745,14,0,2490,'$2 / $10'],
-    [3,'Claude Fable 5.1 (Max)','Anthropic',1722,12,0,3597,'$10 / $50'], [4,'GPT-6 Astra (Max)','OpenAI',1719,11,0,4069,'$10 / $50'],
-    [5,'GPT-6.1 Sol (Max)','OpenAI',1694,13,0,2863,'$2 / $10'], [6,'Qwen4-Max (xHigh)','Alibaba',1674,16,1,1474,'$1.50 / $4.50'],
-    [7,'Claude Opus 5 (Max)','Anthropic',1664,10,0,5025,'$5 / $25'], [8,'GPT-6 Sol (Max)','OpenAI',1657,11,0,3853,'$2 / $10'],
-    [9,'Qwen3.8-Max (0902)','Alibaba',1639,19,1,1079,'$2 / $6'], [10,'Muse Spark 1.3 (Max)','Meta',1637,9,0,6618,'$1.25 / $4.25'],
-    [11,'Claude Fable 5 (High)','Anthropic',1620,9,0,6105,'$10 / $50'], [12,'Qwen3.8-Max','Alibaba',1616,10,1,4017,'$2 / $6'],
-    [13,'DeepSeek-V4.1-Flash-20260910 (Max)','DeepSeek',1611,23,0,726,'$0.30 / $1.20'], [14,'DeepSeek-V4.1-Flash-20261017 (Max)','DeepSeek',1609,10,0,4164,'$0.15 / $0.60'],
-    [15,'GPT-5.6 Sol (xHigh, Codex Harness)','OpenAI',1606,9,0,5366,'$4 / $20']
+  'code/image-to-webdev':{total:70, date:'2026-11-20', rows:[
+    [1,'Claude Opus 5.5 (Max)','Anthropic',1758,19,0,null,null,'$7.53'], [2,'Claude Sonnet 5.5 (xHigh)','Anthropic',1746,14,0,null,null,'$2.37'],
+    [3,'Claude Fable 5.1 (Max)','Anthropic',1723,12,0,null,null,'$9.65'], [4,'GPT-6 Astra (Max)','OpenAI',1719,11,0,null,null,'$9.38'],
+    [5,'GPT-6.1 Sol (Max)','OpenAI',1695,13,0,null,null,'$2.41'], [6,'Qwen4-Max (xHigh)','Alibaba',1675,16,0,null,null,'$6.97'],
+    [7,'GPT-6.1 Terra (Max)','OpenAI',1674,20,0,null,null,'$0.93'], [8,'Claude Opus 5 (Max)','Anthropic',1664,10,0,null,null,'$4.86'],
+    [9,'GPT-6 Sol (Max)','OpenAI',1659,10,0,null,null,'$1.94'], [10,'Qwen3.8-Max (0902)','Alibaba',1639,19,0,null,null,null],
+    [11,'Muse Spark 1.3 (Max)','Meta',1636,9,0,null,null,'$1.18'], [12,'Claude Fable 5 (High)','Anthropic',1620,9,0,null,null,'$4.21'],
+    [13,'Hy4','Tencent',1619,16,0,null,null,'$0.45'], [14,'Qwen3.8-Max','Alibaba',1615,11,0,null,null,'$2.77'],
+    [15,'DeepSeek-V4.1-Flash-20260910 (Max)','DeepSeek',1612,23,0,null,null,'$0.06']
   ]},
-  'image/text-to-image':{total:86, rows:[
-    [1,'GPT-Image-2.5 Sunburst','OpenAI',1428,5,1,68073], [2,'GPT-Image-2.6 Sunburst (Medium)','OpenAI',1410,9,1,6547],
-    [3,'GPT-Image-2.5 Flare','OpenAI',1400,5,1,67372], [4,'MAI-Image-2.7','Microsoft AI',1387,12,0,3082],
-    [5,'GPT-Image-2 (Medium)','OpenAI',1382,4,0,110696], [6,'GPT-Image-2.6 Flare (Medium)','OpenAI',1375,9,1,6447],
-    [7,'MAI-Image-2.6','Microsoft AI',1331,5,0,42837], [8,'Gemini Nano Banana 2.1','Google',1328,9,1,4957],
-    [9,'Grok Imagine Image 2.0','SpaceXAI',1318,7,1,9894], [10,'Reve 2.1','Reve',1302,8,0,7897],
-    [11,'Grok Imagine Image 2.0 (20260801)','SpaceXAI',1287,5,0,38904], [12,'Reve 2.0','Reve',1268,6,0,15282],
-    [13,'Muse Image','Meta',1266,4,0,62120], [14,'Gemini 3.1 Flash Image (nano-banana-2, Web Search)','Google',1256,4,0,84052],
-    [15,'Qwen-Image-3.0-Pro','Alibaba',1254,7,0,10895]
+  'image/text-to-image':{total:86, date:'2026-11-16', rows:[
+    [1,'GPT-Image-2.5 Sunburst','OpenAI',1428,5,0,null,null,'$0.04'], [2,'GPT-Image-2.6 Sunburst (Medium)','OpenAI',1410,9,0,null,null,'$0.04'],
+    [3,'GPT-Image-2.5 Flare','OpenAI',1400,5,0,null,null,'$0.04'], [4,'MAI-Image-2.7','Microsoft AI',1387,12,0,null,null,'$0.03'],
+    [5,'GPT-Image-2 (Medium)','OpenAI',1382,4,0,null,null,'$0.04'], [6,'GPT-Image-2.6 Flare (Medium)','OpenAI',1375,10,0,null,null,'$0.02'],
+    [7,'MAI-Image-2.6','Microsoft AI',1331,5,0,null,null,'$0.09'], [8,'Gemini Nano Banana 2.1','Google',1328,10,0,null,null,'$0.05'],
+    [9,'Grok Imagine Image 2.0','SpaceXAI',1318,8,0,null,null,'$0.04'], [10,'Reve 2.1','Reve',1302,8,0,null,null,'$0.02'],
+    [11,'Grok Imagine Image 2.0 (20260801)','SpaceXAI',1287,5,0,null,null,'$0.06'], [12,'Reve 2.0','Reve',1268,7,0,null,null,'$0.02'],
+    [13,'Muse Image','Meta',1266,5,0,null,null,'$0.01'], [14,'Gemini 3.1 Flash Image (nano-banana-2, Web Search)','Google',1256,4,0,null,null,'$0.07'],
+    [15,'Qwen-Image-3.0-Pro','Alibaba',1254,7,0,null,null,'$0.04']
   ]},
-  'image/image-edit/single-image':{total:64, rows:[
-    [1,'GPT-Image-2.5 Sunburst','OpenAI',1519,4,1,140743], [2,'GPT-Image-2.5 Flare','OpenAI',1484,4,1,137820],
-    [3,'GPT-Image-2.6 Sunburst (Medium)','OpenAI',1481,7,1,16881], [4,'MAI-Image-2.7','Microsoft AI',1475,11,0,3007],
-    [5,'GPT-Image-2 (Medium)','OpenAI',1462,3,0,371930], [6,'GPT-Image-2.6 Flare (Medium)','OpenAI',1461,7,1,16830],
-    [7,'Grok Imagine Image 2.0','SpaceXAI',1437,6,1,33908], [8,'MAI-Image-2.6','Microsoft AI',1427,5,0,82671],
-    [9,'Gemini Nano Banana 2.1','Google',1427,6,1,12041], [10,'Grok Imagine Image 2.0 (20260801)','SpaceXAI',1419,4,0,144482],
-    [11,'Krea 3 Ultra','Krea',1412,12,1,2625], [12,'MAI-Image-2.5','Microsoft AI',1400,4,0,183259],
-    [13,'Muse Image','Meta',1400,4,0,211112], [14,'Seedream 5.0 Pro','Bytedance',1392,3,0,358335],
-    [15,'Grok Imagine Image (Quality, 20260519)','SpaceXAI',1391,6,0,37096]
+  'image/image-edit/single-image':{total:64, date:'2026-11-17', rows:[
+    [1,'GPT-Image-2.5 Sunburst','OpenAI',1519,5,0,null,null,'$0.05'], [2,'GPT-Image-2.5 Flare','OpenAI',1484,5,0,null,null,'$0.05'],
+    [3,'GPT-Image-2.6 Sunburst (Medium)','OpenAI',1481,7,0,null,null,'$0.05'], [4,'MAI-Image-2.7','Microsoft AI',1475,12,0,null,null,'$0.03'],
+    [5,'GPT-Image-2 (Medium)','OpenAI',1462,3,0,null,null,'$0.06'], [6,'GPT-Image-2.6 Flare (Medium)','OpenAI',1461,7,0,null,null,'$0.03'],
+    [7,'Grok Imagine Image 2.0','SpaceXAI',1437,6,0,null,null,'$0.06'], [8,'MAI-Image-2.6','Microsoft AI',1427,5,0,null,null,'$0.09'],
+    [9,'Gemini Nano Banana 2.1','Google',1427,6,0,null,null,'$0.05'], [10,'Grok Imagine Image 2.0 (20260801)','SpaceXAI',1419,4,0,null,null,'$0.06'],
+    [11,'Krea 3 Ultra','Krea',1412,12,0,null,null,null], [12,'MAI-Image-2.5','Microsoft AI',1400,4,0,null,null,'$0.05'],
+    [13,'Muse Image','Meta',1400,4,0,null,null,'$0.01'], [14,'Seedream 5.0 Pro','Bytedance',1392,3,0,null,null,'$0.07'],
+    [15,'Grok Imagine Image (Quality, 20260519)','SpaceXAI',1391,6,0,null,null,'$0.05']
   ]},
-  'image/image-edit/multi-image':{total:48, rows:[
-    [1,'GPT-Image-2.5 Sunburst','OpenAI',1527,5,1,70812], [2,'GPT-Image-2.5 Flare','OpenAI',1475,5,1,69942],
-    [3,'MAI-Image-2.7','Microsoft AI',1458,10,0,3647], [4,'GPT-Image-2 (Medium)','OpenAI',1455,3,0,167372],
-    [5,'GPT-Image-2.6 Flare (Medium)','OpenAI',1442,7,1,10635], [6,'Gemini Nano Banana 2.1','Google',1432,7,1,9631],
-    [7,'Krea 3 Ultra','Krea',1431,7,1,11506], [8,'Seedream 5.0 Pro','Bytedance',1412,4,0,119364],
-    [9,'Muse Image','Meta',1400,4,0,129822], [10,'Gemini 3.1 Flash Image (nano-banana-2, Web Search)','Google',1372,3,0,146492],
-    [11,'MiniMax H3-Image','MiniMax',1367,8,0,6296], [12,'Gemini 3 Pro Image Preview (nano-banana-pro)','Google',1366,4,0,293627],
-    [13,'Gemini 3 Pro Image (nano-banana-pro, 2K)','Google',1364,3,0,278901], [14,'ChatGPT Image Latest (High Fidelity, 20251216)','OpenAI',1350,3,0,278465],
-    [15,'Reve 2.0','Reve',1346,7,0,9927]
+  'image/image-edit/multi-image':{total:48, date:'2026-11-17', rows:[
+    [1,'GPT-Image-2.5 Sunburst','OpenAI',1527,5,0,null,null,'$0.06'], [2,'GPT-Image-2.5 Flare','OpenAI',1475,5,0,null,null,'$0.06'],
+    [3,'MAI-Image-2.7','Microsoft AI',1458,10,0,null,null,'$0.03'], [4,'GPT-Image-2 (Medium)','OpenAI',1455,3,0,null,null,'$0.07'],
+    [5,'GPT-Image-2.6 Flare (Medium)','OpenAI',1442,8,0,null,null,'$0.04'], [6,'Gemini Nano Banana 2.1','Google',1432,7,0,null,null,'$0.05'],
+    [7,'Krea 3 Ultra','Krea',1431,8,0,null,null,null], [8,'Seedream 5.0 Pro','Bytedance',1412,4,0,null,null,'$0.07'],
+    [9,'Muse Image','Meta',1400,4,0,null,null,'$0.01'], [10,'Gemini 3.1 Flash Image (nano-banana-2, Web Search)','Google',1372,3,0,null,null,'$0.07'],
+    [11,'MiniMax H3-Image','MiniMax',1367,9,0,null,null,null], [12,'Gemini 3 Pro Image Preview (nano-banana-pro)','Google',1366,4,0,null,null,null],
+    [13,'Gemini 3 Pro Image (nano-banana-pro, 2K)','Google',1364,3,0,null,null,'$0.14'], [14,'ChatGPT Image Latest (High Fidelity, 20251216)','OpenAI',1350,4,0,null,null,'$0.32'],
+    [15,'Reve 2.0','Reve',1346,7,0,null,null,'$0.04']
   ]},
-  'video/text-to-video':{total:50, rows:[
-    [1,'Gemini Omni 1.2 Flash','Google',1540,16,1,1714], [2,'Gemini Omni 1.1 Flash','Google',1513,15,0,1792],
-    [3,'gemini-omni-flash','Google',1509,8,0,46707], [4,'FLUX 3 Video','Black Forest Labs',1491,17,1,1314],
-    [5,'Grok Imagine Video 1.5','SpaceXAI',1488,19,1,1249], [6,'Dreamina Seedance 2.0 (720p)','Bytedance',1483,8,0,72137],
-    [7,'Dreamina Seedance 2.5 (720p)','Bytedance',1479,8,0,25421], [8,'Wan 3.0','Alibaba',1476,12,0,3060],
-    [9,'SkyReels V4','Skywork',1459,18,0,1060], [10,'Muse Video','Meta',1457,15,0,2225],
-    [11,'MiniMax H3','MiniMax',1456,8,0,29257], [12,'HappyHorse 1.0','Alibaba-ATH',1429,12,0,22896],
-    [13,'Sora 2 Pro','OpenAI',1367,7,0,55965], [14,'Veo 3.1 (Audio)','Google',1363,14,0,13790],
-    [15,'Veo 3.1 (Audio, 1080p)','Google',1363,10,0,25636]
+  'video/text-to-video':{total:50, date:'2026-11-08', rows:[
+    [1,'Gemini Omni 1.2 Flash','Google',1540,16,0,null,null,'$0.70'], [2,'Gemini Omni 1.1 Flash','Google',1513,15,0,null,null,'$1.00'],
+    [3,'gemini-omni-flash','Google',1509,9,0,null,null,'$1.00'], [4,'Grok Imagine Video 1.5','SpaceXAI',1488,19,0,null,null,null],
+    [5,'Dreamina Seedance 2.0 (720p)','Bytedance',1483,8,0,null,null,'$1.66'], [6,'Dreamina Seedance 2.5 (720p)','Bytedance',1479,9,0,null,null,'$2.31'],
+    [7,'Wan 3.0','Alibaba',1476,12,0,null,null,'$2.00'], [8,'SkyReels V4','Skywork',1459,19,0,null,null,null],
+    [9,'FLUX 3 Video','Black Forest Labs',1458,9,0,null,null,'$0.85'], [10,'Muse Video','Meta',1457,15,0,null,null,null],
+    [11,'MiniMax H3','MiniMax',1456,8,0,null,null,'$0.80'], [12,'HappyHorse 1.0','Alibaba-ATH',1429,13,0,null,null,null],
+    [13,'Sora 2 Pro','OpenAI',1367,7,0,null,null,'$0.80'], [14,'Veo 3.1 (Audio)','Google',1363,15,0,null,null,'$3.20'],
+    [15,'Veo 3.1 (Audio, 1080p)','Google',1363,11,0,null,null,'$3.20']
   ]},
-  'video/image-to-video':{total:50, rows:[
-    [1,'Gemini Omni 1.2 Flash','Google',1503,12,1,2666], [2,'Dreamina Seedance 2.5 (720p)','Bytedance',1494,8,0,42724],
-    [3,'MiniMax H3','MiniMax',1493,6,0,121481], [4,'Gemini Omni 1.1 Flash','Google',1487,11,0,3725],
-    [5,'Wan 3.0','Alibaba',1482,11,0,3437], [6,'Dreamina Seedance 2.0 (720p)','Bytedance',1480,7,0,148231],
-    [7,'SkyReels V4','Skywork',1475,16,0,1542], [8,'gemini-omni-flash','Google',1463,6,0,136190],
-    [9,'HiDream-O1-Video-1.0','HiDream',1458,9,1,25149], [10,'Grok Imagine Video 1.5 (720p)','SpaceXAI',1453,5,0,197120],
-    [11,'FLUX 3 Video (20260811)','Black Forest Labs',1451,6,0,84298], [12,'HappyHorse 1.0','Alibaba-ATH',1443,10,0,73331],
-    [13,'Wan 2.7','Alibaba',1427,6,0,108756], [14,'Grok Imagine Video (720p)','SpaceXAI',1411,4,0,624829],
-    [15,'Veo 3.1 (Audio)','Google',1399,10,0,25246]
+  'video/image-to-video':{total:50, date:'2026-11-08', rows:[
+    [1,'Gemini Omni 1.2 Flash','Google',1503,12,0,null,null,'$0.70'], [2,'Dreamina Seedance 2.5 (720p)','Bytedance',1494,8,0,null,null,'$2.31'],
+    [3,'MiniMax H3','MiniMax',1493,6,0,null,null,'$1.30'], [4,'Gemini Omni 1.1 Flash','Google',1487,11,0,null,null,'$1.00'],
+    [5,'Wan 3.0','Alibaba',1482,11,0,null,null,'$2.00'], [6,'Dreamina Seedance 2.0 (720p)','Bytedance',1480,7,0,null,null,'$1.51'],
+    [7,'SkyReels V4','Skywork',1475,16,0,null,null,null], [8,'gemini-omni-flash','Google',1463,6,0,null,null,'$1.00'],
+    [9,'HiDream-O1-Video-1.0','HiDream',1458,9,0,null,null,null], [10,'Grok Imagine Video 1.5 (720p)','SpaceXAI',1453,5,0,null,null,'$1.12'],
+    [11,'FLUX 3 Video (20260811)','Black Forest Labs',1451,6,0,null,null,'$0.85'], [12,'HappyHorse 1.0','Alibaba-ATH',1443,10,0,null,null,null],
+    [13,'Wan 2.7','Alibaba',1427,6,0,null,null,'$0.80'], [14,'Grok Imagine Video (720p)','SpaceXAI',1411,4,0,null,null,'$0.56'],
+    [15,'Veo 3.1 (Audio)','Google',1399,11,0,null,null,'$3.20']
   ]},
-  'video/video-edit':{total:12, rows:[
-    [1,'Wan 3.0','Alibaba',1424,14,0,2062], [2,'Dreamina Seedance 2.5 (720p)','Bytedance',1419,12,0,5227],
-    [3,'Gemini Omni 1.2 Flash','Google',1396,16,1,1167], [4,'gemini-omni-flash','Google',1380,12,0,5052],
-    [5,'MiniMax H3','MiniMax',1378,10,0,8385], [6,'Dreamina Seedance 2.0 (720p)','Bytedance',1368,11,0,7388],
-    [7,'SkyReels V4','Skywork',1364,21,0,697], [8,'HappyHorse 1.0','Alibaba-ATH',1306,13,0,3253],
-    [9,'Kling O3 Pro','KlingAI',1266,8,0,14611], [10,'Grok Imagine Video','SpaceXAI',1250,9,0,18726],
-    [11,'Kling O1 Pro','KlingAI',1190,8,0,17696], [12,'Runway Gen-4 Aleph','Runway',1182,9,0,10159]
+  'video/video-edit':{total:12, date:'2026-11-11', rows:[
+    [1,'Wan 3.0','Alibaba',1424,14,0,null,null,'$2.00'], [2,'Dreamina Seedance 2.5 (720p)','Bytedance',1419,12,0,null,null,'$2.31'],
+    [3,'Gemini Omni 1.2 Flash','Google',1396,17,0,null,null,null], [4,'gemini-omni-flash','Google',1380,12,0,null,null,'$1.00'],
+    [5,'MiniMax H3','MiniMax',1378,10,0,null,null,'$1.30'], [6,'Dreamina Seedance 2.0 (720p)','Bytedance',1368,11,0,null,null,'$1.51'],
+    [7,'SkyReels V4','Skywork',1364,21,0,null,null,null], [8,'HappyHorse 1.0','Alibaba-ATH',1306,14,0,null,null,null],
+    [9,'Kling O3 Pro','KlingAI',1266,9,0,null,null,'$1.68'], [10,'Grok Imagine Video','SpaceXAI',1250,9,0,null,null,'$0.56'],
+    [11,'Kling O1 Pro','KlingAI',1190,9,0,null,null,'$1.34'], [12,'Runway Gen-4 Aleph','Runway',1182,9,0,null,null,'$0.91']
   ]}
   };
 
@@ -315,20 +315,20 @@ function smallPng(canvas, done){
       {path:'agent/alignment', name:'Alignment Index', zh:'对齐指数', metric:'对齐指数', unit:'', count:null, desc:"统计未经许可操作、错误转述和虚报完成三类问题。指数越高，表现越好。榜单为初步结果。"}]},
     {key:'Chat', zh:'对话', boards:[
       {path:'chat/text', name:'Text', zh:'文本', metric:'分数', unit:'', count:null, desc:"用户比较两个匿名模型的文本回答并投票。"},
-      {path:'chat/vision', name:'Vision', zh:'视觉理解', metric:'分数', unit:'', count:'票', desc:"用户根据图片提问，比较识字、读图表和理解图像的能力。"},
-      {path:'chat/document', name:'Document', zh:'文档', metric:'分数', unit:'', count:'票', desc:"比较模型阅读长文档和回答相关问题的表现。"},
-      {path:'chat/search', name:'Search', zh:'联网搜索', metric:'分数', unit:'', count:'票', desc:"比较模型联网搜索后的回答准确性与引用质量。"}]},
+      {path:'chat/vision', name:'Vision', zh:'视觉理解', metric:'分数', unit:'', count:null, desc:"用户根据图片提问，比较识字、读图表和理解图像的能力。"},
+      {path:'chat/document', name:'Document', zh:'文档', metric:'分数', unit:'', count:null, desc:"比较模型阅读长文档和回答相关问题的表现。"},
+      {path:'chat/search', name:'Search', zh:'联网搜索', metric:'分数', unit:'', count:null, desc:"比较模型联网搜索后的回答准确性与引用质量。"}]},
     {key:'Code', zh:'编程', boards:[
       {path:'code/webdev', name:'WebDev', zh:'网页开发', metric:'分数', unit:'', count:null, desc:"按文字需求生成可运行的网页，由用户比较结果。"},
-      {path:'code/image-to-webdev', name:'Image-to-WebDev', zh:'图生网页', metric:'分数', unit:'', count:'票', desc:"按截图或设计稿还原网页，由用户比较效果。"}]},
+      {path:'code/image-to-webdev', name:'Image-to-WebDev', zh:'图生网页', metric:'分数', unit:'', count:null, desc:"按截图或设计稿还原网页，由用户比较效果。"}]},
     {key:'Image', zh:'图像', boards:[
-      {path:'image/text-to-image', name:'Text to Image', zh:'文生图', metric:'分数', unit:'', count:'票', desc:"按文字描述生成图片，由用户比较结果。"},
-      {path:'image/image-edit/single-image', name:'Image Edit', zh:'图像编辑', metric:'分数', unit:'', count:'票', desc:"按文字指令编辑单张图片，由用户比较结果。"},
-      {path:'image/image-edit/multi-image', name:'Image Edit (Multi)', zh:'多图编辑', metric:'分数', unit:'', count:'票', desc:"按文字指令编辑或合成多张图片。"}]},
+      {path:'image/text-to-image', name:'Text to Image', zh:'文生图', metric:'分数', unit:'', count:null, desc:"按文字描述生成图片，由用户比较结果。"},
+      {path:'image/image-edit/single-image', name:'Image Edit', zh:'图像编辑', metric:'分数', unit:'', count:null, desc:"按文字指令编辑单张图片，由用户比较结果。"},
+      {path:'image/image-edit/multi-image', name:'Image Edit (Multi)', zh:'多图编辑', metric:'分数', unit:'', count:null, desc:"按文字指令编辑或合成多张图片。"}]},
     {key:'Video', zh:'视频', boards:[
-      {path:'video/text-to-video', name:'Text to Video', zh:'文生视频', metric:'分数', unit:'', count:'票', desc:"按文字描述生成视频，比较动作、画面和对指令的遵循。"},
-      {path:'video/image-to-video', name:'Image to Video', zh:'图生视频', metric:'分数', unit:'', count:'票', desc:"将静态图生成视频，比较动作与画面的一致性。"},
-      {path:'video/video-edit', name:'Video Edit', zh:'视频编辑', metric:'分数', unit:'', count:'票', desc:"按指令修改已有视频，比较编辑效果和镜头一致性。"}]}
+      {path:'video/text-to-video', name:'Text to Video', zh:'文生视频', metric:'分数', unit:'', count:null, desc:"按文字描述生成视频，比较动作、画面和对指令的遵循。"},
+      {path:'video/image-to-video', name:'Image to Video', zh:'图生视频', metric:'分数', unit:'', count:null, desc:"将静态图生成视频，比较动作与画面的一致性。"},
+      {path:'video/video-edit', name:'Video Edit', zh:'视频编辑', metric:'分数', unit:'', count:null, desc:"按指令修改已有视频，比较编辑效果和镜头一致性。"}]}
   ];
 
   var VENDOR_COLOR = {
@@ -470,7 +470,7 @@ function smallPng(canvas, done){
             var lines = [r[2], B.metric + ' ' + val(B, r[3]) + (r[4] != null ? '（±' + ci(B, r[4]) + '）' : '')];
             if (r[6] != null) lines.push(B.count + '数 ' + fmt(r[6]));
             if (r[7] && r[7] !== 'N/A') lines.push('价格 ' + r[7] + ' /M token');
-            if (r[8]) lines.push('每任务花费（P50）' + r[8]);
+            if (r[8]) lines.push(costLabel(B) + ' ' + r[8]);
             if (r[5]) lines.push('Preliminary：票数较少，排名可能变动');
             return lines;
           }
@@ -539,12 +539,16 @@ function smallPng(canvas, done){
     return td;
   }
 
+  function costLabel(board){
+    var group = board.path.split('/')[0];
+    return (group === 'image' ? '每张图花费' : group === 'video' ? '每段视频花费' : '每任务花费') + '（P50）';
+  }
   function renderTable(){
     var hasPrice = ROWS.some(function(r){ return r[7] != null; });
     var hasCost = ROWS.some(function(r){ return r[8]; });
     var cols = [['排名', 'num'], ['型号'], ['厂商'], [B.metric, 'num'], ['± 区间', 'num']];
     if (B.count) cols.push([B.count + '数', 'num']);
-    if (hasCost) cols.push(['每任务花费 P50', 'num']);
+    if (hasCost) cols.push([costLabel(B), 'num']);
     if (hasPrice) cols.push(['价格 $/M（入 / 出）', 'num']);
     var th = document.getElementById('t-head'); th.textContent = '';
     var tr = el('tr');
@@ -612,7 +616,7 @@ function smallPng(canvas, done){
     var G = GROUPS.filter(function(g){ return g.key === group; })[0];
     document.getElementById('b-title').textContent = G.zh + ' ' + group + ' › ' + B.zh + ' ' + B.name;
     document.getElementById('b-desc').textContent = B.desc;
-    document.getElementById('b-meta').textContent = '第 1–' + ROWS.length + ' 名，共 ' + d.total + ' 个型号上榜 · ' + (d.date ? '榜单日期 ' + d.date + ' · ' : '沿用 11 月 18 日存档 · ') + '指标：' + B.metric + ' · 来源 arena.ai/leaderboard/' + path;
+    document.getElementById('b-meta').textContent = '第 1–' + ROWS.length + ' 名，共 ' + d.total + ' 个型号上榜 · ' + 'Arena 榜单日期 ' + d.date + ' · ' + '指标：' + B.metric + ' · 来源 arena.ai/leaderboard/' + path;
     renderNav();
     renderChart();
     renderTable();

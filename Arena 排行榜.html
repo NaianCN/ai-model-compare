@@ -90,7 +90,7 @@ ul.notes li{margin-bottom:6px}
   <div class="head" id="part-head">
     <div>
       <h1>Arena 排行榜</h1>
-      <p class="sub">汇总 <a href="https://arena.ai/leaderboard">Arena</a> 的智能体、对话、编程、图像和视频榜单，每榜最多显示 15 名。2026-11-18 核对。另见 <a href="AI%20模型花费与智力对比.html">AI 模型花费与智力对比</a>、<a href="20%20美元套餐可用量对比.html">$20 套餐可用量</a>。</p>
+      <p class="sub">汇总 <a href="https://arena.ai/leaderboard">Arena</a> 的智能体、对话、编程、图像和视频榜单，每榜最多显示 15 名。2026-11-20 更新智能体、文本及网页开发榜。另见 <a href="AI%20模型花费与智力对比.html">AI 模型花费与智力对比</a>、<a href="20%20美元套餐可用量对比.html">$20 套餐可用量</a>。</p>
     </div>
   </div>
 
@@ -143,7 +143,7 @@ ul.notes li{margin-bottom:6px}
     <h2>数据说明</h2>
     <ul class="notes">
       <li>数据来自 <a href="https://arena.ai/leaderboard">Arena</a>。盲评分数只在同榜内比较，智能体任务和对齐指数采用各自的指标。</li>
-      <li>横轴从接近最低分处起画。细线为置信区间，斜纹表示初步排名。</li>
+      <li>横轴从接近最低分处起画。细线为置信区间，更新榜单采用以分数为中心的近似区间，斜纹表示初步排名。</li>
       <li>输入和输出价格按每百万 token 计，任务花费按 Arena 公布的中位数列示。</li>
     </ul>
   </section>
@@ -169,15 +169,15 @@ function smallPng(canvas, done){
 (function(){
   // 行：[排名, 型号, 厂商, 分数, ±区间, 是否 Preliminary, 票数/会话数, 价格, (Agent 榜) 每任务花费 P50]
   var DATA = {
-  'agent':{total:65, rows:[
-    [1,'Claude Fable 5.2 (Max)','Anthropic',28.61,3.72,0,10406,'$8 / $40','$9.14'], [2,'Claude Opus 5.5 (Max)','Anthropic',18.19,2.03,0,14649,'$4 / $20','$5.87'],
-    [3,'Gemini 4 Carbon (High)','Google',16.45,0.68,1,64218,'$2 / $10','$1.34'], [4,'Claude Sonnet 5.5 (Max)','Anthropic',15.29,2.89,0,8805,'N/A','$3.37'],
-    [5,'Gemini 4 Hydrogen (High)','Google',14.91,1.89,1,8639,'$1.50 / $7.50','$1.51'], [6,'Claude Fable 5.1 (Max)','Anthropic',14.1,2.08,0,17488,'$10 / $50','$7.82'],
-    [7,'GPT-6 Astra (Max)','OpenAI',13.91,2.03,0,15699,'$10 / $50','$4.91'], [8,'Claude Opus 5.5 (High)','Anthropic',13.35,1.04,0,24277,'$4 / $20','$2.09'],
-    [9,'GPT-6.1 Sol (Max)','OpenAI',11.78,1.12,0,30951,'$2 / $10','$0.98'], [10,'GPT-6.1 Terra (Max)','OpenAI',11.34,1.23,0,25986,'$1 / $5','$0.87'],
-    [11,'Gemini 4 Argon (High)','Google',10,0.89,0,54375,'$2 / $10','$0.69'], [12,'GPT-6.1 Sol (Medium)','OpenAI',8.04,1.04,0,22501,'N/A','$0.38'],
-    [13,'Muse Wonder Full (Max)','Meta',8,0.94,0,32136,'N/A','N/A'], [14,'Qwen4-Max (xHigh)','Alibaba',7.46,1.34,1,14727,'$1.50 / $4.50','$1.46'],
-    [15,'Claude Sonnet 5.5 (High)','Anthropic',7.18,1.92,0,11174,'$2 / $10','$0.78']
+  'agent':{total:68, date:'2026-11-18', rows:[
+    [1,'Claude Fable 5.2 (Max)','Anthropic',1448,38,0,null,null,'$9.13'], [2,'Claude Opus 5.5 (Max)','Anthropic',1336,27,0,null,null,'$5.91'],
+    [3,'Gemini 4 Neon (High)','Google',1333,33,1,null,null,'$2.54'], [4,'Gemini 4 Carbon (High)','Google',1303,9,0,null,null,'$1.36'],
+    [5,'Claude Sonnet 5.5 (Max)','Anthropic',1296,37,0,null,null,'$3.81'], [6,'GPT-6.2 Astra (Max)','OpenAI',1291,35,0,null,null,'$3.31'],
+    [7,'GPT-6 Astra (Max)','OpenAI',1282,27,0,null,null,'$4.72'], [8,'Claude Opus 5.5 (High)','Anthropic',1273,14,0,null,null,'$2.02'],
+    [9,'Claude Fable 5.1 (Max)','Anthropic',1272,27,0,null,null,'$7.52'], [10,'Gemini 4 Hydrogen (High)','Google',1271,23,1,null,null,'$1.50'],
+    [11,'GPT-6.2 Sol (Max)','OpenAI',1241,31,0,null,null,'$1.01'], [12,'GPT-6.1 Sol (Max)','OpenAI',1241,15,0,null,null,'$1.04'],
+    [13,'GPT-6.1 Terra (Max)','OpenAI',1230,15,0,null,null,'$0.85'], [14,'Gemini 4 Argon (High)','Google',1229,12,0,null,null,'$0.69'],
+    [15,'Muse Wonder Full (Max)','Meta',1201,12,0,null,null,null]
   ]},
   'agent/alignment':{total:64, rows:[
     [1,'GPT-6.1 Terra','OpenAI',84.7,2,0], [2,'GPT-6 Astra','OpenAI',84.4,3.2,0],
@@ -189,15 +189,15 @@ function smallPng(canvas, done){
     [13,'Claude Sonnet 5.5','Anthropic',69.2,3.2,0], [14,'Claude Opus 5.5','Anthropic',68.1,3,0],
     [15,'Grok 4.6','SpaceXAI',67.8,2.6,0]
   ]},
-  'chat/text':{total:421, rows:[
-    [1,'Gemini 4 Carbon (High)','Google',1526,10,1,4273,'$2 / $10'], [2,'Gemini 4 Argon (High)','Google',1522,5,0,20779,'$2 / $10'],
-    [3,'Muse Wonder (Max)','Meta',1511,6,0,12696,'$4 / $20'], [4,'Claude Opus 5.5 (High)','Anthropic',1507,6,0,15793,'$4 / $20'],
-    [5,'Claude Fable 5 (High)','Anthropic',1504,4,0,45469,'$10 / $50'], [6,'Claude Opus 4.6 (High)','Anthropic',1503,3,0,84375,'$5 / $25'],
-    [7,'Claude Fable 5.1 (Max)','Anthropic',1502,5,0,20511,'$10 / $50'], [8,'Claude Opus 4.7 (High)','Anthropic',1501,4,0,64260,'$5 / $25'],
-    [9,'Gemini 3.8 Flash (High)','Google',1497,4,1,62675,'$0.75 / $3.75'], [10,'Muse Spark 1.3 (Max)','Meta',1497,5,0,26806,'$1.25 / $4.25'],
-    [11,'Claude Opus 4.6','Anthropic',1496,3,0,89177,'$5 / $25'], [12,'Claude Opus 4.7','Anthropic',1494,4,0,65309,'$5 / $25'],
-    [13,'Muse Spark 1.2 (xHigh)','Meta',1493,6,0,15563,'$1.25 / $4.25'], [14,'Muse Spark 1.1','Meta',1491,4,0,45519,'$1.25 / $4.25'],
-    [15,'Gemini 4 Hydrogen (High)','Google',1490,9,1,4741,'$1.50 / $7.50']
+  'chat/text':{total:426, date:'2026-11-20', rows:[
+    [1,'Gemini 4 Carbon (High)','Google',1527,10,0,null,null,'$0.05'], [2,'Gemini 4 Argon (High)','Google',1520,5,0,null,null,'$0.03'],
+    [3,'Gemini 4 Neon (High)','Google',1513,9,0,null,null,'$0.08'], [4,'Muse Wonder (Max)','Meta',1511,6,0,null,null,'$0.10'],
+    [5,'Claude Opus 5.5 (High)','Anthropic',1506,6,0,null,null,'$0.08'], [6,'Claude Fable 5 (High)','Anthropic',1504,4,0,null,null,'$0.14'],
+    [7,'Claude Fable 5.2 (Max)','Anthropic',1503,9,0,null,null,'$0.24'], [8,'Claude Opus 4.6 (High)','Anthropic',1503,3,0,null,null,'$0.07'],
+    [9,'Claude Fable 5.1 (Max)','Anthropic',1503,6,0,null,null,'$0.46'], [10,'Claude Opus 4.7 (High)','Anthropic',1501,4,0,null,null,'$0.06'],
+    [11,'Muse Spark 1.3 (Max)','Meta',1498,5,0,null,null,'$0.02'], [12,'Gemini 3.8 Flash (High)','Google',1497,4,0,null,null,'$0.01'],
+    [13,'Claude Opus 4.6','Anthropic',1496,4,0,null,null,'$0.06'], [14,'Claude Opus 4.7','Anthropic',1494,4,0,null,null,'$0.06'],
+    [15,'Muse Spark 1.2 (xHigh)','Meta',1493,6,0,null,null,'$0.01']
   ]},
   'chat/vision':{total:166, rows:[
     [1,'Claude Fable 5 (High)','Anthropic',1309,7,0,15536,'$10 / $50'], [2,'Claude Opus 4.7','Anthropic',1300,7,0,23777,'$5 / $25'],
@@ -229,15 +229,15 @@ function smallPng(canvas, done){
     [13,'Grok 4.5','SpaceXAI',1216,6,0,105282,'$2 / $6'], [14,'Claude Opus 5.5 (Medium)','Anthropic',1213,7,0,31730,'$4 / $20'],
     [15,'Gemini 3.1 Pro (Grounding)','Google',1210,5,0,171494,'$2.70 / $16.20']
   ]},
-  'code/webdev':{total:159, rows:[
-    [1,'Claude Fable 5.2 (xHigh)','Anthropic',1826,19,0,1445,'$8 / $40'], [2,'Claude Opus 5.5 (Max)','Anthropic',1816,12,0,4399,'$4 / $20'],
-    [3,'Claude Sonnet 5.5 (xHigh)','Anthropic',1772,10,0,6120,'$2 / $10'], [4,'Gemini 4 Carbon (High)','Google',1768,15,1,2105,'$2 / $10'],
-    [5,'GPT-6 Astra (Max)','OpenAI',1763,8,0,8685,'$10 / $50'], [6,'Qwen4-Max (xHigh)','Alibaba',1750,15,1,1814,'$1.50 / $4.50'],
-    [7,'Claude Fable 5.1 (Max)','Anthropic',1743,8,0,9990,'$10 / $50'], [8,'GPT-6.1 Sol (Max)','OpenAI',1742,10,0,5804,'$2 / $10'],
-    [9,'Muse Wonder Full (Max)','Meta',1724,14,0,2064,'N/A'], [10,'Claude Sonnet 5.5 (High)','Anthropic',1716,8,0,8154,'$2 / $10'],
-    [11,'Gemini 4 Hydrogen (High)','Google',1704,14,1,2046,'$1.50 / $7.50'], [12,'Claude Opus 5 (Max)','Anthropic',1691,6,0,19515,'$5 / $25'],
-    [13,'Kimi K3.1 Pro (Max)','Moonshot',1686,9,0,5215,'$2 / $10'], [14,'GPT-6.1 Terra (Max)','OpenAI',1681,10,0,4309,'$1 / $5'],
-    [15,'Gemini 4 Argon (High)','Google',1679,10,0,5231,'$2 / $10']
+  'code/webdev':{total:163, date:'2026-11-20', rows:[
+    [1,'Claude Fable 5.2 (xHigh)','Anthropic',1823,16,0,null,null,'$11.62'], [2,'Claude Opus 5.5 (Max)','Anthropic',1818,11,0,null,null,'$8.99'],
+    [3,'Claude Sonnet 5.5 (xHigh)','Anthropic',1771,10,0,null,null,'$3.04'], [4,'Gemini 4 Carbon (High)','Google',1769,16,0,null,null,'$1.61'],
+    [5,'Gemini 4 Neon (High)','Google',1763,14,0,null,null,'$2.59'], [6,'GPT-6 Astra (Max)','OpenAI',1763,8,0,null,null,'$9.48'],
+    [7,'GPT-6.2 Astra (Max)','OpenAI',1759,16,0,null,null,'$5.50'], [8,'GPT-6.2 Sol (Max)','OpenAI',1755,15,0,null,null,'$1.50'],
+    [9,'Qwen4-Max (xHigh)','Alibaba',1750,16,0,null,null,'$4.18'], [10,'GPT-6.1 Sol (Max)','OpenAI',1744,10,0,null,null,'$1.84'],
+    [11,'Claude Fable 5.1 (Max)','Anthropic',1741,8,0,null,null,'$11.52'], [12,'Muse Wonder Full (Max)','Meta',1723,15,0,null,null,null],
+    [13,'Claude Sonnet 5.5 (High)','Anthropic',1716,8,0,null,null,'$1.29'], [14,'Gemini 4 Hydrogen (High)','Google',1701,14,0,null,null,'$1.36'],
+    [15,'Claude Opus 5 (Max)','Anthropic',1692,6,0,null,null,'$4.77']
   ]},
   'code/image-to-webdev':{total:66, rows:[
     [1,'Claude Opus 5.5 (Max)','Anthropic',1756,19,0,1313,'$4 / $20'], [2,'Claude Sonnet 5.5 (xHigh)','Anthropic',1745,14,0,2490,'$2 / $10'],
@@ -311,15 +311,15 @@ function smallPng(canvas, done){
 
   var GROUPS = [
     {key:'Agent', zh:'智能体', boards:[
-      {path:'agent', name:'Agent', zh:'智能体任务', metric:'Net Improvement', unit:'%', count:'会话', desc:"根据真实 Agent 会话中的任务完成、用户褒贬、可纠正性、命令行可靠性和工具幻觉评分。净提升以平均模型为基准，单位为百分点。"},
+      {path:'agent', name:'Agent', zh:'智能体任务', metric:'Agent Arena 指数', unit:'', count:null, desc:"用真实会话中的任务完成、用户反馈、可纠正性和命令行可靠性等信号计算。指数基准为 1000 分。"},
       {path:'agent/alignment', name:'Alignment Index', zh:'对齐指数', metric:'对齐指数', unit:'', count:null, desc:"统计未经许可操作、错误转述和虚报完成三类问题。指数越高，表现越好。榜单为初步结果。"}]},
     {key:'Chat', zh:'对话', boards:[
-      {path:'chat/text', name:'Text', zh:'文本', metric:'分数', unit:'', count:'票', desc:"用户比较两个匿名模型的文本回答并投票。"},
+      {path:'chat/text', name:'Text', zh:'文本', metric:'分数', unit:'', count:null, desc:"用户比较两个匿名模型的文本回答并投票。"},
       {path:'chat/vision', name:'Vision', zh:'视觉理解', metric:'分数', unit:'', count:'票', desc:"用户根据图片提问，比较识字、读图表和理解图像的能力。"},
       {path:'chat/document', name:'Document', zh:'文档', metric:'分数', unit:'', count:'票', desc:"比较模型阅读长文档和回答相关问题的表现。"},
       {path:'chat/search', name:'Search', zh:'联网搜索', metric:'分数', unit:'', count:'票', desc:"比较模型联网搜索后的回答准确性与引用质量。"}]},
     {key:'Code', zh:'编程', boards:[
-      {path:'code/webdev', name:'WebDev', zh:'网页开发', metric:'分数', unit:'', count:'票', desc:"按文字需求生成可运行的网页，由用户比较结果。"},
+      {path:'code/webdev', name:'WebDev', zh:'网页开发', metric:'分数', unit:'', count:null, desc:"按文字需求生成可运行的网页，由用户比较结果。"},
       {path:'code/image-to-webdev', name:'Image-to-WebDev', zh:'图生网页', metric:'分数', unit:'', count:'票', desc:"按截图或设计稿还原网页，由用户比较效果。"}]},
     {key:'Image', zh:'图像', boards:[
       {path:'image/text-to-image', name:'Text to Image', zh:'文生图', metric:'分数', unit:'', count:'票', desc:"按文字描述生成图片，由用户比较结果。"},
@@ -612,7 +612,7 @@ function smallPng(canvas, done){
     var G = GROUPS.filter(function(g){ return g.key === group; })[0];
     document.getElementById('b-title').textContent = G.zh + ' ' + group + ' › ' + B.zh + ' ' + B.name;
     document.getElementById('b-desc').textContent = B.desc;
-    document.getElementById('b-meta').textContent = '第 1–' + ROWS.length + ' 名，共 ' + d.total + ' 个型号上榜 · 指标：' + B.metric + ' · 来源 arena.ai/leaderboard/' + path;
+    document.getElementById('b-meta').textContent = '第 1–' + ROWS.length + ' 名，共 ' + d.total + ' 个型号上榜 · ' + (d.date ? '榜单日期 ' + d.date + ' · ' : '沿用 11 月 18 日存档 · ') + '指标：' + B.metric + ' · 来源 arena.ai/leaderboard/' + path;
     renderNav();
     renderChart();
     renderTable();

@@ -91,7 +91,7 @@ td.vendor{font-weight:600}
   <div class="head" id="part-head">
     <div>
     <h1>AI 模型性价比对比</h1>
-    <p class="sub">对比各模型思考档位的智力指数与每任务花费。数据来自 Artificial Analysis（v5.0.1），2026-11-20 核对。花费使用美元和对数刻度。另见 <a href="Arena%20排行榜.html" style="color:inherit">Arena 排行榜</a>、<a href="20%20美元套餐可用量对比.html" style="color:inherit">$20 套餐可用量</a>。</p>
+    <p class="sub">对比各模型思考档位的智力指数与每任务花费。数据来自 Artificial Analysis（v5.0.1），2026-11-23 核对。花费使用美元和对数刻度。另见 <a href="Arena%20排行榜.html" style="color:inherit">Arena 排行榜</a>、<a href="20%20美元套餐可用量对比.html" style="color:inherit">$20 套餐可用量</a>。</p>
     </div>
   </div>
 
@@ -110,7 +110,7 @@ td.vendor{font-weight:600}
 
   <section class="card" id="part-chart">
     <div class="chart">
-      <canvas id="c" role="img" aria-label="折线图，横轴为每任务花费（美元，对数刻度，刻度 0.05 至 30 美元），纵轴为 Artificial Analysis 智力指数 v5.0.1。Claude Fable 5.2 在 3.10 到 26.54 美元之间得分 54 到 65，为全图最高；Gemini 4 Carbon 最高为 60 分、每任务 7.76 美元，Gemini 4 Neon 最高为 61 分、每任务 6.44 美元；Gemini 4 Hydrogen 在 0.29 到 3.16 美元之间得分 27 到 54；Claude Opus 5.5 在 0.98 到 10.04 美元之间得分 35 到 59；GPT-6.2 Sol 在 0.18 到 1.01 美元之间得分 41 到 57；GPT-6.1 Terra 在 0.07 到 0.96 美元之间得分 29 到 51；GPT-6.2 Astra 在 0.66 到 4.00 美元之间得分 46 到 62；Muse Ember 在 0.12 到 0.14 美元之间得分 34 到 36；Sonnet 5.5 与 Fable 5.2 位于中高花费区间；Gemini 4 Argon 在 4.97 美元为 50 分；Tencent Hy4 在 1.03 美元为 35 分；Kimi K3.1 Pro 在 3.68 美元为 46 分；GLM-5.3 在 1.57 美元为 23 分，在 5.01 美元为 32 分，GLM-5.3-Flash 在 0.58 美元为 28 分；DeepSeek V4.1 Flash 1017 在 0.46 美元为 29 分，在 0.60 美元为 33 分，MiniMax-M3.1-Flash 在 0.49 美元为 29 分。"></canvas>
+      <canvas id="c" role="img" aria-label="折线图，横轴为每任务花费（美元，对数刻度，刻度 0.05 至 30 美元），纵轴为 Artificial Analysis 智力指数 v5.0.1。Claude Fable 5.2 在 3.10 到 26.54 美元之间得分 54 到 65，为全图最高；Gemini 4 Carbon 最高为 60 分、每任务 7.76 美元，Gemini 4 Neon 最高为 61 分、每任务 6.44 美元；Gemini 4 Hydrogen 在 0.29 到 3.16 美元之间得分 27 到 54；Claude Opus 5.5 在 0.98 到 10.04 美元之间得分 35 到 59；GPT-6.2 Sol 在 0.18 到 1.01 美元之间得分 41 到 57；GPT-6.1 Terra 在 0.07 到 0.96 美元之间得分 29 到 51；GPT-6.2 Astra 在 0.66 到 4.00 美元之间得分 46 到 62；Muse Ember 在 0.12 到 0.14 美元之间得分 34 到 36；Sonnet 5.5 与 Fable 5.2 位于中高花费区间；Gemini 4 Argon 在 9.95 美元为 50 分；Tencent Hy4 在 1.03 美元为 35 分；Kimi K3.1 Pro 在 3.68 美元为 46 分；GLM-5.3 在 1.57 美元为 23 分，在 5.01 美元为 32 分，GLM-5.3-Flash 在 0.58 美元为 28 分；DeepSeek V4.1 Flash 1017 在 0.46 美元为 29 分，在 0.60 美元为 33 分，MiniMax-M3.1-Flash 在 0.49 美元为 29 分。"></canvas>
     </div>
     <div class="legend" id="legend"></div>
     <p class="dash-note" id="legend-key">虚线 = 该模型的评分与实际表现疑似存在差异</p>
@@ -223,8 +223,8 @@ function smallPng(canvas, done){
      pts:[[0.66,46,'low'],[1.62,57,'medium'],[2.07,60,'high'],[2.52,62,'xhigh'],[4.00,62,'max']]},
     {name:'Gemini 3.8 Flash', fam:'Gemini', letter:'G', color:'#d55181', note:'low 档无花费数据，未入图',
      pts:[[6.26,30,'medium'],[7.77,31,'high']]},
-    {name:'Gemini 4 Argon', fam:'Gemini', letter:'G', color:'#7a1f5c', note:'仅 high 档；2026-11-13 每任务花费 $9.95→$4.97',
-     pts:[[4.97,50,'high']]},
+    {name:'Gemini 4 Argon', fam:'Gemini', letter:'G', color:'#7a1f5c', note:'仅 high 档；2026-11-13 每任务花费 $9.95→$4.97，2026-11-23 核对恢复为 $9.95（单价 $2/$10→$4/$20）',
+     pts:[[9.95,50,'high']]},
     {name:'Gemini 4 Carbon', fam:'Gemini', letter:'G', color:'#0891b2', note:'AA 当前按标准价格列示。',
      pts:[[7.19,54,'low'],[6.59,58,'medium'],[7.76,60,'high']]},
     {name:'Gemini 4 Neon', fam:'Gemini', letter:'G', color:'#3b63d7', note:'2026-11-18 发布，AA 收录低、中、高、超高四档；每百万 token 输入 $3、输出 $15。',
